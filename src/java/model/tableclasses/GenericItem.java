@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package model.tableclasses;
 
 /**
  *
  * @author Conor
  */
 public class GenericItem {
-    private int Id;
-    private String Name;
+    private int id;
+    private String name;
 }

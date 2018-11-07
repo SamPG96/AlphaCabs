@@ -5,6 +5,8 @@
  */
 package model;
 
+import model.tableclasses.User;
+
 /**
  *
  * @author Sam

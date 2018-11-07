@@ -3,7 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package model.tableclasses;
+
+import model.tableclasses.Customer;
+import model.tableclasses.GenericItem;
+import model.tableclasses.Driver;
 
 /**
  *

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package model.tableclasses;
 
 /**
  *
@@ -12,6 +12,6 @@ package model;
 public class Driver {
     private int id;
     private String firstName;
-    private String LastName;
-    private String Registration;
+    private String lastName;
+    private String registration;
 }
