@@ -68,6 +68,13 @@ public class User {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+    
+    public int getCustomerId() {
+        if(customer != null){
+            return customer.getId();
+        }
+        return 0;
+    }
 
     public Driver getDriver() {
         return driver;
@@ -75,6 +82,13 @@ public class User {
 
     public void setDriver(Driver driver) {
         this.driver = driver;
+    }
+    
+    public int getDriverId() {
+        if(driver != null){
+            return driver.getId();
+        }
+        return 0;
     }
 
     public GenericItem getUserStatus() {
