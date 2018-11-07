@@ -7,14 +7,11 @@ package model;
 
 /**
  *
- * @author Sam
+ * @author Conor
  */
-public class User {
+public class Driver {
     private int id;
-    private String username;
-    private String password;
-    private GenericItem userType;
-    private Customer customer;
-    private Driver driver;
-    private GenericItem userStatus;
+    private String firstName;
+    private String LastName;
+    private String Registration;
 }
