@@ -5,12 +5,27 @@
  */
 package model;
 
+import java.util.HashMap;
+
 /**
  *
  * @author Sam
  */
-public class User {
-    String id;
-    String username;
-    String usertype;
+public abstract class User {
+    private final String userID;
+    private final int userType;
+
+    public User(String userID, int userType) {
+        this.userID = userID;
+        this.userType = userType;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+    
+    public int getUserType() {
+        return userType;
+    }
+    
 }
