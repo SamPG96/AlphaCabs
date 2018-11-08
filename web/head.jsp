@@ -7,11 +7,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
+    
     <body>
-        <h1>Hello World!</h1>
+        <img src="imgs/Alpha.png" align="left">
+        <br>
+        <br>
+        <h1>Alpha Cabs</h1>
+        <br>
+        
     </body>
 </html>
