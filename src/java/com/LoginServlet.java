@@ -18,7 +18,6 @@ import model.UserManagement;
  *
  * @author Sam,Jake
  */
-// TODO: complete me
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -64,11 +63,15 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
+        HttpSession session = request.getSession(false);
+
+        Jdbc dbBean = new Jdbc();
+        dbBean.connect((Connection)request.getServletContext().getAttribute("connection"));
+        session.setAttribute("dbbean", dbBean);
+        
         String message = null;
 
-        UserManagement loginUser = new UserManagement();
-        loginUser.setUsername(request.getParameter("username"));
-        loginUser.setPassword(request.getParameter("password"));
+        User loggedInUser = UserManagement.loginUser(request.getParameter("username"), request.getParameter("password"), (Jdbc)session.getAttribute("dbbean"));
 
         //String user = AlphacabListener.login(loginUser);
         UserManagement userType = new UserManagement();
@@ -108,7 +111,7 @@ public class LoginServlet extends HttpServlet {
  * @return a String containing servlet description
  */
 @Override
-        public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

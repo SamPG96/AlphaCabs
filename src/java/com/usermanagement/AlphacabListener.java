@@ -53,11 +53,4 @@ public class AlphacabListener implements ServletContextListener {
         } catch (SQLException e) {
         }
     }
-
-    public void contextInitializied(ServletContextEvent sce) {
-        ServletContext sc = sce.getServletContext();
-
-        sc.setAttribute("User", UserManagement);
-
-    }
 }
