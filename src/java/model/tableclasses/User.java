@@ -21,7 +21,8 @@ public class User {
     public User() {
     }
     
-    public User(int id, String username, String password, GenericItem userType, GenericItem userStatus) {
+    public User(int id, String username, String password, GenericItem userType,
+            GenericItem userStatus) {
         this.id = id;
         this.username = username;
         this.password = password;

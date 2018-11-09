@@ -27,31 +27,6 @@ public class Jdbc {
     Statement statement = null;
     ResultSet rs = null;
     //String query = null;
-
-    public static void main(String[] args){
-        Connection conn;
-        Jdbc jdbc = new Jdbc();
-        
-        String dbpath = "jdbc:derby://localhost:1527/alphacabsdb";
-        String dbuser = "ateam";
-        String dbpass = "ateam";
-        
-        try {
-            //Class.forName("com.mysql.jdbc.Driver");
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-            // TODO: make user and password variable
-            conn = DriverManager.getConnection(dbpath, dbuser, dbpass);
-            
-            jdbc.connect(conn);
-            ArrayList test = jdbc.retrieve("Users","Username","jsmith");
-            System.out.println(test.get(0).toString());
-        }
-        catch(ClassNotFoundException | SQLException e){
-            System.err.println(e);
-        }
-        
-    }
-    
     public Jdbc(String query) {
         //this.query = query;
     }
@@ -78,20 +53,20 @@ public class Jdbc {
         return aList;
     }
 
-    private ArrayList<Map<String, String>> rsToMaps() throws SQLException {
-        ArrayList<Map<String, String>> ret = new ArrayList<>();
-        Map<String, String> rowMap;
+    private ArrayList<HashMap<String, String>> rsToMaps() throws SQLException {
+        ArrayList<HashMap<String, String>> ret = new ArrayList<>();
+        HashMap<String, String> rowMap;
         
         int nCols = rs.getMetaData().getColumnCount();
         String[] colNames = new String[nCols];
         for (int c = 0; c < nCols; c++) {
-            colNames[c] = rs.getMetaData().getColumnName(c);
+            colNames[c] = rs.getMetaData().getColumnName(c+1);
         }
 
         while (rs.next()) {
             rowMap = new HashMap<>();
-            for (int c = 1; c <= nCols; c++) {
-                rowMap.put(colNames[c], rs.getString(c));
+            for (int c = 0; c < nCols; c++) {
+                rowMap.put(colNames[c], rs.getString(c+1));
             }
             ret.add(rowMap);
         }
@@ -99,7 +74,7 @@ public class Jdbc {
     }
 
     private void select(String tableName, String colName, String value) {
-        String query = "SELECT * FROM " + tableName + " WHERE " + colName + " EQUALS " + value;
+        String query = "SELECT * FROM " + tableName + " WHERE " + colName + " = \'" + value + "\'";
 
         try {
             statement = connection.createStatement();
@@ -109,7 +84,7 @@ public class Jdbc {
         }
     }
 
-    public ArrayList<Map<String, String>> retrieve(String tableName, String colName, String value) throws SQLException {
+    public ArrayList<HashMap<String, String>> retrieve(String tableName, String colName, String value) {
         select(tableName, colName, value);
 
         try {

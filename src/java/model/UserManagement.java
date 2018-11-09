@@ -5,9 +5,10 @@
  */
 package model;
 
+import java.util.ArrayList;
 import model.tableclasses.User;
 import java.util.HashMap;
-import java.util.Map;
+import model.tableclasses.GenericItem;
 
 /**
  *
@@ -15,6 +16,8 @@ import java.util.Map;
  */
 public class UserManagement {
     static String userTableName = "Users";
+    static String userTypesTableName = "UserTypes";
+    static String userStatusTableName = "UserStatus";
     
     public static void newCustomer(String username, String pass, String name,
                                    String address, Jdbc jdbc){
@@ -31,63 +34,79 @@ public class UserManagement {
     }
     
     /*
-     * Verify a users login details and return a User object than represents
-     * their user entity. If the username of password is invalid then null is
-     * returned.
+     * Verify a users login details and return the associated ID of the user,
+     * If the username of password is invalid then null is returned.
      */
-    public static User loginUser(String user, String pass, Jdbc jdbc){
-        User loggedInUser;
-        String existanceFieldsToCheck[] = {"Username", "Password"};
-        String existanceFieldVals[] = {user, pass};
-        Map <String, String> userDBInfo = new HashMap<>();
+    public static String loginUser(String user, String pass, Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        HashMap<String, String> userDBInfo;
         
-        // Checks if user exists and its password is valid.
-        if (jdbc.exists(
-                this.userTableName,
-                existanceFieldsToCheck,
-                existanceFieldVals) == false){
-            return null;
-        };
+        // Retrieve user information from the DB
+        results = jdbc.retrieve(userTableName, "username", user);        
         
-        // Retrieve information on the user and feed it to a class that
-        // represents its user type.
-        userDBInfo = jdbc.retrieve(this.userTableName, user);
-        
-        switch (Integer.parseInt(userDBInfo.get("UserType"))){
-            case 1:
-                loggedInUser = new AdminUser(
-                        userDBInfo.get("Id"),
-                        1
-                );
-                break;
-                
-            case 2:
-                loggedInUser = new DriverUser(
-                        userDBInfo.get("DriverId"),
-                        userDBInfo.get("Id"),
-                        2
-                );
-                break;
-
-            case 3:
-                loggedInUser = new CustomerUser(
-                        userDBInfo.get("CustomerId"),
-                        userDBInfo.get("Id"),
-                        2
-                );
-                break;
-            
-            default:
-                throw new RuntimeException("user ID not valid");
+        // Ensure only one user exists with the given user name. Usernames are
+        // unique so this should never happen.
+        if (results.size() != 1){
+            throw new RuntimeException("more than one user ecists with the " +
+                                       "same username");
         }
         
-        return loggedInUser;
+        // Should only be one result, so index the first
+        userDBInfo = results.get(0);
+        
+        // Check the password is correct
+        if (userDBInfo.get("PASSWORD").equals(pass) == false){
+            return null;
+        }
+        
+        return userDBInfo.get("usertype");
     }
-    
+
+    /*
+     * Queriues the DB for information about a user. All information is returned
+     * as a User object.
+     */
+    public static User getUser(String userID, Jdbc jdbc){
+        HashMap<String, String> userDBInfo;
+        ArrayList<HashMap<String, String>> userTypeOpts;
+        ArrayList<HashMap<String, String>> userStatusOpts;
+        String userTypeName = null;
+        String userStatusName = null;
+
+        // Retrieve user information from the DB. Note ID is primary key so
+        // their should only ever be one result.
+        userDBInfo = jdbc.retrieve(userTableName, "id", userID).get(0);
+
+        // Identify the name of the user type for user
+        userTypeOpts = jdbc.retrieve(userTypesTableName);
+        for (HashMap<String, String> row: userTypeOpts){
+            if (row.get("Id").equals(userDBInfo.get("UserTypeID"))){
+                userTypeName = row.get("UserType");
+            }
+        }
+        
+        // Identify the name of status set for the user
+        userStatusOpts = jdbc.retrieve(userStatusTableName);
+         for (HashMap<String, String> row: userStatusOpts){
+            if (row.get("Id").equals(userDBInfo.get("UserStatusID"))){
+                userStatusName = row.get("Status");
+            }
+        }       
+        
+        // Initialize and return User object
+        return new User(
+                Integer.valueOf(userID),
+                userDBInfo.get("username"),
+                userDBInfo.get("password"),
+                new GenericItem(Integer.valueOf(userDBInfo.get("UserTypeId")),
+                        userTypeName),
+                new GenericItem(Integer.valueOf(userDBInfo.get("UserStatusID")),
+                        userStatusName));
+    }
     /*
      * Queries the database to check the status of a user account 
      */
-    public static int getUserAccountStatus(User user, Jdbc jdbc){
-        
-    }
+//    public static int getUserAccountStatus(User user, Jdbc jdbc){
+//        
+//    }
 }
