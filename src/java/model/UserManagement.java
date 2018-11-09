@@ -13,25 +13,19 @@ import java.util.Map;
  * @author Sam
  */
 public class UserManagement {
-    Jdbc jdbc;
-    String userTableName;
-
-    public UserManagement(Jdbc jdbc) {
-        this.jdbc = jdbc;
-        this.userTableName = "Users";
-    }
+    static String userTableName = "Users";
     
-    public void newCustomer(String username, String pass, String name,
-                                String address){
+    public static void newCustomer(String username, String pass, String name,
+                                   String address, Jdbc jdbc){
         
     }
 
-    public void newDriver(String username, String pass, String name,
-                              String vehicleReg){
+    public static void newDriver(String username, String pass, String name,
+                                 String vehicleReg, Jdbc jdbc){
         
     }
     
-    public void updateUserDetails(User user){
+    public static void updateUserDetails(User user, Jdbc jdbc){
         
     }
     
@@ -40,14 +34,14 @@ public class UserManagement {
      * their user entity. If the username of password is invalid then null is
      * returned.
      */
-    public User loginUser(String user, String pass){
+    public static User loginUser(String user, String pass, Jdbc jdbc){
         User loggedInUser;
         String existanceFieldsToCheck[] = {"Username", "Password"};
         String existanceFieldVals[] = {user, pass};
         Map <String, String> userDBInfo = new HashMap<>();
         
         // Checks if user exists and its password is valid.
-        if (this.jdbc.exists(
+        if (jdbc.exists(
                 this.userTableName,
                 existanceFieldsToCheck,
                 existanceFieldVals) == false){
@@ -56,7 +50,7 @@ public class UserManagement {
         
         // Retrieve information on the user and feed it to a class that
         // represents its user type.
-        userDBInfo = this.jdbc.retrieve(this.userTableName, user);
+        userDBInfo = jdbc.retrieve(this.userTableName, user);
         
         switch (Integer.parseInt(userDBInfo.get("UserType"))){
             case 1:
@@ -92,7 +86,7 @@ public class UserManagement {
     /*
      * Queries the database to check the status of a user account 
      */
-    public int getUserAccountStatus(User user){
+    public static int getUserAccountStatus(User user, Jdbc jdbc){
         
     }
 }
