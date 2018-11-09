@@ -5,6 +5,7 @@
  */
 package model;
 
+import model.tableclasses.User;
 import java.util.HashMap;
 import java.util.Map;
 
