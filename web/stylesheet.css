@@ -1,0 +1,35 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 09-Nov-2018, 01:00:41
+    Author     : yuugy
+*/
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+.navbar {     
+    overflow: hidden;
+    background-color: white;
+    position: fixed; 
+    top: 0; 
+    width: 100%; 
+}
+.navbar a {
+    float: right;
+    text-align: center;
+    padding: 14px 16px;
+    
+}
+
+.main {
+    margin-top: 150px;
+    margin-bottom: 30px; 
+}
