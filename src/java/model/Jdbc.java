@@ -73,6 +73,40 @@ public class Jdbc {
         return ret;
     }
 
+    /*
+    * Sets the ReturnSet to the rows in the DB that meet criteria
+    * specified in the param.
+    */
+    private void select(String tableName) {
+        String query = "SELECT * FROM " + tableName;
+
+        try {
+            statement = connection.createStatement();
+            rs = statement.executeQuery(query);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    /*
+    * Sets the ReturnSet to the rows in the DB that meet criteria
+    * specified in the param.
+    */
+    private void select(String tableName, int id) {
+        String query = "SELECT * FROM " + tableName + " WHERE ID = " + id + "";
+
+        try {
+            statement = connection.createStatement();
+            rs = statement.executeQuery(query);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    /*
+    * Sets the ReturnSet to the rows in the DB that meet criteria
+    * specified in the param.
+    */
     private void select(String tableName, String colName, String value) {
         String query = "SELECT * FROM " + tableName + " WHERE " + colName + " = \'" + value + "\'";
 
@@ -84,9 +118,16 @@ public class Jdbc {
         }
     }
 
-    public ArrayList<HashMap<String, String>> retrieve(String tableName, String colName, String value) {
-        select(tableName, colName, value);
+    /*
+    * Returns a list of hashmaps of rows from the DB that meet criteria 
+    * specified in the params.
+    */
+    public ArrayList<HashMap<String, String>> retrieve(String tableName) {
+        
+        //GET Qualifiing Rows from DB
+        select(tableName);
 
+        //Transform and Return Rows to a List of HashMaps
         try {
             if (rs == null) {
                 System.out.println("rs is null");
@@ -96,9 +137,53 @@ public class Jdbc {
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;//results;
+        return null;
     }
+    
+    /*
+    * Returns a list of hashmaps of rows from the DB that meet criteria 
+    * specified in the params.
+    */
+    public ArrayList<HashMap<String, String>> retrieve(String tableName, int id) {
+        
+        //GET Qualifiing Rows from DB
+        select(tableName, id);
 
+        //Transform and Return Rows to a List of HashMaps
+        try {
+            if (rs == null) {
+                System.out.println("rs is null");
+            } else {
+                return rsToMaps();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    /*
+    * Returns a list of hashmaps of rows from the DB that meet criteria 
+    * specified in the params.
+    */
+    public ArrayList<HashMap<String, String>> retrieve(String tableName, String colName, String value) {
+        
+        //GET Qualifiing Rows from DB
+        select(tableName, colName, value);
+
+        //Transform and Return Rows to a List of HashMaps
+        try {
+            if (rs == null) {
+                System.out.println("rs is null");
+            } else {
+                return rsToMaps();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     public void insert(String[] str) {
         PreparedStatement ps = null;
         try {
