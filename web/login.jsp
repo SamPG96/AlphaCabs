@@ -41,4 +41,6 @@
     </div>
     
     <jsp:include page="foot.jsp"/>
+
 </html>
+
