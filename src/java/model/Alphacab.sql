@@ -46,7 +46,7 @@ CREATE TABLE UserType (
 INSERT INTO UserType (Id, UserType) VALUES
 (1, 'Admin'),
 (2, 'Driver'),
-(3, 'Customer');
+(4, 'Customer');
 
 -- --------------------------------------------------------
 
@@ -60,7 +60,7 @@ CREATE TABLE UserStatus (
 INSERT INTO UserStatus (Id, Status) VALUES
 (1, 'Unappoved'),
 (2, 'Active'),
-(3, 'Inactive');
+(4, 'Inactive');
 
 ---------------------------------------------------------
 

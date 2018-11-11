@@ -16,7 +16,7 @@ import model.tableclasses.GenericItem;
  */
 public class UserManagement {
     static String userTableName = "Users";
-    static String userTypesTableName = "UserTypes";
+    static String userTypesTableName = "UserType";
     static String userStatusTableName = "UserStatus";
     
     public static void newCustomer(String username, String pass, String name,
@@ -35,19 +35,24 @@ public class UserManagement {
     
     /*
      * Verify a users login details and return the associated ID of the user,
-     * If the username of password is invalid then null is returned.
+     * If the username of password is invalid then -1 is returned.
      */
-    public static String loginUser(String user, String pass, Jdbc jdbc){
+    public static int loginUser(String user, String pass, Jdbc jdbc){
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> userDBInfo;
         
         // Retrieve user information from the DB
-        results = jdbc.retrieve(userTableName, "username", user);        
+        results = jdbc.retrieve(userTableName, "USERNAME", user);        
+        
+        // If no user was found with given username then return failure
+        if (results.isEmpty()){
+            return -1;
+        }
         
         // Ensure only one user exists with the given user name. Usernames are
         // unique so this should never happen.
-        if (results.size() != 1){
-            throw new RuntimeException("more than one user ecists with the " +
+        if (results.size() > 1){
+            throw new RuntimeException("more than one user exists with the " +
                                        "same username");
         }
         
@@ -56,17 +61,17 @@ public class UserManagement {
         
         // Check the password is correct
         if (userDBInfo.get("PASSWORD").equals(pass) == false){
-            return null;
+            return -1;
         }
         
-        return userDBInfo.get("usertype");
+        return Integer.valueOf(userDBInfo.get("ID"));
     }
 
     /*
      * Queriues the DB for information about a user. All information is returned
      * as a User object.
      */
-    public static User getUser(String userID, Jdbc jdbc){
+    public static User getUser(int userID, Jdbc jdbc){
         HashMap<String, String> userDBInfo;
         ArrayList<HashMap<String, String>> userTypeOpts;
         ArrayList<HashMap<String, String>> userStatusOpts;
@@ -75,32 +80,32 @@ public class UserManagement {
 
         // Retrieve user information from the DB. Note ID is primary key so
         // their should only ever be one result.
-        userDBInfo = jdbc.retrieve(userTableName, "id", userID).get(0);
+        userDBInfo = jdbc.retrieve(userTableName, userID).get(0);
 
         // Identify the name of the user type for user
         userTypeOpts = jdbc.retrieve(userTypesTableName);
         for (HashMap<String, String> row: userTypeOpts){
-            if (row.get("Id").equals(userDBInfo.get("UserTypeID"))){
-                userTypeName = row.get("UserType");
+            if (row.get("ID").equals(userDBInfo.get("USERTYPEID"))){
+                userTypeName = row.get("USERTYPE");
             }
         }
         
         // Identify the name of status set for the user
         userStatusOpts = jdbc.retrieve(userStatusTableName);
          for (HashMap<String, String> row: userStatusOpts){
-            if (row.get("Id").equals(userDBInfo.get("UserStatusID"))){
-                userStatusName = row.get("Status");
+            if (row.get("ID").equals(userDBInfo.get("USERSTATUSID"))){
+                userStatusName = row.get("STATUS");
             }
         }       
         
         // Initialize and return User object
         return new User(
-                Integer.valueOf(userID),
-                userDBInfo.get("username"),
-                userDBInfo.get("password"),
-                new GenericItem(Integer.valueOf(userDBInfo.get("UserTypeId")),
+                userID,
+                userDBInfo.get("USERNAME"),
+                userDBInfo.get("PASSWORD"),
+                new GenericItem(Integer.valueOf(userDBInfo.get("USERTYPEID")),
                         userTypeName),
-                new GenericItem(Integer.valueOf(userDBInfo.get("UserStatusID")),
+                new GenericItem(Integer.valueOf(userDBInfo.get("USERSTATUSID")),
                         userStatusName));
     }
     /*

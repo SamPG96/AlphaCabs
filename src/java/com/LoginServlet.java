@@ -7,6 +7,7 @@ package com;
 
 import java.io.IOException;
 import java.sql.Connection;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -64,20 +65,27 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        ServletContext sc = request.getServletContext();
+        
+        // Go straight to an error page if their where problems connecting to
+        // the DB.
+        if (sc.getAttribute("dBConnectionError") != null){
+            request.getRequestDispatcher("conErr.jsp").forward(request, response);
+        }
         
         // Connect Jdbc to the DB
         Jdbc dbBean = new Jdbc();
-        dbBean.connect((Connection)request.getServletContext().getAttribute("connection"));
+        dbBean.connect((Connection)sc.getAttribute("connection"));
         
-        // Attempt to login the user, null is returned if the password or
+        // Attempt to login the user, -1 is returned if the password or
         // username is inccorect  
-        String loggedInUserID = UserManagement.loginUser(
+        int loggedInUserID = UserManagement.loginUser(
                 request.getParameter("username"),
                 request.getParameter("password"),
                 dbBean);
 
         // Handle result of login attempt
-        if (loggedInUserID == null) {
+        if (loggedInUserID == -1) {
             // Login failure!
             String message = "Incorrect username or password, try again";
             request.setAttribute("errMsg", message + "</br>");
@@ -102,7 +110,7 @@ public class LoginServlet extends HttpServlet {
                     request.getRequestDispatcher("loginDriver.jsp").forward(
                             request, response);
                     break;
-                case 3:
+                case 4:
                     request.getRequestDispatcher("loginCustomer.jsp").forward(
                             request, response);
                     break;

@@ -84,7 +84,7 @@ public class Jdbc {
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
         } catch (SQLException e) {
-            System.out.println(e);
+            throw new RuntimeException(e);
         }
     }
     
@@ -99,7 +99,7 @@ public class Jdbc {
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
         } catch (SQLException e) {
-            System.out.println(e);
+            throw new RuntimeException(e);
         }
     }
     
@@ -114,7 +114,7 @@ public class Jdbc {
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
         } catch (SQLException e) {
-            System.out.println(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -135,7 +135,7 @@ public class Jdbc {
                 return rsToMaps();
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
         }
         return null;
     }
@@ -157,7 +157,7 @@ public class Jdbc {
                 return rsToMaps();
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
         }
         return null;
     }
@@ -179,7 +179,7 @@ public class Jdbc {
                 return rsToMaps();
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
         }
         return null;
     }
@@ -195,7 +195,7 @@ public class Jdbc {
             ps.close();
             System.out.println("1 row added.");
         } catch (SQLException ex) {
-            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
         }
 
     }
@@ -211,7 +211,7 @@ public class Jdbc {
             ps.close();
             System.out.println("1 rows updated.");
         } catch (SQLException ex) {
-            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -224,8 +224,7 @@ public class Jdbc {
             statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch (SQLException e) {
-            System.out.println("way way" + e);
-            //results = e.toString();
+            throw new RuntimeException(e);
         }
     }
 
@@ -235,7 +234,7 @@ public class Jdbc {
             statement.close();
             //connection.close();                                         
         } catch (SQLException e) {
-            System.out.println(e);
+            throw new RuntimeException(e);
         }
     }
 }

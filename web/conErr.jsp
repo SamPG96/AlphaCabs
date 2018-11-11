@@ -12,7 +12,6 @@
         <title>Connection Error Page</title>
     </head>
     <body>
-        <h1>DB Connection could not been established!!</h1>
-         <jsp:include page="foot.jsp"/>
+        <h1>Database Connection could not been established!!</h1>
     </body>
 </html>
