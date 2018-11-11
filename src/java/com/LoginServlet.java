@@ -5,14 +5,17 @@
  */
 package com;
 
-import com.usermanagement.AlphacabListener;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Connection;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Jdbc;
 import model.UserManagement;
+import model.tableclasses.User;
 
 /**
  *
@@ -62,48 +65,62 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-
-        HttpSession session = request.getSession(false);
-
-        Jdbc dbBean = new Jdbc();
-        dbBean.connect((Connection)request.getServletContext().getAttribute("connection"));
-        session.setAttribute("dbbean", dbBean);
+        ServletContext sc = request.getServletContext();
         
-        String message = null;
+        // Go straight to an error page if their where problems connecting to
+        // the DB.
+        if (sc.getAttribute("dBConnectionError") != null){
+            request.getRequestDispatcher("conErr.jsp").forward(request, response);
+        }
+        
+        // Connect Jdbc to the DB
+        Jdbc dbBean = new Jdbc();
+        dbBean.connect((Connection)sc.getAttribute("connection"));
+        
+        // Attempt to login the user, -1 is returned if the password or
+        // username is inccorect  
+        int loggedInUserID = UserManagement.loginUser(
+                request.getParameter("username"),
+                request.getParameter("password"),
+                dbBean);
 
-        User loggedInUser = UserManagement.loginUser(request.getParameter("username"), request.getParameter("password"), (Jdbc)session.getAttribute("dbbean"));
-
-        //String user = AlphacabListener.login(loginUser);
-        UserManagement userType = new UserManagement();
-        loggedInUser.getUserType;// Not sure how to do this.
-
-        if (loginUser.equals(null)) {
-
-            message = "Please try again";
+        // Handle result of login attempt
+        if (loggedInUserID == -1) {
+            // Login failure!
+            String message = "Incorrect username or password, try again";
+            request.setAttribute("errMsg", message + "</br>");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
 
         } else {
-
-            if (loggedInUser == 1) {
-
-                message = "You have successfully logged in.";
-                request.getRequestDispatcher("loginAdmin.jsp").forward(request, response);
-
-            } else if (loggedInUser == 2) {
-
-                message = "You have successfully logged in.";
-                request.getRequestDispatcher("loginDriver.jsp").forward(request, response);
-
-            } else if (loggedInUser == 3) {
-
-                message = "You have successfully logged in.";
-                request.getRequestDispatcher("loginCustomer.jsp").forward(request, response);
-
+            // Login success!
+            // Create a new session
+            HttpSession session = request.getSession();
+            session.setAttribute("userID", loggedInUserID);
+            session.setAttribute("dbbean", dbBean);
+            
+            User user = UserManagement.getUser(loggedInUserID, dbBean);
+            
+            // Move to the page associated with the user type
+            switch (user.getUserType().getId()) {
+                case 1:
+                    request.getRequestDispatcher("loginAdmin.jsp").forward(
+                            request, response);
+                    break;
+                case 2:
+                    request.getRequestDispatcher("loginDriver.jsp").forward(
+                            request, response);
+                    break;
+                case 4:
+                    request.getRequestDispatcher("loginCustomer.jsp").forward(
+                            request, response);
+                    break;
+                default:
+                    throw new RuntimeException("user type not recognised");
             }
 
         }
 
     }
-}
 
 /**
  * Returns a short description of the servlet.

@@ -1,7 +1,7 @@
 <%-- 
     Document   : login
     Created on : 09-Nov-2018, 00:43:37
-    Author     : yuugy
+    Author     : 
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,7 +16,7 @@
     <jsp:include page="head.jsp"/>
     <div class="main">
         <h2>Login:</h2>
-        <form method="POST" action="Update.do">     <%--CHANGE ME --%>
+        <form method="POST" action="LoginServlet.do">
             <table>
                 <tr>
                     <th></th>
@@ -36,7 +36,7 @@
             </table>
         </form>
         
-        <%=((String)(request.getAttribute("msg"))!=null)?(String)(request.getAttribute("msg")):""%> <%--CHANGE ME --%>
+        <%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%>
     </div>
     
     <jsp:include page="foot.jsp"/>
