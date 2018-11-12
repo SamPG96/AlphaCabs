@@ -29,19 +29,23 @@ public class AlphacabListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext sc = sce.getServletContext();
 
+
+        // Establish a connection to the database and store it
+
         String db = sc.getInitParameter("dbname");
         String dbpath = "jdbc:derby://localhost:1527/" + db.trim();
         String dbuser = sc.getInitParameter("dbuser");
         String dbpass = sc.getInitParameter("dbpass");
 
         try {
-            //Class.forName("com.mysql.jdbc.Driver");
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-            // TODO: make user and password variable
             conn = DriverManager.getConnection(dbpath, dbuser, dbpass);
 
         } catch (ClassNotFoundException | SQLException e) {
-            sc.setAttribute("error", e);
+
+            // unable to connect to database 
+            sc.setAttribute("dBConnectionError", e);
+
         }
         sc.setAttribute("connection", conn);
     }
