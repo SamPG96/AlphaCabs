@@ -169,12 +169,12 @@ public class Jdbc {
 
             //Write user values to statement
             if (user.getUsername() != null) {
-                ps.setString(1, user.getUsername());
+                ps.setString(1, user.getUsername().trim());
             } else {
                 return 0;
             }
             if (user.getPassword() != null) {
-                ps.setString(2, user.getPassword());
+                ps.setString(2, user.getPassword().trim());
             } else {
                 return 0;
             }
@@ -199,11 +199,10 @@ public class Jdbc {
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
+            ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
             }
-
-            ps.close();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -223,19 +222,24 @@ public class Jdbc {
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write customer values to statement
-            ps.setString(1, customer.getFirstName());
-            ps.setString(2, customer.getLastName());
-            ps.setString(3, customer.getAddress());
+            if (customer.getFirstName() != null) {
+                ps.setString(1, customer.getFirstName().trim());
+            }
+            if (customer.getLastName() != null) {
+                ps.setString(2, customer.getLastName().trim());
+            }
+            if (customer.getAddress() != null) {
+                ps.setString(3, customer.getAddress().trim());
+            }
 
             ps.executeUpdate();
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
+            ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
             }
-
-            ps.close();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -255,23 +259,26 @@ public class Jdbc {
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write driver values to statement
-            ps.setString(1, driver.getFirstName());
-            ps.setString(2, driver.getLastName());
-            if (driver.getRegistration()!= null) {
-                ps.setString(3, driver.getRegistration());
+            if (driver.getFirstName() != null) {
+                ps.setString(1, driver.getFirstName().trim());
+            }
+            if (driver.getLastName() != null) {
+                ps.setString(2, driver.getLastName().trim());
+            }
+            if (driver.getRegistration() != null) {
+                ps.setString(3, driver.getRegistration().trim());
             } else {
                 return 0;
             }
-            
+
             ps.executeUpdate();
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
+            ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
             }
-
-            ps.close();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -300,12 +307,12 @@ public class Jdbc {
                 ps.setInt(2, booking.getDriver().getDriverId());
             }
             if (booking.getSourceAddress() != null) {
-                ps.setString(3, booking.getSourceAddress());
+                ps.setString(3, booking.getSourceAddress().trim());
             } else {
                 return 0;
             }
             if (booking.getDestinationAddress() != null) {
-                ps.setString(4, booking.getDestinationAddress());
+                ps.setString(4, booking.getDestinationAddress().trim());
             } else {
                 return 0;
             }
@@ -330,11 +337,10 @@ public class Jdbc {
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
+            ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
             }
-
-            ps.close();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -343,19 +349,216 @@ public class Jdbc {
     //END_INSERT
 
     //START_UPDATE
-    public void update(String[] str) {
-        PreparedStatement ps = null;
+    public long update(User user) {
+        PreparedStatement ps;
+
         try {
-            ps = connection.prepareStatement("Update Users Set password=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, str[1].trim());
-            ps.setString(2, str[0].trim());
+            ps = connection.prepareStatement("UPDATE Users SET "
+                    + "username = ?,"
+                    + "password = ?,"
+                    + "usertypeid = ?,"
+                    + "customerid = ?,"
+                    + "driverid = ?,"
+                    + "userstatusid = ? "
+                    + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            //Write user values to statement
+            if (user.getUsername() != null) {
+                ps.setString(1, user.getUsername().trim());
+            } else {
+                return 0;
+            }
+            if (user.getPassword() != null) {
+                ps.setString(2, user.getPassword().trim());
+            } else {
+                return 0;
+            }
+            if (user.getUserType() != null) {
+                ps.setInt(3, user.getUserType().getId());
+            } else {
+                return 0;
+            }
+            if (user.getCustomer() != null) {
+                ps.setInt(4, user.getCustomer().getId());
+            }
+            if (user.getDriver() != null) {
+                ps.setInt(5, user.getDriver().getId());
+            }
+            if (user.getUserStatus() != null) {
+                ps.setInt(6, user.getUserStatus().getId());
+            } else {
+                return 0;
+            }
+            if (user.getId() != 0) {
+                ps.setInt(7, user.getId());
+            } else {
+                return 0;
+            }
+            
             ps.executeUpdate();
 
+            //GET the generated ID
+            rs = ps.getGeneratedKeys();
             ps.close();
-            System.out.println("1 rows updated.");
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
+        return 0;
+    }
+    
+    public long update(Customer customer) {
+        PreparedStatement ps;
+
+        try {
+            ps = connection.prepareStatement("UPDATE Customers SET "
+                    + "firstname = ?,"
+                    + "lastname = ?,"
+                    + "address = ? "
+                    + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            //Write customer values to statement
+            if (customer.getFirstName() != null) {
+                ps.setString(1, customer.getFirstName().trim());
+            }
+            if (customer.getLastName() != null) {
+                ps.setString(2, customer.getLastName().trim());
+            }
+            if (customer.getAddress() != null) {
+                ps.setString(3, customer.getAddress().trim());
+            }
+            if (customer.getId() != 0) {
+                ps.setInt(4, customer.getId());
+            } else {
+                return 0;
+            }
+            
+            ps.executeUpdate();
+
+            //GET the generated ID
+            rs = ps.getGeneratedKeys();
+            ps.close();
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return 0;
+    }
+    
+    public long update(Driver driver) {
+        PreparedStatement ps;
+
+        try {
+            ps = connection.prepareStatement("UPDATE Drivers SET "
+                    + "firstname = ?,"
+                    + "lastname = ?,"
+                    + "registration = ? "
+                    + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            //Write driver values to statement
+            if (driver.getFirstName() != null) {
+                ps.setString(1, driver.getFirstName().trim());
+            }
+            if (driver.getLastName() != null) {
+                ps.setString(2, driver.getLastName().trim());
+            }
+            if (driver.getRegistration()!= null) {
+                ps.setString(3, driver.getRegistration().trim());
+            }else{
+                return 0;
+            }
+            if (driver.getId() != 0) {
+                ps.setInt(4, driver.getId());
+            } else {
+                return 0;
+            }
+            
+            ps.executeUpdate();
+
+            //GET the generated ID
+            rs = ps.getGeneratedKeys();
+            ps.close();
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return 0;
+    }
+    
+    public long update(Booking booking) {
+        PreparedStatement ps;
+
+        try {
+            ps = connection.prepareStatement("UPDATE Bookings SET "
+                    + "customerid = ?,"
+                    + "driverid = ?,"
+                    + "sourceaddress = ?,"
+                    + "destinationaddress = ?,"
+                    + "distancekm = ?,"
+                    + "timebooked = ?,"
+                    + "timearrived = ?,"
+                    + "bookingstatus = ?,"
+                    + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
+            
+            //Write booking values to statement
+            if (booking.getCustomer() != null) {
+                ps.setInt(1, booking.getCustomer().getCustomerId());
+            } else {
+                return 0;
+            }
+            if (booking.getDriver() != null) {
+                ps.setInt(2, booking.getDriver().getDriverId());
+            }
+            if (booking.getSourceAddress() != null) {
+                ps.setString(3, booking.getSourceAddress().trim());
+            } else {
+                return 0;
+            }
+            if (booking.getDestinationAddress() != null) {
+                ps.setString(4, booking.getDestinationAddress().trim());
+            } else {
+                return 0;
+            }
+            if (booking.getDistanceKM() != 0.0) {
+                ps.setDouble(5, booking.getDistanceKM());
+            }
+            if (booking.getTimeBooked() != null) {
+                ps.setTimestamp(6, booking.getTimeBooked());
+            } else {
+                return 0;
+            }
+            if (booking.getTimeArrived() != null) {
+                ps.setTimestamp(7, booking.getTimeArrived());
+            }
+            if (booking.getBookingStatus() != null) {
+                ps.setInt(8, booking.getBookingStatus().getId());
+            } else {
+                return 0;
+            }
+            if (booking.getId() != 0) {
+                ps.setInt(9, booking.getId());
+            } else {
+                return 0;
+            }
+            
+            ps.executeUpdate();
+
+            //GET the generated ID
+            rs = ps.getGeneratedKeys();
+            ps.close();
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return 0;
     }
     //END_UPDATE
 
