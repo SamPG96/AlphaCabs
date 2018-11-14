@@ -349,6 +349,10 @@ public class Jdbc {
     //END_INSERT
 
     //START_UPDATE
+    /*
+    * Updates given user on the database table users
+    * Return the generated ID of new row if successful else returns 0
+     */
     public long update(User user) {
         PreparedStatement ps;
 
@@ -409,6 +413,10 @@ public class Jdbc {
         return 0;
     }
     
+    /*
+    * Updates given customer on the database table customers
+    * Return the generated ID of new row if successful else returns 0
+     */
     public long update(Customer customer) {
         PreparedStatement ps;
 
@@ -449,6 +457,10 @@ public class Jdbc {
         return 0;
     }
     
+    /*
+    * Updates given driver on the database table drivers
+    * Return the generated ID of new row if successful else returns 0
+     */
     public long update(Driver driver) {
         PreparedStatement ps;
 
@@ -491,6 +503,10 @@ public class Jdbc {
         return 0;
     }
     
+    /*
+    * Updates given booking on the database table bookings
+    * Return the generated ID of new row if successful else returns 0
+     */
     public long update(Booking booking) {
         PreparedStatement ps;
 
@@ -563,6 +579,9 @@ public class Jdbc {
     //END_UPDATE
 
     //START_DELETE
+    /*
+    * Deletes the record found at the given tablename and id
+     */
     public void delete(String tablename, int id) {
 
         String query = "DELETE FROM " + tablename
