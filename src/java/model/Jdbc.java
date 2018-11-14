@@ -563,10 +563,10 @@ public class Jdbc {
     //END_UPDATE
 
     //START_DELETE
-    public void delete(String user) {
+    public void delete(String tablename, int id) {
 
-        String query = "DELETE FROM Users "
-                + "WHERE username = '" + user.trim() + "'";
+        String query = "DELETE FROM " + tablename
+                + " WHERE id = " + String.valueOf(id);
 
         try {
             statement = connection.createStatement();
