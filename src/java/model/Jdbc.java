@@ -171,17 +171,17 @@ public class Jdbc {
             if (user.getUsername() != null) {
                 ps.setString(1, user.getUsername().trim());
             } else {
-                return 0;
+                throw new RuntimeException("Username in User cannot be null");
             }
             if (user.getPassword() != null) {
                 ps.setString(2, user.getPassword().trim());
             } else {
-                return 0;
+                throw new RuntimeException("Password in User cannot be null");
             }
             if (user.getUserType() != null) {
                 ps.setInt(3, user.getUserType().getId());
             } else {
-                return 0;
+                throw new RuntimeException("UserType in User cannot be null");
             }
             if (user.getCustomer() != null) {
                 ps.setInt(4, user.getCustomer().getId());
@@ -192,7 +192,7 @@ public class Jdbc {
             if (user.getUserStatus() != null) {
                 ps.setInt(6, user.getUserStatus().getId());
             } else {
-                return 0;
+                throw new RuntimeException("UserStatus in User cannot be null");
             }
 
             ps.executeUpdate();
@@ -268,7 +268,8 @@ public class Jdbc {
             if (driver.getRegistration() != null) {
                 ps.setString(3, driver.getRegistration().trim());
             } else {
-                return 0;
+                throw new RuntimeException("Registration in Driver"
+                        + " cannot be null");
             }
 
             ps.executeUpdate();
@@ -301,7 +302,7 @@ public class Jdbc {
             if (booking.getCustomer() != null) {
                 ps.setInt(1, booking.getCustomer().getCustomerId());
             } else {
-                return 0;
+                throw new RuntimeException("Customer in Booking cannot be null");
             }
             if (booking.getDriver() != null) {
                 ps.setInt(2, booking.getDriver().getDriverId());
@@ -309,12 +310,14 @@ public class Jdbc {
             if (booking.getSourceAddress() != null) {
                 ps.setString(3, booking.getSourceAddress().trim());
             } else {
-                return 0;
+                throw new RuntimeException("SourceAddress in Booking"
+                        + " cannot be null");
             }
             if (booking.getDestinationAddress() != null) {
                 ps.setString(4, booking.getDestinationAddress().trim());
             } else {
-                return 0;
+                throw new RuntimeException("DestinationAddress in Booking"
+                        + " cannot be null");
             }
             if (booking.getDistanceKM() != 0.0) {
                 ps.setDouble(5, booking.getDistanceKM());
@@ -322,7 +325,8 @@ public class Jdbc {
             if (booking.getTimeBooked() != null) {
                 ps.setTimestamp(6, booking.getTimeBooked());
             } else {
-                return 0;
+                throw new RuntimeException("TimeBooked in Booking"
+                        + " cannot be null");
             }
             if (booking.getTimeArrived() != null) {
                 ps.setTimestamp(7, booking.getTimeArrived());
@@ -330,7 +334,8 @@ public class Jdbc {
             if (booking.getBookingStatus() != null) {
                 ps.setInt(8, booking.getBookingStatus().getId());
             } else {
-                return 0;
+                throw new RuntimeException("Booking Status in Booking"
+                        + " cannot be null");
             }
 
             ps.executeUpdate();
@@ -370,17 +375,17 @@ public class Jdbc {
             if (user.getUsername() != null) {
                 ps.setString(1, user.getUsername().trim());
             } else {
-                return 0;
+                throw new RuntimeException("Username in User cannot be null");
             }
             if (user.getPassword() != null) {
                 ps.setString(2, user.getPassword().trim());
             } else {
-                return 0;
+                throw new RuntimeException("Password in User cannot be null");
             }
             if (user.getUserType() != null) {
                 ps.setInt(3, user.getUserType().getId());
             } else {
-                return 0;
+                throw new RuntimeException("UserType in User cannot be null");
             }
             if (user.getCustomer() != null) {
                 ps.setInt(4, user.getCustomer().getId());
@@ -391,12 +396,12 @@ public class Jdbc {
             if (user.getUserStatus() != null) {
                 ps.setInt(6, user.getUserStatus().getId());
             } else {
-                return 0;
+                throw new RuntimeException("UserStatus in User cannot be null");
             }
             if (user.getId() != 0) {
                 ps.setInt(7, user.getId());
             } else {
-                return 0;
+                throw new RuntimeException("Id in User cannot be null");
             }
             
             ps.executeUpdate();
@@ -440,7 +445,8 @@ public class Jdbc {
             if (customer.getId() != 0) {
                 ps.setInt(4, customer.getId());
             } else {
-                return 0;
+                throw new RuntimeException("Id in Customer"
+                        + " cannot be null");
             }
             
             ps.executeUpdate();
@@ -481,12 +487,14 @@ public class Jdbc {
             if (driver.getRegistration()!= null) {
                 ps.setString(3, driver.getRegistration().trim());
             }else{
-                return 0;
+                throw new RuntimeException("Registration in Driver"
+                        + " cannot be null");
             }
             if (driver.getId() != 0) {
                 ps.setInt(4, driver.getId());
             } else {
-                return 0;
+                throw new RuntimeException("Id in Driver"
+                        + " cannot be null");
             }
             
             ps.executeUpdate();
@@ -526,7 +534,7 @@ public class Jdbc {
             if (booking.getCustomer() != null) {
                 ps.setInt(1, booking.getCustomer().getCustomerId());
             } else {
-                return 0;
+                throw new RuntimeException("Customer in Booking cannot be null");
             }
             if (booking.getDriver() != null) {
                 ps.setInt(2, booking.getDriver().getDriverId());
@@ -534,12 +542,14 @@ public class Jdbc {
             if (booking.getSourceAddress() != null) {
                 ps.setString(3, booking.getSourceAddress().trim());
             } else {
-                return 0;
+                throw new RuntimeException("SourceAddress in Booking"
+                        + " cannot be null");
             }
             if (booking.getDestinationAddress() != null) {
                 ps.setString(4, booking.getDestinationAddress().trim());
             } else {
-                return 0;
+                throw new RuntimeException("DestinationAddress in Booking"
+                        + " cannot be null");
             }
             if (booking.getDistanceKM() != 0.0) {
                 ps.setDouble(5, booking.getDistanceKM());
@@ -547,7 +557,8 @@ public class Jdbc {
             if (booking.getTimeBooked() != null) {
                 ps.setTimestamp(6, booking.getTimeBooked());
             } else {
-                return 0;
+                throw new RuntimeException("TimeBooked in Booking"
+                        + " cannot be null");
             }
             if (booking.getTimeArrived() != null) {
                 ps.setTimestamp(7, booking.getTimeArrived());
@@ -555,12 +566,14 @@ public class Jdbc {
             if (booking.getBookingStatus() != null) {
                 ps.setInt(8, booking.getBookingStatus().getId());
             } else {
-                return 0;
+                throw new RuntimeException("BookingStatus in Booking"
+                        + " cannot be null");
             }
             if (booking.getId() != 0) {
                 ps.setInt(9, booking.getId());
             } else {
-                return 0;
+                throw new RuntimeException("Id in Booking"
+                        + " cannot be null");
             }
             
             ps.executeUpdate();
