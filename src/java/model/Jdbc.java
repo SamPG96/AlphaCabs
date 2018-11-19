@@ -204,9 +204,10 @@ public class Jdbc {
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
-            ps.close();
             if (rs.next()) {
-                return rs.getLong(1);
+                long id = rs.getLong(1);
+                ps.close();
+                return id;
             }else{
                 throw new SQLException("Inserting user failed, no ID obtained");
             }
@@ -247,9 +248,10 @@ public class Jdbc {
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
-            ps.close();
             if (rs.next()) {
-                return rs.getLong(1);
+                long id = rs.getLong(1);
+                ps.close();
+                return id;
             }else{
                 throw new SQLException("Inserting customer failed, no ID obtained");
             }
@@ -293,9 +295,10 @@ public class Jdbc {
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
-            ps.close();
             if (rs.next()) {
-                return rs.getLong(1);
+                long id = rs.getLong(1);
+                ps.close();
+                return id;
             }else{
                 throw new SQLException("Inserting driver failed, no ID obtained");
             }
@@ -365,9 +368,10 @@ public class Jdbc {
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
-            ps.close();
             if (rs.next()) {
-                return rs.getLong(1);
+                long id = rs.getLong(1);
+                ps.close();
+                return id;
             }else{
                 throw new SQLException("Inserting booking failed, no ID obtained");
             }
@@ -437,9 +441,10 @@ public class Jdbc {
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
-            ps.close();
             if (rs.next()) {
-                return rs.getLong(1);
+                long id = rs.getLong(1);
+                ps.close();
+                return id;
             }else{
                 throw new SQLException("Updating user failed, no ID obtained");
             }
@@ -488,9 +493,10 @@ public class Jdbc {
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
-            ps.close();
             if (rs.next()) {
-                return rs.getLong(1);
+                long id = rs.getLong(1);
+                ps.close();
+                return id;
             }else{
                 throw new SQLException("Customer user failed, no ID obtained");
             }
@@ -542,9 +548,10 @@ public class Jdbc {
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
-            ps.close();
             if (rs.next()) {
-                return rs.getLong(1);
+                long id = rs.getLong(1);
+                ps.close();
+                return id;
             }else{
                 throw new SQLException("Updating driver failed, no ID obtained");
             }
@@ -627,9 +634,10 @@ public class Jdbc {
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
-            ps.close();
             if (rs.next()) {
-                return rs.getLong(1);
+                long id = rs.getLong(1);
+                ps.close();
+                return id;
             }else{
                 throw new SQLException("Updating booking failed, no ID obtained");
             }
