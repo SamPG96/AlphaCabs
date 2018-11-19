@@ -10,7 +10,7 @@ package model.tableclasses;
  * @author Conor
  */
 public class Driver {
-    private int id;
+    private long id;
     private String firstName;
     private String lastName;
     private String registration;
@@ -18,23 +18,23 @@ public class Driver {
     public Driver() {
     }
     
-    public Driver(int id, String registration) {
+    public Driver(long id, String registration) {
         this.id = id;
         this.registration = registration;
     }
 
-    public Driver(int id, String firstName, String lastName, String registration) {
+    public Driver(long id, String firstName, String lastName, String registration) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.registration = registration;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

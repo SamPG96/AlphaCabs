@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * @author Conor
  */
 public class Booking {
-    private int id;
+    private long id;
     private User customer;
     private User driver;
     private String sourceAddress;
@@ -24,7 +24,7 @@ public class Booking {
     public Booking() {
     }
     
-    public Booking(int id, User customer, String sourceAddress, String destinationAddress, Timestamp timeBooked, GenericItem bookingStatus) {
+    public Booking(long id, User customer, String sourceAddress, String destinationAddress, Timestamp timeBooked, GenericItem bookingStatus) {
         this.id = id;
         this.customer = customer;
         this.sourceAddress = sourceAddress;
@@ -33,11 +33,11 @@ public class Booking {
         this.bookingStatus = bookingStatus;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

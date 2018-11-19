@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,44 +50,51 @@ public class Jdbc {
     private void select(String tableName) {
         String query = "SELECT * FROM " + tableName;
 
-        try {
-            statement = connection.createStatement();
-            rs = statement.executeQuery(query);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        this.executeSelect(query);
     }
 
     /*
     * Sets the ReturnSet to the rows in the DB that meet criteria
     * specified in the param.
      */
-    private void select(String tableName, int id) {
+    private void select(String tableName, long id) {
         String query = "SELECT * FROM " + tableName + " WHERE ID = " + id + "";
 
-        try {
-            statement = connection.createStatement();
-            rs = statement.executeQuery(query);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        this.executeSelect(query);
     }
 
     /*
     * Sets the ReturnSet to the rows in the DB that meet criteria
     * specified in the param.
      */
-    private void select(String tableName, String colName, String value) {
-        String query = "SELECT * FROM " + tableName + " WHERE " + colName + " = \'" + value + "\'";
+    private void select(String tableName, String colName, String value,
+            boolean usePar) {
+        String query;
+        
+        if (usePar == true){
+            // Parenthesis will surrond the value making it a string
+            query = "SELECT * FROM " + tableName + " WHERE " + colName + " = \'" + value + "\'";
+        }
+        else{
+            // Parenthesis will not surround the value
+            query = "SELECT * FROM " + tableName + " WHERE " + colName + " = " + value;
+        }
+        
+        this.executeSelect(query);
+    }
 
-        try {
+    /*
+    * Executes the select query.
+    */
+    private void executeSelect(String query){
+         try {
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
+        }       
     }
-
+    
     /*
     * Returns a list of hashmaps of rows from the DB that meet criteria 
     * specified in the params.
@@ -96,50 +104,48 @@ public class Jdbc {
         //GET Qualifiing Rows from DB
         select(tableName);
 
-        //Transform and Return Rows to a List of HashMaps
-        try {
-            if (rs == null) {
-                System.out.println("rs is null");
-            } else {
-                return rsToMaps();
-            }
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-        return null;
+        return this.processRetrieve();
     }
 
     /*
     * Returns a list of hashmaps of rows from the DB that meet criteria 
     * specified in the params.
      */
-    public ArrayList<HashMap<String, String>> retrieve(String tableName, int id) {
+    public ArrayList<HashMap<String, String>> retrieve(String tableName, long id) {
 
         //GET Qualifiing Rows from DB
         select(tableName, id);
 
-        //Transform and Return Rows to a List of HashMaps
-        try {
-            if (rs == null) {
-                System.out.println("rs is null");
-            } else {
-                return rsToMaps();
-            }
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-        return null;
+        return this.processRetrieve();
     }
 
     /*
     * Returns a list of hashmaps of rows from the DB that meet criteria 
-    * specified in the params.
-     */
-    public ArrayList<HashMap<String, String>> retrieve(String tableName, String colName, String value) {
-
+    * specified in the params. The field value must be a long.
+    */
+    public ArrayList<HashMap<String, String>> retrieve(String tableName, String colName, long value) {
         //GET Qualifiing Rows from DB
-        select(tableName, colName, value);
+        select(tableName, colName, String.valueOf(value), false);
+        
+        return this.processRetrieve();
+    }
 
+    /*
+    * Returns a list of hashmaps of rows from the DB that meet criteria 
+    * specified in the params. The field value must be a string.
+    */
+    public ArrayList<HashMap<String, String>> retrieve(String tableName, String colName, String value) {
+        //GET Qualifiing Rows from DB
+        select(tableName, colName, value, true);
+
+        return this.processRetrieve();
+    }
+
+    /*
+    * Processes the response of a retrieve request. Results are returned as
+    * a list of hashmaps.
+    */
+    private ArrayList<HashMap<String, String>> processRetrieve() {
         //Transform and Return Rows to a List of HashMaps
         try {
             if (rs == null) {
@@ -165,7 +171,7 @@ public class Jdbc {
 
         try {
             ps = connection.prepareStatement(
-                    "INSERT INTO Users VALUES (?,?,?,?,?,?)",
+                    "INSERT INTO Users (Username, Password, UserTypeId, CustomerId, DriverId, UserStatusId) VALUES (?,?,?,?,?,?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write user values to statement
@@ -180,18 +186,24 @@ public class Jdbc {
                 throw new RuntimeException("Password in User cannot be null");
             }
             if (user.getUserType() != null) {
-                ps.setInt(3, user.getUserType().getId());
+                ps.setLong(3, user.getUserType().getId());
             } else {
                 throw new RuntimeException("UserType in User cannot be null");
             }
             if (user.getCustomer() != null) {
-                ps.setInt(4, user.getCustomer().getId());
+                ps.setLong(4, user.getCustomer().getId());
+            }
+            else{
+                ps.setNull(4, Types.LONGNVARCHAR);
             }
             if (user.getDriver() != null) {
-                ps.setInt(5, user.getDriver().getId());
+                ps.setLong(5, user.getDriver().getId());
+            }
+            else{
+                ps.setNull(5, Types.LONGVARCHAR);
             }
             if (user.getUserStatus() != null) {
-                ps.setInt(6, user.getUserStatus().getId());
+                ps.setLong(6, user.getUserStatus().getId());
             } else {
                 throw new RuntimeException("UserStatus in User cannot be null");
             }
@@ -226,7 +238,7 @@ public class Jdbc {
 
         try {
             ps = connection.prepareStatement(
-                    "INSERT INTO Customers VALUES (?,?,?)",
+                    "INSERT INTO Customers (FirstName, LastName, Address) VALUES (?,?,?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write customer values to statement
@@ -322,12 +334,12 @@ public class Jdbc {
 
             //Write booking values to statement
             if (booking.getCustomer() != null) {
-                ps.setInt(1, booking.getCustomer().getCustomerId());
+                ps.setLong(1, booking.getCustomer().getCustomerId());
             } else {
                 throw new RuntimeException("Customer in Booking cannot be null");
             }
             if (booking.getDriver() != null) {
-                ps.setInt(2, booking.getDriver().getDriverId());
+                ps.setLong(2, booking.getDriver().getDriverId());
             }
             if (booking.getSourceAddress() != null) {
                 ps.setString(3, booking.getSourceAddress().trim());
@@ -354,7 +366,7 @@ public class Jdbc {
                 ps.setTimestamp(7, booking.getTimeArrived());
             }
             if (booking.getBookingStatus() != null) {
-                ps.setInt(8, booking.getBookingStatus().getId());
+                ps.setLong(8, booking.getBookingStatus().getId());
             } else {
                 throw new RuntimeException("Booking Status in Booking"
                         + " cannot be null");
@@ -412,23 +424,23 @@ public class Jdbc {
                 throw new RuntimeException("Password in User cannot be null");
             }
             if (user.getUserType() != null) {
-                ps.setInt(3, user.getUserType().getId());
+                ps.setLong(3, user.getUserType().getId());
             } else {
                 throw new RuntimeException("UserType in User cannot be null");
             }
             if (user.getCustomer() != null) {
-                ps.setInt(4, user.getCustomer().getId());
+                ps.setLong(4, user.getCustomer().getId());
             }
             if (user.getDriver() != null) {
-                ps.setInt(5, user.getDriver().getId());
+                ps.setLong(5, user.getDriver().getId());
             }
             if (user.getUserStatus() != null) {
-                ps.setInt(6, user.getUserStatus().getId());
+                ps.setLong(6, user.getUserStatus().getId());
             } else {
                 throw new RuntimeException("UserStatus in User cannot be null");
             }
             if (user.getId() != 0) {
-                ps.setInt(7, user.getId());
+                ps.setLong(7, user.getId());
             } else {
                 throw new RuntimeException("Id in User cannot be null");
             }
@@ -479,7 +491,7 @@ public class Jdbc {
                 ps.setString(3, customer.getAddress().trim());
             }
             if (customer.getId() != 0) {
-                ps.setInt(4, customer.getId());
+                ps.setLong(4, customer.getId());
             } else {
                 throw new RuntimeException("Id in Customer"
                         + " cannot be null");
@@ -534,7 +546,7 @@ public class Jdbc {
                         + " cannot be null");
             }
             if (driver.getId() != 0) {
-                ps.setInt(4, driver.getId());
+                ps.setLong(4, driver.getId());
             } else {
                 throw new RuntimeException("Id in Driver"
                         + " cannot be null");
@@ -582,12 +594,12 @@ public class Jdbc {
 
             //Write booking values to statement
             if (booking.getCustomer() != null) {
-                ps.setInt(1, booking.getCustomer().getCustomerId());
+                ps.setLong(1, booking.getCustomer().getCustomerId());
             } else {
                 throw new RuntimeException("Customer in Booking cannot be null");
             }
             if (booking.getDriver() != null) {
-                ps.setInt(2, booking.getDriver().getDriverId());
+                ps.setLong(2, booking.getDriver().getDriverId());
             }
             if (booking.getSourceAddress() != null) {
                 ps.setString(3, booking.getSourceAddress().trim());
@@ -614,13 +626,13 @@ public class Jdbc {
                 ps.setTimestamp(7, booking.getTimeArrived());
             }
             if (booking.getBookingStatus() != null) {
-                ps.setInt(8, booking.getBookingStatus().getId());
+                ps.setLong(8, booking.getBookingStatus().getId());
             } else {
                 throw new RuntimeException("BookingStatus in Booking"
                         + " cannot be null");
             }
             if (booking.getId() != 0) {
-                ps.setInt(9, booking.getId());
+                ps.setLong(9, booking.getId());
             } else {
                 throw new RuntimeException("Id in Booking"
                         + " cannot be null");
