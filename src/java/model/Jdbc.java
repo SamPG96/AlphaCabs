@@ -161,6 +161,7 @@ public class Jdbc {
      */
     public long insert(User user) {
         PreparedStatement ps;
+        int nAffectedRows;
 
         try {
             ps = connection.prepareStatement(
@@ -171,17 +172,17 @@ public class Jdbc {
             if (user.getUsername() != null) {
                 ps.setString(1, user.getUsername().trim());
             } else {
-                return 0;
+                throw new RuntimeException("Username in User cannot be null");
             }
             if (user.getPassword() != null) {
                 ps.setString(2, user.getPassword().trim());
             } else {
-                return 0;
+                throw new RuntimeException("Password in User cannot be null");
             }
             if (user.getUserType() != null) {
                 ps.setInt(3, user.getUserType().getId());
             } else {
-                return 0;
+                throw new RuntimeException("UserType in User cannot be null");
             }
             if (user.getCustomer() != null) {
                 ps.setInt(4, user.getCustomer().getId());
@@ -192,21 +193,26 @@ public class Jdbc {
             if (user.getUserStatus() != null) {
                 ps.setInt(6, user.getUserStatus().getId());
             } else {
-                return 0;
+                throw new RuntimeException("UserStatus in User cannot be null");
             }
-
-            ps.executeUpdate();
+            
+            //Execute and check for change
+            nAffectedRows = ps.executeUpdate();
+            if (nAffectedRows == 0) {
+                throw new SQLException("Inserting user failed, no rows affected.");
+            }
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
             ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
+            }else{
+                throw new SQLException("Inserting user failed, no ID obtained");
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
-        return 0;
     }
 
     /*
@@ -215,6 +221,7 @@ public class Jdbc {
      */
     public long insert(Customer customer) {
         PreparedStatement ps;
+        int nAffectedRows;
 
         try {
             ps = connection.prepareStatement(
@@ -232,18 +239,23 @@ public class Jdbc {
                 ps.setString(3, customer.getAddress().trim());
             }
 
-            ps.executeUpdate();
+            //Execute and check for change
+            nAffectedRows = ps.executeUpdate();
+            if (nAffectedRows == 0) {
+                throw new SQLException("Inserting customer failed, no rows affected.");
+            }
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
             ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
+            }else{
+                throw new SQLException("Inserting customer failed, no ID obtained");
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
-        return 0;
     }
 
     /*
@@ -252,6 +264,7 @@ public class Jdbc {
      */
     public long insert(Driver driver) {
         PreparedStatement ps;
+        int nAffectedRows;
 
         try {
             ps = connection.prepareStatement(
@@ -268,21 +281,27 @@ public class Jdbc {
             if (driver.getRegistration() != null) {
                 ps.setString(3, driver.getRegistration().trim());
             } else {
-                return 0;
+                throw new RuntimeException("Registration in Driver"
+                        + " cannot be null");
             }
 
-            ps.executeUpdate();
+            //Execute and check for change
+            nAffectedRows = ps.executeUpdate();
+            if (nAffectedRows == 0) {
+                throw new SQLException("Inserting driver failed, no rows affected.");
+            }
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
             ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
+            }else{
+                throw new SQLException("Inserting driver failed, no ID obtained");
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
-        return 0;
     }
 
     /*
@@ -291,6 +310,7 @@ public class Jdbc {
      */
     public long insert(Booking booking) {
         PreparedStatement ps;
+        int nAffectedRows;
 
         try {
             ps = connection.prepareStatement(
@@ -301,7 +321,7 @@ public class Jdbc {
             if (booking.getCustomer() != null) {
                 ps.setInt(1, booking.getCustomer().getCustomerId());
             } else {
-                return 0;
+                throw new RuntimeException("Customer in Booking cannot be null");
             }
             if (booking.getDriver() != null) {
                 ps.setInt(2, booking.getDriver().getDriverId());
@@ -309,12 +329,14 @@ public class Jdbc {
             if (booking.getSourceAddress() != null) {
                 ps.setString(3, booking.getSourceAddress().trim());
             } else {
-                return 0;
+                throw new RuntimeException("SourceAddress in Booking"
+                        + " cannot be null");
             }
             if (booking.getDestinationAddress() != null) {
                 ps.setString(4, booking.getDestinationAddress().trim());
             } else {
-                return 0;
+                throw new RuntimeException("DestinationAddress in Booking"
+                        + " cannot be null");
             }
             if (booking.getDistanceKM() != 0.0) {
                 ps.setDouble(5, booking.getDistanceKM());
@@ -322,7 +344,8 @@ public class Jdbc {
             if (booking.getTimeBooked() != null) {
                 ps.setTimestamp(6, booking.getTimeBooked());
             } else {
-                return 0;
+                throw new RuntimeException("TimeBooked in Booking"
+                        + " cannot be null");
             }
             if (booking.getTimeArrived() != null) {
                 ps.setTimestamp(7, booking.getTimeArrived());
@@ -330,21 +353,27 @@ public class Jdbc {
             if (booking.getBookingStatus() != null) {
                 ps.setInt(8, booking.getBookingStatus().getId());
             } else {
-                return 0;
+                throw new RuntimeException("Booking Status in Booking"
+                        + " cannot be null");
             }
 
-            ps.executeUpdate();
+            //Execute and check for change
+            nAffectedRows = ps.executeUpdate();
+            if (nAffectedRows == 0) {
+                throw new SQLException("Inserting booking failed, no rows affected.");
+            }
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
             ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
+            }else{
+                throw new SQLException("Inserting booking failed, no ID obtained");
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
-        return 0;
     }
     //END_INSERT
 
@@ -355,6 +384,7 @@ public class Jdbc {
      */
     public long update(User user) {
         PreparedStatement ps;
+        int nAffectedRows;
 
         try {
             ps = connection.prepareStatement("UPDATE Users SET "
@@ -365,22 +395,22 @@ public class Jdbc {
                     + "driverid = ?,"
                     + "userstatusid = ? "
                     + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
-            
+
             //Write user values to statement
             if (user.getUsername() != null) {
                 ps.setString(1, user.getUsername().trim());
             } else {
-                return 0;
+                throw new RuntimeException("Username in User cannot be null");
             }
             if (user.getPassword() != null) {
                 ps.setString(2, user.getPassword().trim());
             } else {
-                return 0;
+                throw new RuntimeException("Password in User cannot be null");
             }
             if (user.getUserType() != null) {
                 ps.setInt(3, user.getUserType().getId());
             } else {
-                return 0;
+                throw new RuntimeException("UserType in User cannot be null");
             }
             if (user.getCustomer() != null) {
                 ps.setInt(4, user.getCustomer().getId());
@@ -391,34 +421,40 @@ public class Jdbc {
             if (user.getUserStatus() != null) {
                 ps.setInt(6, user.getUserStatus().getId());
             } else {
-                return 0;
+                throw new RuntimeException("UserStatus in User cannot be null");
             }
             if (user.getId() != 0) {
                 ps.setInt(7, user.getId());
             } else {
-                return 0;
+                throw new RuntimeException("Id in User cannot be null");
             }
-            
-            ps.executeUpdate();
+
+            //Execute and check for change
+            nAffectedRows = ps.executeUpdate();
+            if (nAffectedRows == 0) {
+                throw new SQLException("Updating user failed, no rows affected.");
+            }
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
             ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
+            }else{
+                throw new SQLException("Updating user failed, no ID obtained");
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
-        return 0;
     }
-    
+
     /*
     * Updates given customer on the database table customers
     * Return the generated ID of new row if successful else returns 0
      */
     public long update(Customer customer) {
         PreparedStatement ps;
+        int nAffectedRows;
 
         try {
             ps = connection.prepareStatement("UPDATE Customers SET "
@@ -426,7 +462,7 @@ public class Jdbc {
                     + "lastname = ?,"
                     + "address = ? "
                     + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
-            
+
             //Write customer values to statement
             if (customer.getFirstName() != null) {
                 ps.setString(1, customer.getFirstName().trim());
@@ -440,29 +476,36 @@ public class Jdbc {
             if (customer.getId() != 0) {
                 ps.setInt(4, customer.getId());
             } else {
-                return 0;
+                throw new RuntimeException("Id in Customer"
+                        + " cannot be null");
             }
-            
-            ps.executeUpdate();
+
+            //Execute and check for change
+            nAffectedRows = ps.executeUpdate();
+            if (nAffectedRows == 0) {
+                throw new SQLException("Customer user failed, no rows affected.");
+            }
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
             ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
+            }else{
+                throw new SQLException("Customer user failed, no ID obtained");
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
-        return 0;
     }
-    
+
     /*
     * Updates given driver on the database table drivers
     * Return the generated ID of new row if successful else returns 0
      */
     public long update(Driver driver) {
         PreparedStatement ps;
+        int nAffectedRows;
 
         try {
             ps = connection.prepareStatement("UPDATE Drivers SET "
@@ -470,7 +513,7 @@ public class Jdbc {
                     + "lastname = ?,"
                     + "registration = ? "
                     + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
-            
+
             //Write driver values to statement
             if (driver.getFirstName() != null) {
                 ps.setString(1, driver.getFirstName().trim());
@@ -478,37 +521,45 @@ public class Jdbc {
             if (driver.getLastName() != null) {
                 ps.setString(2, driver.getLastName().trim());
             }
-            if (driver.getRegistration()!= null) {
+            if (driver.getRegistration() != null) {
                 ps.setString(3, driver.getRegistration().trim());
-            }else{
-                return 0;
+            } else {
+                throw new RuntimeException("Registration in Driver"
+                        + " cannot be null");
             }
             if (driver.getId() != 0) {
                 ps.setInt(4, driver.getId());
             } else {
-                return 0;
+                throw new RuntimeException("Id in Driver"
+                        + " cannot be null");
             }
-            
-            ps.executeUpdate();
+
+            //Execute and check for change
+            nAffectedRows = ps.executeUpdate();
+            if (nAffectedRows == 0) {
+                throw new SQLException("Updating driver failed, no rows affected.");
+            }
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
             ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
+            }else{
+                throw new SQLException("Updating driver failed, no ID obtained");
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
-        return 0;
     }
-    
+
     /*
     * Updates given booking on the database table bookings
     * Return the generated ID of new row if successful else returns 0
      */
     public long update(Booking booking) {
         PreparedStatement ps;
+        int nAffectedRows;
 
         try {
             ps = connection.prepareStatement("UPDATE Bookings SET "
@@ -521,12 +572,12 @@ public class Jdbc {
                     + "timearrived = ?,"
                     + "bookingstatus = ?,"
                     + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
-            
+
             //Write booking values to statement
             if (booking.getCustomer() != null) {
                 ps.setInt(1, booking.getCustomer().getCustomerId());
             } else {
-                return 0;
+                throw new RuntimeException("Customer in Booking cannot be null");
             }
             if (booking.getDriver() != null) {
                 ps.setInt(2, booking.getDriver().getDriverId());
@@ -534,12 +585,14 @@ public class Jdbc {
             if (booking.getSourceAddress() != null) {
                 ps.setString(3, booking.getSourceAddress().trim());
             } else {
-                return 0;
+                throw new RuntimeException("SourceAddress in Booking"
+                        + " cannot be null");
             }
             if (booking.getDestinationAddress() != null) {
                 ps.setString(4, booking.getDestinationAddress().trim());
             } else {
-                return 0;
+                throw new RuntimeException("DestinationAddress in Booking"
+                        + " cannot be null");
             }
             if (booking.getDistanceKM() != 0.0) {
                 ps.setDouble(5, booking.getDistanceKM());
@@ -547,7 +600,8 @@ public class Jdbc {
             if (booking.getTimeBooked() != null) {
                 ps.setTimestamp(6, booking.getTimeBooked());
             } else {
-                return 0;
+                throw new RuntimeException("TimeBooked in Booking"
+                        + " cannot be null");
             }
             if (booking.getTimeArrived() != null) {
                 ps.setTimestamp(7, booking.getTimeArrived());
@@ -555,26 +609,33 @@ public class Jdbc {
             if (booking.getBookingStatus() != null) {
                 ps.setInt(8, booking.getBookingStatus().getId());
             } else {
-                return 0;
+                throw new RuntimeException("BookingStatus in Booking"
+                        + " cannot be null");
             }
             if (booking.getId() != 0) {
                 ps.setInt(9, booking.getId());
             } else {
-                return 0;
+                throw new RuntimeException("Id in Booking"
+                        + " cannot be null");
             }
-            
-            ps.executeUpdate();
+
+            //Execute and check for change
+            nAffectedRows = ps.executeUpdate();
+            if (nAffectedRows == 0) {
+                throw new SQLException("Updating booking failed, no rows affected.");
+            }
 
             //GET the generated ID
             rs = ps.getGeneratedKeys();
             ps.close();
             if (rs.next()) {
                 return rs.getLong(1);
+            }else{
+                throw new SQLException("Updating booking failed, no ID obtained");
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
-        return 0;
     }
     //END_UPDATE
 
