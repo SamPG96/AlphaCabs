@@ -4,27 +4,27 @@
  * and open the template in the editor.
  */
 package model.tableclasses;
-import java.util.Date;  
+import java.sql.Timestamp;
 
 /**
  *
  * @author Conor
  */
 public class Booking {
-    private int id;
+    private long id;
     private User customer;
     private User driver;
     private String sourceAddress;
     private String destinationAddress;
     private double distanceKM;
-    private Date timeBooked;
-    private Date timeArrived;
+    private Timestamp timeBooked;
+    private Timestamp timeArrived;
     private GenericItem bookingStatus;
 
     public Booking() {
     }
     
-    public Booking(int id, User customer, String sourceAddress, String destinationAddress, Date timeBooked, GenericItem bookingStatus) {
+    public Booking(long id, User customer, String sourceAddress, String destinationAddress, Timestamp timeBooked, GenericItem bookingStatus) {
         this.id = id;
         this.customer = customer;
         this.sourceAddress = sourceAddress;
@@ -33,11 +33,11 @@ public class Booking {
         this.bookingStatus = bookingStatus;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -81,19 +81,19 @@ public class Booking {
         this.distanceKM = distanceKM;
     }
 
-    public Date getTimeBooked() {
+    public Timestamp getTimeBooked() {
         return timeBooked;
     }
 
-    public void setTimeBooked(Date timeBooked) {
+    public void setTimeBooked(Timestamp timeBooked) {
         this.timeBooked = timeBooked;
     }
 
-    public Date getTimeArrived() {
+    public Timestamp getTimeArrived() {
         return timeArrived;
     }
 
-    public void setTimeArrived(Date timeArrived) {
+    public void setTimeArrived(Timestamp timeArrived) {
         this.timeArrived = timeArrived;
     }
 
