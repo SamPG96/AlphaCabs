@@ -1,1 +1,5 @@
 build/
+
+nbproject/
+!nbproject.properties
+!project.xml
