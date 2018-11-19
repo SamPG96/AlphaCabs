@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Jdbc;
-import model.UserManagement;
+import model.UserManager;
 import model.tableclasses.User;
 
 /**
@@ -79,7 +79,7 @@ public class LoginServlet extends HttpServlet {
         
         // Attempt to login the user, -1 is returned if the password or
         // username is inccorect  
-        int loggedInUserID = UserManagement.loginUser(
+        long loggedInUserID = UserManager.loginUser(
                 request.getParameter("username"),
                 request.getParameter("password"),
                 dbBean);
@@ -98,24 +98,23 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userID", loggedInUserID);
             session.setAttribute("dbbean", dbBean);
             
-            User user = UserManagement.getUser(loggedInUserID, dbBean);
+            User user = UserManager.getUser(loggedInUserID, dbBean);
             
             // Move to the page associated with the user type
-            switch (user.getUserType().getId()) {
-                case 1:
-                    request.getRequestDispatcher("loginAdmin.jsp").forward(
+            if (user.getUserType().getId() == 1) {
+                request.getRequestDispatcher("loginAdmin.jsp").forward(
+                        request, response);
+            }
+            else if (user.getUserType().getId() == 2) {
+                request.getRequestDispatcher("loginDriver.jsp").forward(
+                        request, response);
+            }
+            else if (user.getUserType().getId() == 4) {
+                request.getRequestDispatcher("loginCustomer.jsp").forward(
                             request, response);
-                    break;
-                case 2:
-                    request.getRequestDispatcher("loginDriver.jsp").forward(
-                            request, response);
-                    break;
-                case 4:
-                    request.getRequestDispatcher("loginCustomer.jsp").forward(
-                            request, response);
-                    break;
-                default:
-                    throw new RuntimeException("user type not recognised");
+            }
+            else{
+                throw new RuntimeException("user type not recognised");
             }
 
         }
