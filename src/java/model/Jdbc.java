@@ -334,12 +334,12 @@ public class Jdbc {
 
             //Write booking values to statement
             if (booking.getCustomer() != null) {
-                ps.setLong(1, booking.getCustomer().getCustomerId());
+                ps.setLong(1, booking.getCustomer().getId());
             } else {
                 throw new RuntimeException("Customer in Booking cannot be null");
             }
             if (booking.getDriver() != null) {
-                ps.setLong(2, booking.getDriver().getDriverId());
+                ps.setLong(2, booking.getDriver().getId());
             }
             if (booking.getSourceAddress() != null) {
                 ps.setString(3, booking.getSourceAddress().trim());
@@ -594,12 +594,12 @@ public class Jdbc {
 
             //Write booking values to statement
             if (booking.getCustomer() != null) {
-                ps.setLong(1, booking.getCustomer().getCustomerId());
+                ps.setLong(1, booking.getCustomer().getId());
             } else {
                 throw new RuntimeException("Customer in Booking cannot be null");
             }
             if (booking.getDriver() != null) {
-                ps.setLong(2, booking.getDriver().getDriverId());
+                ps.setLong(2, booking.getDriver().getId());
             }
             if (booking.getSourceAddress() != null) {
                 ps.setString(3, booking.getSourceAddress().trim());
