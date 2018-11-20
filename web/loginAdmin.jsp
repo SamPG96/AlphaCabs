@@ -50,6 +50,9 @@ and open the template in the editor.
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'Drivers')">Drivers</button>
             <button class="tablinks" onclick="openTab(event, 'Bookings')">Bookings</button>
+            <button class="tablinks" onclick="openTab(event, 'Details')">Customer Details</button>
+            <button class="tablinks" onclick="openTab(event, 'Report')">Daily Report</button>            
+            <button class="tablinks" onclick="openTab(event, 'Settings')">Settings</button>            
         </div>
         
 	
@@ -60,11 +63,29 @@ and open the template in the editor.
         </div>
         
         <div id="Bookings" class="tabcontent">
-            <h3>Manage Bookings</h3>
+            <h3>Assign Drivers to Bookings</h3>
             <p><%@include file='admindashbookings.jsp' %></p>
             <!--<p>INPUT JSP FILE HERE</p>-->
         </div>
         
+        <div id="Details" class="tabcontent">
+            <h3>Change User Details</h3>
+            <!--<p>< %@include file='.jsp' %></p>-->
+            <p>INPUT JSP FILE HERE - For changing and approving new customers upon request</p>
+        </div>
+            
+        <div id="Report" class="tabcontent">
+            <h3>View Daily Report</h3>
+            <!--<p>< %@include file='.jsp' %></p>-->
+            <p>INPUT JSP FILE HERE - For viewing daily report</p>
+        </div>            
+
+        <div id="Settings" class="tabcontent">
+            <h3>Manage Settings</h3>
+            <!--<p>< %@include file='.jsp' %></p>-->
+            <p>INPUT JSP FILE HERE - For changing the Price per Mile</p>
+        </div>
+            
         <script>
             function openTab(evt, option) {
                 var i, tabcontent, tablinks;

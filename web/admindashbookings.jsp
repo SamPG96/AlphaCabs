@@ -21,7 +21,7 @@
     </head>
     <body>
 
-            Id
+            <!--Id
             CustomerId
             DriverId
             SourceAddress
@@ -29,9 +29,9 @@
             DistanceKM
             TimeBooked
             TimeArrived
-            BookingStatusId
+            BookingStatusId-->
 
-            <form method="POST" action="AdminDashBookingsServlet.do"></form>
+            <form method="POST" action="AdminDashBookingsServlet.do">
 
         <jsp:include page="foot.jsp"/>
 

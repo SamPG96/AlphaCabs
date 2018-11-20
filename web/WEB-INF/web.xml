@@ -30,7 +30,7 @@
     </servlet>
     <servlet>
         <servlet-name>AdminDashBookingsServlet</servlet-name>
-        <servlet-class>com.usermanagement.AdminDashBookingsServlet</servlet-class>
+        <servlet-class>com.AdminDashBookingsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserServLet</servlet-name>

@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package model.tableclasses;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
@@ -32,6 +34,17 @@ public class Booking {
         this.timeBooked = timeBooked;
         this.bookingStatus = bookingStatus;
     }
+
+    //public Booking(ResultSet resultSet) throws SQLException {
+        //throw new UnsupportedOperationException("Not supported yet."); 
+        //To change body of generated methods, choose Tools | Templates.
+        
+        //this.id = resultSet.getLong("id");
+        //CUSTOMER OR CUSTOMER ID?
+        //The database has customer id, but this constructor has customer as User type
+        //this.customer = resultSet.getUser("customer");
+        
+    //}
 
     public long getId() {
         return id;

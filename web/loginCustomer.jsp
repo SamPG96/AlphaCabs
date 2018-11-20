@@ -53,12 +53,12 @@ and open the template in the editor.
         
         <div id="Booking" class="tabcontent">
             <h3>Make a Booking</h3>
-            <p>INPUT JSP FILE HERE</p>
+            <p>INPUT JSP FILE HERE - Make a Booking here</p>
         </div>
         
         <div id="Details" class="tabcontent">
             <h3>Edit Your Details</h3>
-            <p>INPUT JSP FILE HERE</p>
+            <p>INPUT JSP FILE HERE - Request changes to Details here</p>
         </div>
         
         <script>

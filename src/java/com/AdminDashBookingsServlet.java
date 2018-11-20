@@ -3,13 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.usermanagement;
+package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Jdbc;
-import model.UserManagement;
+import model.tableclasses.Booking;
+//import model.UserManagement;
 import model.tableclasses.User;
 
 /**
@@ -37,18 +42,16 @@ public class AdminDashBookingsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         //response.setContentType("text/html;charset=UTF-8");
-        
         //HttpSession session = request.getSession(false);
-        
         //Jdbc jdbc = (Jdbc)session.getAttribute("dbean");
         //if (jdbc == null)
         //    request.getRequestDispatcher("/conErr.jsp").forward(request, reponse);
         //else {
-            
         //}
-
+        
+        //System.out.println("TESTING TESTING 1 2 3 - processRequest");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,12 +66,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);      
-        
-        //PrintWriter out = response.getWriter();
-        //String registration = request.getParameter();
-        
-        
+        processRequest(request, response);
         
     }
 
@@ -85,33 +83,76 @@ public class AdminDashBookingsServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
+        //PrintWriter out = response.getWriter();
+        //String registration = request.getParameter();
+        
+        //System.out.println("TESTING TESTING 1 2 3 - doGet");
+        
         //Check if DB connection is still active
         //response.setContentType("text/html;charset=UTF-8");
-        
         HttpSession session = request.getSession(false);
-        
-        Jdbc jdbc = (Jdbc)session.getAttribute("dbean");
-        
+
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbean");
+
         request.getRequestDispatcher("/admindashdrivers.jsp").forward(request, response);
         
+        String qryStr = "";
+        Statement statement = null;
+        //ResultSet resultSet = null;
+        Booking booking = null;
         
+        PrintWriter out = response.getWriter();
+        Connection connection = null;
+        
+        //try {
+        qryStr = "SELECT * from booking";
+        
+        //resultSet = statement.executeQuery(qryStr);
+        //booking = statement.executeQuery(qryStr);
+        
+        //if (resultSet.next()) {
+        //if (booking.next()) {
+        
+            //Id
+            //CustomerId
+            //SourceAddress
+            //DestinationAddress
+            //TimeBooked
+            //BookingStatusId
+            
+            //Booking booking = new Booking(Booking);
+            
+            //booking.setId(booking.getId());
+            booking.getId();
+            //booking.setId(resultSet.getLong("Id"));
+            //booking.setCustomer(booking.getCustomer());
+            booking.getCustomer();
+            //booking.setSourceAddress(booking.getSourceAddress());
+            booking.getSourceAddress();
+            //booking.setDestinationAddress(booking.getDestinationAddress());
+            booking.getDestinationAddress();
+            //booking.setTimeBooked(booking.getTimeBooked());
+            booking.getTimeBooked();
+            //booking.setBookingStatus(booking.getBookingStatus());
+            booking.getBookingStatus();
+            
+            System.out.println("TESTING 1 2 3");
+  
+            //booking.setBookingId(resultSet.getLong("Id"));
+            //booking.setBookingCustomerId(resultSet.getInt("CustomerId"));
+            //booking.setBookingDriverId(resultSet.getInt("DriverId"));
+            //booking.setBookingSourceAddress(resultSet.getString("SourceAddress"));
+            //booking.setBookingDestinationAddress(resultSet.getString("DestinationAddress"));
+            //booking.setBookingDistanceKM(resultSet.getDouble("DistanceKM"));
+            //booking.setBookingTimeBooked(resultSet.getTimestamp("TimeBooked"));
+            //booking.setBookingTimeArrived(resultSet.getTimestamp("TimeArrived"));
+            //booking.setBookingStatusId(resultSet.getInt("BookingStatusId"));
             
         //}
         
-            //Display all active jobs that DO NOT have a driver currently assigned
-            //(Or display all jobs and allow admin to change things as they see fit)
-            //Check how many active jobs are in stage 1 (OUTSTANDING)
-            //FOR all jobs active
-            //(int x = 0; x < Bookings.size(); x++) {
-            //IF BookingStatusId == 1 display job details
-            //if (Bookings.getBooking(x).getBookingStatusId()) {
-            //}
+        //} catch (SQLException ex) {
+            //Logger.getLogger(AdminDashBookingsServlet.class.getName()).log(Level.SEVERE, null, ex);
         //}
-
-        //String [] query = new String[x];
-        //???????????????
-        //Display all drivers that are currently NOT assigned to a job already
-        //(Should a driver be able to have multiple jobs assigned to them? - E.g. if the driver is nearby to two)        
     }
 
     /**
