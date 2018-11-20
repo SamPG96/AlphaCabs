@@ -14,7 +14,7 @@ import model.tableclasses.Customer;
  *
  * @author Conor
  */
-public class BookingManagement {
+public class BookingManager {
     
     public Booking generateNewBooking(String firstName, String lastName, 
             String address, boolean isSourceSameAsHome, String sourceAddress, 
