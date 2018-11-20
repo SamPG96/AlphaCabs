@@ -14,8 +14,8 @@ public class Booking {
     public static final String TABLE_NAME_BOOKINGS = "Bookings";
     
     private long id;
-    private User customer;
-    private User driver;
+    private Customer customer;
+    private Driver driver;
     private String sourceAddress;
     private String destinationAddress;
     private int numOfPassengers;
@@ -28,7 +28,7 @@ public class Booking {
     public Booking() {
     }
     
-    public Booking(long id, User customer, String sourceAddress, 
+    public Booking(long id, Customer customer, String sourceAddress, 
             String destinationAddress, int numOfPassengers, 
             Timestamp timeBooked, Timestamp departureTime, 
             GenericItem bookingStatus) {
@@ -42,7 +42,7 @@ public class Booking {
         this.bookingStatus = bookingStatus;
     }
     
-    public Booking(User customer, String sourceAddress, 
+    public Booking(Customer customer, String sourceAddress, 
             String destinationAddress, int numOfPassengers, 
             Timestamp timeBooked, Timestamp departureTime, 
             GenericItem bookingStatus) {
@@ -63,19 +63,19 @@ public class Booking {
         this.id = id;
     }
 
-    public User getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(User customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
-    public User getDriver() {
+    public Driver getDriver() {
         return driver;
     }
 
-    public void setDriver(User driver) {
+    public void setDriver(Driver driver) {
         this.driver = driver;
     }
 
