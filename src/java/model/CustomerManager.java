@@ -56,20 +56,6 @@ public class CustomerManager {
         customerId = jdbc.insert(customer);
         customer.setId(customerId);
         
-        // Create a user account for the customer. But by default it is
-        // deactivated until an admin can approve it.
-        userId = UserManager.newCustomerUser(password, customer,
-                    new GenericItem(1, "Unappoved"), jdbc);        
-        
-        if (userId < 0){
-            // Something unexpected has happend whilst creating a user account
-            // and may of corrupted the DB as a result, so raise an exception.
-            // The use and handling of the UserManager validation method earlier
-            // in this method should prevent such a thing from happening.
-            throw new RuntimeException("failed to create user account for "+
-                                       "customer, error: " + userId);
-        }
-        
         return customerId;
     }
 }
