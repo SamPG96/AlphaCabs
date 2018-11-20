@@ -5,15 +5,51 @@
  */
 package model;
 
+import java.sql.Timestamp;
+import model.tableclasses.Booking;
+import model.tableclasses.GenericItem;
+import model.tableclasses.Customer;
+
 /**
  *
  * @author Conor
  */
 public class BookingManagement {
     
+    public Booking generateNewBooking(String firstName, String lastName, 
+            String address, boolean isSourceSameAsHome, String sourceAddress, 
+            String destinationAddress, int numOfPassengers, 
+            Timestamp timeBooked, Timestamp departureTime, 
+            GenericItem bookingStatus){
+        
+        Customer newCustomer = new Customer(firstName, lastName, address);
+        if(isSourceSameAsHome){
+            sourceAddress = address;
+        }
+        
+        GenericItem gi = new GenericItem(1, "Outstanding");
+        
+        return new Booking(newCustomer, sourceAddress, destinationAddress, 
+                numOfPassengers, timeBooked, departureTime, gi);
+    }
     
+    public Booking generateNewBooking(Customer customer, boolean isSourceSameAsHome, String sourceAddress, 
+            String destinationAddress, int numOfPassengers, 
+            Timestamp timeBooked, Timestamp departureTime, 
+            GenericItem bookingStatus){
+        
+        if(isSourceSameAsHome && customer != null){
+            sourceAddress = customer.getAddress();
+        }
+        
+        GenericItem gi = new GenericItem(1, "Outstanding");
+        
+        return new Booking(customer, sourceAddress, destinationAddress, 
+                numOfPassengers, timeBooked, departureTime, gi);
+    }
     
-    public double calcDistanceKM(String source, String dest){
+    private double calcDistanceKM(String source, String dest){
+        //TODO with Google Maps API
         return 0.0;
     }
 }
