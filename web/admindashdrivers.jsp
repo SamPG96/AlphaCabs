@@ -4,7 +4,11 @@
     Author     : tc2-buxton
 --%>
 
+<%@page import="model.tableclasses.Booking"%>
 <%@page import="java.sql.*" %>
+<%@page import="java.util.*" %>
+<%@page import="model.BookingManager" %>
+<%@page import="model.Jdbc" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -18,15 +22,26 @@
 
     </head>
     <body>
+        
+        <input type="radio" name="select"/>
+        <% out.println("DISPLAY DRIVER HERE - row 1");%>
 
-            Id
-            FirstName
-            LastName
-            Registration
+        <br><input type="radio" name="select"/>
+        <% out.println("DISPLAY DRIVER HERE - row 2");%>
 
-            <input type="submit" value="Create New Driver" name="newDriver"/>
+        <br><input type="radio" name="select"/>
+        <% out.println("DISPLAY DRIVER HERE - row 3");%>
 
-            <form method="POST" action="AdminDashDriversServlet.do"></form>
+        <br><input type="radio" name="select"/>
+        <% out.println("DISPLAY DRIVER HERE - row 4");%>
+        
+        <br><input type="radio" name="select"/>
+        <% out.println("etc.");%>
+
+        <br><input type="submit" value="Create New Driver" name="newDriver"/>
+        <input type="submit" value="Change Details" name="detailsChange"/>
+        
+        <form method="POST" action="AdminDashDriversServlet.do"></form>
 
         <jsp:include page="foot.jsp"/>
 
