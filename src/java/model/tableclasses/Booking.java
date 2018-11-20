@@ -18,20 +18,40 @@ public class Booking {
     private User driver;
     private String sourceAddress;
     private String destinationAddress;
+    private int numOfPassengers;
     private double distanceKM;
     private Timestamp timeBooked;
-    private Timestamp timeArrived;
+    private Timestamp departureTime;
+    private Timestamp arrivalTime;
     private GenericItem bookingStatus;
 
     public Booking() {
     }
     
-    public Booking(long id, User customer, String sourceAddress, String destinationAddress, Timestamp timeBooked, GenericItem bookingStatus) {
+    public Booking(long id, User customer, String sourceAddress, 
+            String destinationAddress, int numOfPassengers, 
+            Timestamp timeBooked, Timestamp departureTime, 
+            GenericItem bookingStatus) {
         this.id = id;
         this.customer = customer;
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
+        this.numOfPassengers = numOfPassengers;
         this.timeBooked = timeBooked;
+        this.departureTime = departureTime;
+        this.bookingStatus = bookingStatus;
+    }
+    
+    public Booking(User customer, String sourceAddress, 
+            String destinationAddress, int numOfPassengers, 
+            Timestamp timeBooked, Timestamp departureTime, 
+            GenericItem bookingStatus) {
+        this.customer = customer;
+        this.sourceAddress = sourceAddress;
+        this.destinationAddress = destinationAddress;
+        this.numOfPassengers = numOfPassengers;
+        this.timeBooked = timeBooked;
+        this.departureTime = departureTime;
         this.bookingStatus = bookingStatus;
     }
 
@@ -92,11 +112,11 @@ public class Booking {
     }
 
     public Timestamp getTimeArrived() {
-        return timeArrived;
+        return arrivalTime;
     }
 
     public void setTimeArrived(Timestamp timeArrived) {
-        this.timeArrived = timeArrived;
+        this.arrivalTime = timeArrived;
     }
 
     public GenericItem getBookingStatus() {
@@ -106,6 +126,31 @@ public class Booking {
     public void setBookingStatus(GenericItem bookingStatus) {
         this.bookingStatus = bookingStatus;
     }
+
+    public int getNumOfPassengers() {
+        return numOfPassengers;
+    }
+
+    public void setNumOfPassengers(int numOfPassengers) {
+        this.numOfPassengers = numOfPassengers;
+    }
+
+    public Timestamp getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(Timestamp departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public Timestamp getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(Timestamp arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+    
     
     
 }
