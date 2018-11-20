@@ -10,6 +10,8 @@ package model.tableclasses;
  * @author Conor
  */
 public class Driver {
+    public static final String TABLE_NAME_DRIVERS = "Drivers";
+    
     private long id;
     private String firstName;
     private String lastName;

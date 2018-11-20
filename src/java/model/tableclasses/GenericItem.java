@@ -10,6 +10,10 @@ package model.tableclasses;
  * @author Conor
  */
 public class GenericItem {
+    public static final String TABLE_NAME_USERSTATUS = "UserStatus";
+    public static final String TABLE_NAME_BOOKINGSTATUS = "BookingStatus";
+    public static final String TABLE_NAME_USERTYPE = "UserType";
+    
     private long id;
     private String name;
 

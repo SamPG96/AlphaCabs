@@ -11,6 +11,8 @@ import java.sql.Timestamp;
  * @author Conor
  */
 public class Booking {
+    public static final String TABLE_NAME_BOOKINGS = "Bookings";
+    
     private long id;
     private User customer;
     private User driver;
