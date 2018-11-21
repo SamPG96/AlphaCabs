@@ -20,10 +20,10 @@ import static model.tableclasses.User.userTypesTableName;
  * @author Sam
  */
 public class UserManager {
-    private static final long noFirstNameErrCode = -1;
-    private static final long noLastNameErrCode = -2;
-    private static final long noPasswordErrCode = -3;
-    private static final int passwordsDontMatchErrCode = -4;
+    public static final long noFirstNameErrCode = -1;
+    public static final long noLastNameErrCode = -2;
+    public static final long noPasswordErrCode = -3;
+    public static final int passwordsDontMatchErrCode = -4;
 
     /*
      * Creates a user account for a customer. The ID of the new user is returned

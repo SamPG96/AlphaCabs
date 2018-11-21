@@ -7,7 +7,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import model.tableclasses.Customer;
 import model.tableclasses.Driver;
 
 
@@ -16,9 +15,9 @@ import model.tableclasses.Driver;
  * @author Sam
  */
 public class DriverManager {
-    static int noDriverFirstNameErrCode = -20;
-    static int noDriverLastNameErrCode = -21;
-    static int noDriverRegistrationErrCode = -22;
+    public static int noDriverFirstNameErrCode = -20;
+    public static int noDriverLastNameErrCode = -21;
+    public static int noDriverRegistrationErrCode = -22;
     
     /*
     * Add a new record driver to the DB
