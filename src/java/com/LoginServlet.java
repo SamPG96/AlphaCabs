@@ -93,32 +93,18 @@ public class LoginServlet extends HttpServlet {
 
         } else {
             // Login success!
+            User user = UserManager.getUser(loggedInUserID, dbBean);
+
             // Create a new session
             HttpSession session = request.getSession();
             session.setAttribute("userID", loggedInUserID);
             session.setAttribute("dbbean", dbBean);
+            session.setAttribute("userType", user.getUserType());
             
-            User user = UserManager.getUser(loggedInUserID, dbBean);
-            
+            request.getRequestDispatcher("index.jsp").forward(
+                         request, response);
             // Move to the page associated with the user type
-            if (user.getUserType().getId() == 1) {
-                request.getRequestDispatcher("loginAdmin.jsp").forward(
-                        request, response);
-            }
-            else if (user.getUserType().getId() == 2) {
-                request.getRequestDispatcher("loginDriver.jsp").forward(
-                        request, response);
-            }
-            else if (user.getUserType().getId() == 4) {
-                request.getRequestDispatcher("loginCustomer.jsp").forward(
-                            request, response);
-            }
-            else{
-                throw new RuntimeException("user type not recognised");
-            }
-
         }
-
     }
 
 /**
