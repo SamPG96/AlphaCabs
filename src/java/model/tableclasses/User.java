@@ -10,9 +10,7 @@ package model.tableclasses;
  * @author Sam
  */
 public class User {
-    public static String userTableName = "Users";
-    public static String userTypesTableName = "UserType";
-    public static String userStatusTableName = "UserStatus";
+    public static final String TABLE_NAME_USERS = "Users";
     private long id;
     private String username;
     private String password;
