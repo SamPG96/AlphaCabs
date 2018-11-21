@@ -26,15 +26,31 @@
     </head>
     <body>
         
-        <%
-            //if (request.getParameter("Submit") != null) {
-            //    String[] array = request.getParameterValues("avaliableDrivers");
-                
-            //    for (int i = 0; i < array.length; i++) {
-            //        out.println("");
-            //    }
-            //}
-        %>
+        <table border="1">
+            <!--TOP ROW Column Headers-->
+            <tr>
+                <td>Source Address</td>
+                <td>Destination Address</td>
+                <td>Distance (KM)</td>
+                <td>Time Booked</td>
+                <td>Number of Passengers</td>
+                <td>Booking Status</td>
+                <!--<td>Outstanding Status</td>-->
+            </tr>
+            
+            <!--Rows to be generated-->
+            <% //while (resultSet.next()) { %>
+            <tr>
+                <td><%= // %></td>
+                <td><%= // %></td>
+                <td><%= // %></td>
+                <td><%= // %></td>
+                <td><%= // %></td>
+                <td><%= // %></td>                
+            </tr>
+            <% //} %>
+            
+        </table>
         
         <form action="admindashbookings.jsp">
             <!-- TODO The drop down list should appear for the first booking in the list (least recent),
@@ -50,45 +66,6 @@
             <!-- TODO press submit changes database so selected driver is assigned to job -->
             <input type="Submit" name="Submit" value="Submit">
         </form>
-        
-        <%
-            
-            try {
-
-            } catch(Exception ex) {
-                ex.printStackTrace();
-                out.println("Error: " + ex.getMessage());
-            }
-            
-            //String st=request.getParameter("sel");
-            //if(st!=null){
-            //    out.println("You have selected: " + st);
-            //}
-        %>
-        
-        <%
-        //<c:forEach>
-        //</c:forEach>
-        %>
-        
-        <%
-            //Create arraylist to be displayedd
-            //ArrayList<String> booking = new ArrayList<String>();
-            //booking = bookingManager.getData();
-            
-            //for (int i = 0; i < booking.size(); i++) {
-                //bookingManager.
-            //}
-            
-            //DISPLAY list of bookings
-
-            //TODO - uncomment
-            //BookingManager booking = new BookingManager();
-
-            //BookingManager currentBooking = booking.buildBooking();
-
-            //out.println(currentBooking);
-        %>
 
             <form method="POST" action="AdminDashBookingsServlet.do">
 

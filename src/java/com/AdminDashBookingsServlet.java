@@ -85,6 +85,14 @@ public class AdminDashBookingsServlet extends HttpServlet {
         request.getRequestDispatcher("/admindashdrivers.jsp").forward(request, response);
         
         //BUTTON PUSHES - not activity
+        //getFullBooking constructor to be made
+//        Booking booking = BookingManager.getFullBooking(
+//        request.getParameter("SourceAddress"));
+//        request.getParameter("DestinationAddress");
+//        request.getParameter("DistanceKM");
+//        request.getParameter("TimeBooked");
+//        request.getParameter("Number Of Passengers");
+//        request.getParameter("BookingStatusId");
         
     }
 
