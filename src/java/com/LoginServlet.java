@@ -93,29 +93,32 @@ public class LoginServlet extends HttpServlet {
 
         } else {
             // Login success!
+            User user = UserManagement.getUser(loggedInUserID, dbBean);
+
             // Create a new session
             HttpSession session = request.getSession();
             session.setAttribute("userID", loggedInUserID);
             session.setAttribute("dbbean", dbBean);
+            session.setAttribute("userType", user.getUserType());
             
-            User user = UserManagement.getUser(loggedInUserID, dbBean);
-            
+            request.getRequestDispatcher("index.jsp").forward(
+                         request, response);
             // Move to the page associated with the user type
-            switch (user.getUserType().getId()) {
-                case 1:
-                    request.getRequestDispatcher("loginAdmin.jsp").forward(
-                            request, response);
-                    break;
-                case 2:
-                    request.getRequestDispatcher("loginDriver.jsp").forward(
-                            request, response);
-                    break;
-                case 4:
-                    request.getRequestDispatcher("loginCustomer.jsp").forward(
-                            request, response);
-                    break;
-                default:
-                    throw new RuntimeException("user type not recognised");
+//            switch (user.getUserType().getId()) {
+//               case 1:
+//                   request.getRequestDispatcher("loginAdmin.jsp").forward(
+//                           request, response);
+//                    break;
+//                case 2:
+//                    request.getRequestDispatcher("loginDriver.jsp").forward(
+//                            request, response);
+//                    break;
+//                case 4:
+//                    request.getRequestDispatcher("loginCustomer.jsp").forward(
+//                            request, response);
+//                    break;
+//                default:
+//                    throw new RuntimeException("user type not recognised");
             }
 
         }
