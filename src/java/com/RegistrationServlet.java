@@ -82,7 +82,7 @@ public class RegistrationServlet extends HttpServlet {
         Jdbc dbBean = new Jdbc();
         dbBean.connect((Connection)sc.getAttribute("connection"));
          // Values from Booking.jsp
-        int errorCodes = CustomerManager.addNewCustomer (
+        long errorCodes = CustomerManager.addNewCustomer (
                 request.getParameter("firstname"), //whatever alex has named them
                 request.getParameter("lastname"),
                 request.getParameter("address"),

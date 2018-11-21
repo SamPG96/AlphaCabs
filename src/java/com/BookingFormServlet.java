@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import model.Jdbc;
 import model.UserManagement;
 import model.tableclasses.User;
+import model.BookingManager;
 
 /**
  *
@@ -69,42 +70,48 @@ public class BookingFormServlet extends HttpServlet {
         
         // Go straight to an error page if their where problems connecting to
         // the DB.
-        if (sc.getAttribute("dBConnectionError") != null){
-            request.getRequestDispatcher("conErr.jsp").forward(request, response);
-        }
+       // if (sc.getAttribute("dBConnectionError") != null){
+        //    request.getRequestDispatcher("conErr.jsp").forward(request, response);
+        //}
         
         // Connect Jdbc to the DB
-        Jdbc dbBean = new Jdbc();
-        dbBean.connect((Connection)sc.getAttribute("connection"));
-         // Values from Booking.jsp
-        int bookingIncomplete = BookingManager.generateNewBooking(
-                request.getParameter("firstName"), //whatever alex has named these
-                request.getParameter("lastName"),
+        //Jdbc dbBean = new Jdbc();
+        //dbBean.connect((Connection)sc.getAttribute("connection"));
+        HttpSession session = request.getSession(false);
+        
+        if (session != null && session.getAttribute("userID") != null) {
+            Jdbc jdbc = (Jdbc)session.getAttribute("jdbc");
+            Customer customer = UserManager.getUser(session.getAttribute("userID"), jdbc).getCustomer();
+            ERR_CUST_NULL;
+        }
+        // Values from Booking.jsp
+        Booking booking = BookingManager.generateNewBooking(
+                
                 request.getParameter("source"),
-                request.getParameter("sourceequalshome"), // need somesort of tick box on JSP
                 request.getParameter("destination"),
                 request.getParameter("Date Booked"),
-                request.getParameter("passengers"),
-                dbBean);
+                request.getParameter("passengers"));
 
         // Handle result of login attempt
-        if (bookingIncomplete == -1) {
-            // Login failure!
+        //check for errors from booking manager
+        if (booking == -1) {
+            //Booking incomplete
             String message = "form incomplete. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("Booking.jsp").forward(request, response);
 
         } else {
-            if (loggedInUser ==) {
+               HttpSession session = request.getSession(false);
+               request.setAttribute("booking", booking);
+               
+            if (session != null && session.getAttribute("userID") != null)  {
                 //User Logged in
+                //publish booking to DB
                 request.getRequestDispatcher("Invoice.jsp").forward(request, response);
-                //pass booking info to Booking Manager?
             } else {
-                //User not logged in yet
+                //User not logged in
                 request.getRequestDispatcher("bookingIdentity.jsp").forward(request, response);
-                //Login and pass booking info to a Session whilst they login?
             }
-            //What happens to info that is needed for guest logins?
 
         }
         

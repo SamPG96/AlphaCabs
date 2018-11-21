@@ -7,10 +7,14 @@ package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.Statement;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Jdbc;
 
 /**
  *
@@ -46,6 +50,14 @@ public class AdminDashCustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        response.setContentType("text/html");
+        PrintWriter pw = response.getWriter();
+        Connection conn = null;
+        Statement st=null;
+        
+        
+        String url = "jdbc:mysql//localhost:8080/"
     }
 
     /**
@@ -60,6 +72,23 @@ public class AdminDashCustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+         ServletContext sc = request.getServletContext();
+        
+        // Go straight to an error page if their where problems connecting to
+        // the DB.
+        if (sc.getAttribute("dBConnectionError") != null){
+            request.getRequestDispatcher("conErr.jsp").forward(request, response);
+        }
+        
+        // Connect Jdbc to the DB
+        Jdbc dbBean = new Jdbc();
+        dbBean.connect((Connection)sc.getAttribute("connection"));
+         // Values from Booking.jsp
+        int CustomertoApprove = CustomerManager.approveCustomer(
+                request.getParameter("customerID"),
+                request.getParameter("approveBT"), //whatever alex has named these
+                dbBean);
         
         //GET ID from the JSP??
         //Give ID to model.
