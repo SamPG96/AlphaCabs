@@ -104,26 +104,9 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("index.jsp").forward(
                          request, response);
             // Move to the page associated with the user type
-//            switch (user.getUserType().getId()) {
-//               case 1:
-//                   request.getRequestDispatcher("loginAdmin.jsp").forward(
-//                           request, response);
-//                    break;
-//                case 2:
-//                    request.getRequestDispatcher("loginDriver.jsp").forward(
-//                            request, response);
-//                    break;
-//                case 4:
-//                    request.getRequestDispatcher("loginCustomer.jsp").forward(
-//                            request, response);
-//                    break;
-//                default:
-//                    throw new RuntimeException("user type not recognised");
             }
 
         }
-
-    }
 
 /**
  * Returns a short description of the servlet.
