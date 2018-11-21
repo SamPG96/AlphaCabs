@@ -24,19 +24,44 @@
             
             
             <div class="line"></div>
-              <%-- DATE  ORDER ID--%>  
-              <h2>Thank you for using Alphacabs</h2>
-              Details of the trip:
-              Name:
-              Source:
-              Destination:
-              Passengers:
-              Driver:
-              <div class="line"></div>
-              Miles:
-              Price per mile:
-              VAT:
-              Total including VAT:
+              
+            <h2>Thank you for using Alphacabs</h2>
+            
+            <%-- DATE  ORDER ID--%>  
+            
+            <h2>Thank you for using Alphacabs</h2>
+            
+            <tr>
+                <td>Details of the trip:</td><td></td>
+            </tr>
+            <tr>
+                <td>Name:</td><td></td>
+            </tr>
+            <tr>
+                <td>Source:</td><td></td>
+            </tr>
+            <tr>
+                <td>Destination:</td><td></td>
+            </tr>
+            <tr>
+                <td>Passengers:</td><td></td>
+            </tr>
+                     <div class="line"></div>
+            <tr>
+                <td>Miles:</td><td></td>
+            </tr>
+            <tr>
+                <td>Price per mile:</td><td></td>
+            </tr>
+            <tr>
+                <td>VAT:</td><td></td>
+            </tr>
+            <tr>
+                <td>Total including VAT:</td><td></td>
+            </tr>
+                      
+              
+              
              
         </div>
     
