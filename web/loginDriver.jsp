@@ -8,9 +8,15 @@ and open the template in the editor.
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Driver Dashboard</title>
+
     </head>
     <body>
-        <h1>You've logged on as Driver</h1>
-			
+        <h1>DRIVER Dashboard</h1>
+        
+        Here lies the information to your salvation...
+        
+        <br>ACTIVE JOBS
+
     </body>
+    <jsp:include page="/common/foot.jsp"/>
 </html>
