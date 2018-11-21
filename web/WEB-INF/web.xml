@@ -39,6 +39,8 @@
     <servlet>
         <servlet-name>AdminApproveCustomer</servlet-name>
         <servlet-class>com.AdminDashCustomerServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>AdminDashBookingsServlet</servlet-name>
         <servlet-class>com.AdminDashBookingsServlet</servlet-class>
     </servlet>
@@ -67,8 +69,8 @@
         <url-pattern>/RegistrationServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AdminApproveCustomer</servlet-name>
-        <url-pattern>/AdminApproveCustomer</url-pattern>
+        <servlet-name>AdminDashBookingsServlet</servlet-name>
+        <url-pattern>/AdminDashBookingsServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
