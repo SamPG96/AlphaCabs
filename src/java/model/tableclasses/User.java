@@ -10,7 +10,7 @@ package model.tableclasses;
  * @author Sam
  */
 public class User {
-    private int id;
+    private long id;
     private String username;
     private String password;
     private GenericItem userType;
@@ -18,23 +18,39 @@ public class User {
     private Driver driver;
     private GenericItem userStatus;
 
-    public User() {
+    /*
+    * Constructor for creating a customer user representation where the User ID
+    * and username is not known yet.
+    */
+    public User(String password, GenericItem userType, Customer customer,
+            GenericItem userStatus) {
+        this.password = password;
+        this.userType = userType;
+        this.customer = customer;
+        this.driver = null;
+        this.userStatus = userStatus;
     }
     
-    public User(int id, String username, String password, GenericItem userType,
+    /*
+    * Constructor that takes information about a User that is common to all user
+    * types.
+    */
+    public User(long id, String username, String password, GenericItem userType,
             GenericItem userStatus) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.userType = userType;
+        this.customer = null;
+        this.driver = null;
         this.userStatus = userStatus;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -70,7 +86,7 @@ public class User {
         this.customer = customer;
     }
     
-    public int getCustomerId() {
+    public long getCustomerId() {
         if(customer != null){
             return customer.getId();
         }
@@ -85,7 +101,7 @@ public class User {
         this.driver = driver;
     }
     
-    public int getDriverId() {
+    public long getDriverId() {
         if(driver != null){
             return driver.getId();
         }

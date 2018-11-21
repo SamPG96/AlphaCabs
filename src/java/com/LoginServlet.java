@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Jdbc;
-import model.UserManagement;
+import model.UserManager;
 import model.tableclasses.User;
 
 /**
@@ -79,7 +79,7 @@ public class LoginServlet extends HttpServlet {
         
         // Attempt to login the user, -1 is returned if the password or
         // username is inccorect  
-        int loggedInUserID = UserManagement.loginUser(
+        long loggedInUserID = UserManager.loginUser(
                 request.getParameter("username"),
                 request.getParameter("password"),
                 dbBean);
@@ -93,7 +93,7 @@ public class LoginServlet extends HttpServlet {
 
         } else {
             // Login success!
-            User user = UserManagement.getUser(loggedInUserID, dbBean);
+            User user = UserManager.getUser(loggedInUserID, dbBean);
 
             // Create a new session
             HttpSession session = request.getSession();
@@ -104,9 +104,8 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("index.jsp").forward(
                          request, response);
             // Move to the page associated with the user type
-            }
-
         }
+    }
 
 /**
  * Returns a short description of the servlet.
