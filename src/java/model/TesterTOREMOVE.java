@@ -37,8 +37,6 @@ public class TesterTOREMOVE {
                         "Dave",
                         "Watson",
                         "Some house",
-                        "pass",
-                        "pass",
                         jdbc);
 
         System.out.println("CUSTOMER ID: " + resp);
