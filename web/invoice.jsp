@@ -17,8 +17,14 @@
      
         <div class="main">
             <center><h1>Alphacab: Invoice</h1></center>
+            
+           <%--
+<%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%>
+           --%>
+            
+            
             <div class="line"></div>
-              <%-- DATE ORDER ID--%>  
+              <%-- DATE  ORDER ID--%>  
               <h2>Thank you for using Alphacabs</h2>
               Details of the trip:
               Name:

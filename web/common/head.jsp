@@ -14,7 +14,33 @@
     <body>
         <div class="navbar">
         <img src="imgs/Alpha.png" align="left">
+        
+        
+       <%
+        try {
+            if(session != null && session.getAttribute("userID") != null)  {
+%>
+       
+        <a href="profile.jsp"> Profile </a>
+        
+        <%
+            } else {
+    %>
+   <a href="login.jsp"> Login </a>
+    
+    <%
+       
+            }
+        } catch (Exception e) {
+
+        }
+    %>
+        
+        
+        
+        <%--
         <a href="login.jsp"> Login </a>
+        --%>
         <br>
         <br>
         <h1>Alpha Cabs</h1>

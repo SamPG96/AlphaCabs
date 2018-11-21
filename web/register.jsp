@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Template</title>
+        <title>Register</title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
     
@@ -50,13 +50,12 @@
             
                 
             </table>
-                </form></center>
+                </form>
+            
+            <%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%>
+            </center>
        
-            
-            
-            
-            
-            
+               
             
            
             

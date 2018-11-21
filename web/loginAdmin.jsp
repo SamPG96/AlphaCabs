@@ -13,4 +13,5 @@ and open the template in the editor.
         <h1>You've logged on as Admin</h1>
 			
     </body>
+    <jsp:include page="/common/foot.jsp"/>
 </html>

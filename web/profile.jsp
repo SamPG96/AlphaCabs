@@ -1,6 +1,6 @@
 <%-- 
-    Document   : bookingidentity
-    Created on : 21-Nov-2018, 01:21:37
+    Document   : profile
+    Created on : 21-Nov-2018, 02:21:32
     Author     : yuugy
 --%>
 
@@ -17,12 +17,14 @@
      
         <div class="main">
         
-       <jsp:include page="login.jsp"/>
-       <div class="line"></div>
-       
-      
-       <center><a href="guest.jsp" class="button">Book as guest</a>
-       <a href="register.jsp" class="button">Book with a new AlphaCabs account</a></center>
+            <h1>Profile</h1>
+            
+            
+            
+            
+            <button type="button">Logout</button>
+            <button type="button">Edit</button>
+            
         </div>
     
     <jsp:include page="/common/foot.jsp"/>

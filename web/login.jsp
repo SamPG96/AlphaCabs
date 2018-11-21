@@ -18,6 +18,7 @@
         <h2>Login:</h2>
         <form method="POST" action="LoginServlet.do">
             <table>
+                
                                 <tr>
                     <td>Username:</td>
                     <td><input type="text" name="username"/></td>
