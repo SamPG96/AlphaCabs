@@ -5,26 +5,32 @@
  */
 package com;
 
-import com.usermanagement.AlphacabListener;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.servlet.http.HttpSession;
 import model.Jdbc;
-import model.UserManager;
+import model.tableclasses.Booking;
+import model.BookingManager;
+//import model.UserManagement;
 import model.tableclasses.User;
-
 
 /**
  *
- * @author Sam,Jake
+ * @author tc2-buxton
  */
-public class LoginServlet extends HttpServlet {
+public class AdminDashBookingsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,7 +43,6 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -53,7 +58,11 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-
+        
+        //try {
+            
+        //}
+        
     }
 
     /**
@@ -68,56 +77,31 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-        ServletContext sc = request.getServletContext();
-        
-        // Go straight to an error page if their where problems connecting to
-        // the DB.
-        if (sc.getAttribute("dBConnectionError") != null){
-            request.getRequestDispatcher("conErr.jsp").forward(request, response);
-        }
-        
-        // Connect Jdbc to the DB
-        Jdbc dbBean = new Jdbc();
-        dbBean.connect((Connection)sc.getAttribute("connection"));
-        
-        // Attempt to login the user, -1 is returned if the password or
-        // username is inccorect  
-        long loggedInUserID = UserManager.loginUser(
-                request.getParameter("username"),
-                request.getParameter("password"),
-                dbBean);
 
-        // Handle result of login attempt
-        if (loggedInUserID == -1) {
-            // Login failure!
-            String message = "Incorrect username or password, try again";
-            request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        HttpSession session = request.getSession(false);
 
-        } else {
-            // Login success!
-            User user = UserManager.getUser(loggedInUserID, dbBean);
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbean");
 
-            // Create a new session
-            HttpSession session = request.getSession();
-            session.setAttribute("userID", loggedInUserID);
-            session.setAttribute("dbbean", dbBean);
-            session.setAttribute("userType", user.getUserType());
-            
-            request.getRequestDispatcher("index.jsp").forward(
-                         request, response);
-            // Move to the page associated with the user type
-        }
+        request.getRequestDispatcher("/admindashdrivers.jsp").forward(request, response);
+        
+        //BUTTON PUSHES - not activity
+        //getFullBooking constructor to be made
+//        Booking booking = BookingManager.getFullBooking(
+//        request.getParameter("SourceAddress"));
+//        request.getParameter("DestinationAddress");
+//        request.getParameter("DistanceKM");
+//        request.getParameter("TimeBooked");
+//        request.getParameter("Number Of Passengers");
+//        request.getParameter("BookingStatusId");
+        
     }
 
-
-/**
- * Returns a short description of the servlet.
- *
- * @return a String containing servlet description
- */
-@Override
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>

@@ -10,30 +10,36 @@ package model.tableclasses;
  * @author Conor
  */
 public class Customer {
-    private int id;
+    public static String customerTable = "Customers";
+    private long id;
     private String firstName;
     private String lastName;
     private String address;
 
-    public Customer() {
-    }
-    
-    public Customer(int id) {
-        this.id = id;
+    /*
+    * Constructor that takes all customer information apart from the customer ID
+    */
+    public Customer(String firstName, String lastName, String address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
     }
 
-    public Customer(int id, String firstName, String lastName, String address) {
+    /*
+    * Constructor that takes all customer information
+    */
+    public Customer(long id, String firstName, String lastName, String address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

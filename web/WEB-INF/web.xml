@@ -39,6 +39,8 @@
     <servlet>
         <servlet-name>AdminApproveCustomer</servlet-name>
         <servlet-class>com.AdminDashCustomerServlet</servlet-class>
+        <servlet-name>AdminDashBookingsServlet</servlet-name>
+        <servlet-class>com.AdminDashBookingsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserServLet</servlet-name>

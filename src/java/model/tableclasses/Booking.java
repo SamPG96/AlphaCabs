@@ -4,56 +4,78 @@
  * and open the template in the editor.
  */
 package model.tableclasses;
-import java.util.Date;  
+import java.sql.Timestamp;
 
 /**
  *
  * @author Conor
  */
 public class Booking {
-    private int id;
-    private User customer;
-    private User driver;
+    public static final String TABLE_NAME_BOOKINGS = "Bookings";
+    
+    private long id;
+    private Customer customer;
+    private Driver driver;
     private String sourceAddress;
     private String destinationAddress;
+    private int numOfPassengers;
     private double distanceKM;
-    private Date timeBooked;
-    private Date timeArrived;
+    private Timestamp timeBooked;
+    private Timestamp departureTime;
+    private Timestamp arrivalTime;
     private GenericItem bookingStatus;
 
     public Booking() {
     }
     
-    public Booking(int id, User customer, String sourceAddress, String destinationAddress, Date timeBooked, GenericItem bookingStatus) {
+    public Booking(long id, Customer customer, String sourceAddress, 
+            String destinationAddress, int numOfPassengers, 
+            Timestamp timeBooked, Timestamp departureTime, 
+            GenericItem bookingStatus) {
         this.id = id;
         this.customer = customer;
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
+        this.numOfPassengers = numOfPassengers;
         this.timeBooked = timeBooked;
+        this.departureTime = departureTime;
+        this.bookingStatus = bookingStatus;
+    }
+    
+    public Booking(Customer customer, String sourceAddress, 
+            String destinationAddress, int numOfPassengers, 
+            Timestamp timeBooked, Timestamp departureTime, 
+            GenericItem bookingStatus) {
+        this.customer = customer;
+        this.sourceAddress = sourceAddress;
+        this.destinationAddress = destinationAddress;
+        this.numOfPassengers = numOfPassengers;
+        this.timeBooked = timeBooked;
+        this.departureTime = departureTime;
         this.bookingStatus = bookingStatus;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public User getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(User customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
-    public User getDriver() {
+    public Driver getDriver() {
         return driver;
     }
 
-    public void setDriver(User driver) {
+    public void setDriver(Driver driver) {
         this.driver = driver;
     }
 
@@ -81,20 +103,20 @@ public class Booking {
         this.distanceKM = distanceKM;
     }
 
-    public Date getTimeBooked() {
+    public Timestamp getTimeBooked() {
         return timeBooked;
     }
 
-    public void setTimeBooked(Date timeBooked) {
+    public void setTimeBooked(Timestamp timeBooked) {
         this.timeBooked = timeBooked;
     }
 
-    public Date getTimeArrived() {
-        return timeArrived;
+    public Timestamp getTimeArrived() {
+        return arrivalTime;
     }
 
-    public void setTimeArrived(Date timeArrived) {
-        this.timeArrived = timeArrived;
+    public void setTimeArrived(Timestamp timeArrived) {
+        this.arrivalTime = timeArrived;
     }
 
     public GenericItem getBookingStatus() {
@@ -104,6 +126,31 @@ public class Booking {
     public void setBookingStatus(GenericItem bookingStatus) {
         this.bookingStatus = bookingStatus;
     }
+
+    public int getNumOfPassengers() {
+        return numOfPassengers;
+    }
+
+    public void setNumOfPassengers(int numOfPassengers) {
+        this.numOfPassengers = numOfPassengers;
+    }
+
+    public Timestamp getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(Timestamp departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public Timestamp getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(Timestamp arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+    
     
     
 }

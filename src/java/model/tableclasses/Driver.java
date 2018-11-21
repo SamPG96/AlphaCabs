@@ -10,31 +10,36 @@ package model.tableclasses;
  * @author Conor
  */
 public class Driver {
-    private int id;
+    public static String driverTable = "Drivers";
+    private long id;
     private String firstName;
     private String lastName;
     private String registration;
-
-    public Driver() {
-    }
     
-    public Driver(int id, String registration) {
-        this.id = id;
+    /*
+    * Constructor that takes all driver information apart from the driver ID
+    */
+    public Driver(String firstName, String lastName, String registration) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.registration = registration;
     }
 
-    public Driver(int id, String firstName, String lastName, String registration) {
+    /*
+    * Constructor that takes all driver information
+    */
+    public Driver(long id, String firstName, String lastName, String registration) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.registration = registration;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
