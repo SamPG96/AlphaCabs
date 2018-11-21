@@ -54,6 +54,18 @@ public class Booking {
         this.departureTime = departureTime;
         this.bookingStatus = bookingStatus;
     }
+    
+    public Booking(String sourceAddress, 
+            String destinationAddress, int numOfPassengers, 
+            Timestamp timeBooked, Timestamp departureTime, 
+            GenericItem bookingStatus) {
+        this.sourceAddress = sourceAddress;
+        this.destinationAddress = destinationAddress;
+        this.numOfPassengers = numOfPassengers;
+        this.timeBooked = timeBooked;
+        this.departureTime = departureTime;
+        this.bookingStatus = bookingStatus;
+    }
 
     public long getId() {
         return id;
