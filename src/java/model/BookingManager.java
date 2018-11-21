@@ -15,77 +15,113 @@ import model.tableclasses.Customer;
  * @author Conor
  */
 public class BookingManager {
-    
+
     public static final int ERR_CUST_NULL = -1,
             ERR_SRC_HOME_NULL = -2,
             ERR_SRC_ADDR_NULL = -3,
             ERR_DEST_ADDR_NULL = -4,
             ERR_N_PAS_NULL = -5,
             ERR_DEP_TIME_NULL = -6;
-    
+
     private int error;
 
-    public Booking generateNewBooking(Customer customer, 
-            String isSourceSameAsHome, String sourceAddress, 
-            String destinationAddress, String numOfPassengers, 
-            String departureTime){
-        
-        Booking ret = new Booking();
-      
-        if(customer == null){
+    public Booking generateNewBooking(Customer customer,
+            String isSourceSameAsHome, String sourceAddress,
+            String destinationAddress, String numOfPassengers,
+            String departureTime) {
+
+        boolean isSSAH;
+        int nPassengers;
+        Timestamp depTime;
+        GenericItem bookingStatus;
+
+        if (customer == null) {
             this.error = ERR_CUST_NULL;
             return null;
         }
-        
-        if(isSourceSameAsHome == null){
+
+        if (isSourceSameAsHome == null) {
             this.error = ERR_SRC_HOME_NULL;
             return null;
+        } else {
+            isSSAH = Boolean.parseBoolean(isSourceSameAsHome);
         }
-        
-        if(sourceAddress == null){
+
+        if (sourceAddress == null) {
             this.error = ERR_SRC_ADDR_NULL;
             return null;
         }
-        
-        if(destinationAddress == null){
+
+        if (destinationAddress == null) {
             this.error = ERR_DEST_ADDR_NULL;
             return null;
         }
-        
-        if(numOfPassengers == null){
+
+        if (numOfPassengers == null) {
             this.error = ERR_N_PAS_NULL;
             return null;
+        } else {
+            nPassengers = Integer.parseInt(numOfPassengers);
         }
-        
-        if(departureTime == null){
+
+        if (departureTime == null) {
             this.error = ERR_DEP_TIME_NULL;
             return null;
+        } else {
+            depTime = Timestamp.valueOf(departureTime);
         }
-        
-//        if(isSourceSameAsHome && customer != null){
-//            sourceAddress = customer.getAddress();
-//        }
-        
-        GenericItem gi = new GenericItem(1, "Outstanding");
-        
-        return ret;
+
+        if (isSSAH) {
+            sourceAddress = customer.getAddress();
+        }
+
+        bookingStatus = new GenericItem(1, "Outstanding");
+
+        return new Booking(customer, sourceAddress, destinationAddress,
+                nPassengers, new Timestamp(System.currentTimeMillis()),
+                depTime, bookingStatus);
     }
-    
-    public static Booking generateNewBooking(String sourceAddress, 
-            String destinationAddress, int numOfPassengers, 
-            Timestamp timeBooked, Timestamp departureTime, 
-            GenericItem bookingStatus){
-        
-        
-        GenericItem gi = new GenericItem(1, "Outstanding");
-        
-        return new Booking(sourceAddress, destinationAddress, 
-                numOfPassengers, timeBooked, departureTime, gi);
+
+    public Booking generateNewBooking(String sourceAddress,
+            String destinationAddress, String numOfPassengers,
+            String timeBooked, String departureTime) {
+
+        int nPassengers;
+        Timestamp depTime;
+        GenericItem bookingStatus;
+
+        if (sourceAddress == null) {
+            this.error = ERR_SRC_ADDR_NULL;
+            return null;
+        }
+
+        if (destinationAddress == null) {
+            this.error = ERR_DEST_ADDR_NULL;
+            return null;
+        }
+
+        if (numOfPassengers == null) {
+            this.error = ERR_N_PAS_NULL;
+            return null;
+        } else {
+            nPassengers = Integer.parseInt(numOfPassengers);
+        }
+
+        if (departureTime == null) {
+            this.error = ERR_DEP_TIME_NULL;
+            return null;
+        } else {
+            depTime = Timestamp.valueOf(departureTime);
+        }
+
+        bookingStatus = new GenericItem(1, "Outstanding");
+
+        return new Booking(sourceAddress, destinationAddress,
+                nPassengers, new Timestamp(System.currentTimeMillis()),
+                depTime, bookingStatus);
     }
-    
-    
-    
-    private double calcDistanceKM(String source, String dest){
+
+    private double calcDistanceKM(String source, String dest) {
         //TODO with Google Maps API
         return 0.0;
     }
@@ -97,6 +133,5 @@ public class BookingManager {
     public void setError(int error) {
         this.error = error;
     }
-    
-    
+
 }
