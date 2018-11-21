@@ -14,5 +14,6 @@
 
 
 <div class="footer">
+    <div class="line"></div>
  <a href="userMan.jsp"> Back to Main </a>
 </div>

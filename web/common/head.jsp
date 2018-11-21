@@ -18,7 +18,7 @@
         <br>
         <br>
         <h1>Alpha Cabs</h1>
-        <br>
+               <div class="line"></div>
         </div>
     </body>
 </html>
