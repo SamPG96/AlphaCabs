@@ -11,20 +11,23 @@ package model.tableclasses;
  */
 public class Driver {
     public static final String TABLE_NAME_DRIVERS = "Drivers";
-    
     private long id;
     private String firstName;
     private String lastName;
     private String registration;
-
-    public Driver() {
-    }
     
-    public Driver(long id, String registration) {
-        this.id = id;
+    /*
+    * Constructor that takes all driver information apart from the driver ID
+    */
+    public Driver(String firstName, String lastName, String registration) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.registration = registration;
     }
 
+    /*
+    * Constructor that takes all driver information
+    */
     public Driver(long id, String firstName, String lastName, String registration) {
         this.id = id;
         this.firstName = firstName;

@@ -16,6 +16,7 @@ import model.tableclasses.Customer;
  */
 public class BookingManager {
     
+
     public static final int ERR_CUST_NULL = -1,
             ERR_SRC_HOME_NULL = -2,
             ERR_SRC_ADDR_NULL = -3,
@@ -71,19 +72,17 @@ public class BookingManager {
         return ret;
     }
     
-    public static Booking generateNewBooking(String sourceAddress, 
+    public static Booking generateNewBooking(String sourceAddress,
             String destinationAddress, int numOfPassengers, 
             Timestamp timeBooked, Timestamp departureTime, 
             GenericItem bookingStatus){
-        
-        
+
         GenericItem gi = new GenericItem(1, "Outstanding");
         
         return new Booking(sourceAddress, destinationAddress, 
                 numOfPassengers, timeBooked, departureTime, gi);
+ 
     }
-    
-    
     
     private double calcDistanceKM(String source, String dest){
         //TODO with Google Maps API
