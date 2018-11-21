@@ -21,8 +21,10 @@
             
             
             
-            
-            <button type="button">Logout</button>
+            <form method="POST" action="LogoutServlet.do">
+                <input type="submit" value="Logout"/>
+            </form>
+                
             <button type="button">Edit</button>
             
         </div>

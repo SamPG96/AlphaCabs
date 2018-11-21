@@ -26,32 +26,6 @@
     </head>
     <body>
         
-        <table border="1">
-            <!--TOP ROW Column Headers-->
-            <tr>
-                <td>Source Address</td>
-                <td>Destination Address</td>
-                <td>Distance (KM)</td>
-                <td>Time Booked</td>
-                <td>Number of Passengers</td>
-                <td>Booking Status</td>
-                <!--<td>Outstanding Status</td>-->
-            </tr>
-            
-            <!--Rows to be generated-->
-            <% //while (resultSet.next()) { %>
-            <tr>
-                <td><%= // %></td>
-                <td><%= // %></td>
-                <td><%= // %></td>
-                <td><%= // %></td>
-                <td><%= // %></td>
-                <td><%= // %></td>                
-            </tr>
-            <% //} %>
-            
-        </table>
-        
         <form action="admindashbookings.jsp">
             <!-- TODO The drop down list should appear for the first booking in the list (least recent),
             and give a list of drivers that can be assigned to that job-->
