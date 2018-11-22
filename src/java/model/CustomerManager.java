@@ -15,9 +15,9 @@ import model.tableclasses.GenericItem;
  * @author Sam
  */
 public class CustomerManager {
-    static int noCustomerFirstNameErrCode = -10;
-    static int noCustomerLastNameErrCode = -11;
-    static int noCustomerAddressErrCode = -12;
+    public static int noCustomerFirstNameErrCode = -10;
+    public static int noCustomerLastNameErrCode = -11;
+    public static int noCustomerAddressErrCode = -12;
     /*
      * Creates a new customer entry in the database and generates them a user
      * account.
