@@ -22,13 +22,13 @@
             
             
             
-            <center><form method="POST" action="???.do">
+            <center><form method="POST" action="BookingFormServlet.do">
             <table>
                 <tr>
-                    <td>Pickup:</td><td></td><td>Destination</td>
+                    <td>Source:</td><td></td><td>Destination</td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="pickup"/></td><td></td><td><input type="text" name="destination"/></td>
+                    <td><input type="text" name="source"/></td><td></td><td><input type="text" name="destination"/></td>
                 </tr>
                 <tr>
                     <td>Date:</td><td>Time:</td><td>Passengers:</td>
