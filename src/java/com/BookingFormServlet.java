@@ -114,7 +114,7 @@ public class BookingFormServlet extends HttpServlet {
                         message = "Customer not given";
                         break;
                     case ERR_SRC_HOME_NULL:
-                        message = "Source home not given";
+                        message = "Source  not given";
                         break;
                     case ERR_SRC_ADDR_NULL:
                         message = "Source Address not given";
@@ -134,7 +134,7 @@ public class BookingFormServlet extends HttpServlet {
                 }
             
             request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("booking.jsp").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         } else{
             jdbc.insert(booking);
             request.getRequestDispatcher("invoice.jsp").forward(request, response);
