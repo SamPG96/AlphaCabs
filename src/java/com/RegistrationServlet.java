@@ -5,26 +5,29 @@
  */
 package com;
 
-import com.AlphacabListener;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.servlet.http.HttpSession;
+import model.CustomerManager;
 import model.Jdbc;
-import model.UserManager;
+import model.UserManagement;
 import model.tableclasses.User;
-
 
 /**
  *
- * @author Sam,Jake
+ * @author jakec
  */
-public class LoginServlet extends HttpServlet {
+//TO DO:
+// Take first and last names from booking servlet then create username
+// Pass Username and Password onto model
+// 
+public class RegistrationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -53,7 +56,6 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-
     }
 
     /**
@@ -69,7 +71,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        ServletContext sc = request.getServletContext();
+                ServletContext sc = request.getServletContext();
         
         // Go straight to an error page if their where problems connecting to
         // the DB.
@@ -80,44 +82,53 @@ public class LoginServlet extends HttpServlet {
         // Connect Jdbc to the DB
         Jdbc dbBean = new Jdbc();
         dbBean.connect((Connection)sc.getAttribute("connection"));
-        
-        // Attempt to login the user, -1 is returned if the password or
-        // username is inccorect  
-        long loggedInUserID = UserManager.loginUser(
-                request.getParameter("username"),
+         // Values from Booking.jsp
+        long customerID = CustomerManager.addNewCustomer (
+                request.getParameter("firstname"), //whatever alex has named them
+                request.getParameter("lastname"),
+                request.getParameter("address"),
                 request.getParameter("password"),
+                request.getParameter("passwordConfirm"),
                 dbBean);
-
-        // Handle result of login attempt
-        if (loggedInUserID == -1) {
-            // Login failure!
-            String message = "Incorrect username or password, try again";
+            //TO DO: use error var
+        if (customerID == -10) {
+            // Firstname not entered
+            String message = "Firstname not entered. Please try again";
             request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
 
-        } else {
-            // Login success!
-            User user = UserManager.getUser(loggedInUserID, dbBean);
-
-            // Create a new session
-            HttpSession session = request.getSession();
-            session.setAttribute("userID", loggedInUserID);
-            session.setAttribute("dbbean", dbBean);
-            session.setAttribute("userType", user.getUserType());
-            
-            request.getRequestDispatcher("index.jsp").forward(
-                         request, response);
-            // Move to the page associated with the user type
+        } else if (customerID == -11){
+            // lastname not entered
+            String message = "Lastname not entered. Please try again";
+            request.setAttribute("errMsg", message + "</br>");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+        } else if (customerID == -12){
+            // Address not entered
+            String message = "Address not entered. Please try again";
+            request.setAttribute("errMsg", message + "</br>");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+        } else if (customerID == -13){
+            // passwords do not match
+            String message = "passwords do not match. Please try again";
+            request.setAttribute("errMsg", message + "</br>");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
         }
+        else {
+            // Registration success!
+            String username = UserManager.generateUsername();
+            request.getParameter("Username", username);
+            request.getRequestDispatcher("registerConfirmation.jsp").forward(request, response);
+
+        }
+        
     }
 
-
-/**
- * Returns a short description of the servlet.
- *
- * @return a String containing servlet description
- */
-@Override
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>

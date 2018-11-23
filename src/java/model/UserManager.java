@@ -200,7 +200,8 @@ public class UserManager {
 
         // Retrieve user information from the DB. Note ID is primary key so
         // their should only ever be one result.
-        userDBInfo = jdbc.retrieve(TABLE_NAME_USERS, userID).get(0);
+        ArrayList<HashMap<String, String>> results = jdbc.retrieve(TABLE_NAME_USERS, userID);
+        userDBInfo = results.get(0);
 
         // Identify the name of the user type for user
         userTypeOpts = jdbc.retrieve(TABLE_NAME_USERTYPE);
