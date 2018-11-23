@@ -106,29 +106,30 @@ public class BookingFormServlet extends HttpServlet {
             // Handle result of login attempt
             //check for errors from booking manager
             if (booking == null) {
-                String message;
+                String message = "Oops! - ";
+                
                 //error with booking information
                 switch (bookingMan.getError()) {
                     case ERR_CUST_NULL:
-                        message = "Customer not given";
+                        message +=  "Customer not given";
                         break;
                     case ERR_SRC_HOME_NULL:
-                        message = "Source  not given";
+                        message += "Source  not given";
                         break;
                     case ERR_SRC_ADDR_NULL:
-                        message = "Source Address not given";
+                        message += "Source Address not given";
                         break;
                     case ERR_DEST_ADDR_NULL:
-                        message = "Destination Address not given";
+                        message += "Destination Address not given";
                         break;
                     case ERR_N_PAS_NULL:
-                        message = "Passengers not given";
+                        message += "Passengers not given";
                         break;
                     case ERR_DEP_TIME_NULL:
-                        message = "Departure Time not given";
+                        message += "Departure Time not given";
                         break;
                     default:
-                        message = "booking form error";
+                        message += "booking form error";
                         break;
                 }
 
