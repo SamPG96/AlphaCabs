@@ -6,6 +6,8 @@
 package model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import model.tableclasses.Booking;
 import model.tableclasses.GenericItem;
 import model.tableclasses.Customer;
@@ -40,31 +42,31 @@ public class BookingManager {
             return null;
         }
 
-        if (isSourceSameAsHome == null) {
+        if (isSourceSameAsHome == null || isSourceSameAsHome.isEmpty()) {
             this.error = ERR_SRC_HOME_NULL;
             return null;
         } else {
             isSSAH = Boolean.parseBoolean(isSourceSameAsHome);
         }
 
-        if (sourceAddress == null) {
+        if (sourceAddress == null || sourceAddress.isEmpty()) {
             this.error = ERR_SRC_ADDR_NULL;
             return null;
         }
 
-        if (destinationAddress == null) {
+        if (destinationAddress == null || destinationAddress.isEmpty()) {
             this.error = ERR_DEST_ADDR_NULL;
             return null;
         }
 
-        if (numOfPassengers == null) {
+        if (numOfPassengers == null || numOfPassengers.isEmpty()) {
             this.error = ERR_N_PAS_NULL;
             return null;
         } else {
             nPassengers = Integer.parseInt(numOfPassengers);
         }
 
-        if (departureTime == null) {
+        if (departureTime == null || departureTime.isEmpty()) {
             this.error = ERR_DEP_TIME_NULL;
             return null;
         } else {
@@ -120,6 +122,15 @@ public class BookingManager {
                 nPassengers, new Timestamp(System.currentTimeMillis()),
                 depTime, bookingStatus);
     }
+    
+    public static Booking[] getAllBookings(Jdbc jdbc){
+        ArrayList<HashMap<String, String>> bookingsMap = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
+        Booking[] bookingsArr = new Booking[bookingsMap.size()];
+        
+        //Map bookingsMaps to BookingsArr
+        
+        return bookingsArr;
+    } 
 
     private double calcDistanceKM(String source, String dest) {
         //TODO with Google Maps API
