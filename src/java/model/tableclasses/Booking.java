@@ -27,6 +27,24 @@ public class Booking {
 
     public Booking() {
     }
+
+    public Booking(long id, Customer customer, Driver driver, 
+            String sourceAddress, String destinationAddress, 
+            int numOfPassengers, double distanceKM, Timestamp timeBooked, 
+            Timestamp departureTime, Timestamp arrivalTime, 
+            GenericItem bookingStatus) {
+        this.id = id;
+        this.customer = customer;
+        this.driver = driver;
+        this.sourceAddress = sourceAddress;
+        this.destinationAddress = destinationAddress;
+        this.numOfPassengers = numOfPassengers;
+        this.distanceKM = distanceKM;
+        this.timeBooked = timeBooked;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.bookingStatus = bookingStatus;
+    }
     
     public Booking(long id, Customer customer, String sourceAddress, 
             String destinationAddress, int numOfPassengers, 
@@ -47,6 +65,18 @@ public class Booking {
             Timestamp timeBooked, Timestamp departureTime, 
             GenericItem bookingStatus) {
         this.customer = customer;
+        this.sourceAddress = sourceAddress;
+        this.destinationAddress = destinationAddress;
+        this.numOfPassengers = numOfPassengers;
+        this.timeBooked = timeBooked;
+        this.departureTime = departureTime;
+        this.bookingStatus = bookingStatus;
+    }
+    
+    public Booking(String sourceAddress, 
+            String destinationAddress, int numOfPassengers, 
+            Timestamp timeBooked, Timestamp departureTime, 
+            GenericItem bookingStatus) {
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.numOfPassengers = numOfPassengers;

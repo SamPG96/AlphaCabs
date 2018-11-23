@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import model.tableclasses.Customer;
 import model.tableclasses.GenericItem;
 
@@ -13,24 +15,19 @@ import model.tableclasses.GenericItem;
  * @author Sam
  */
 public class CustomerManager {
-    static int noCustomerFirstNameErrCode = -10;
-    static int noCustomerLastNameErrCode = -11;
-    static int noCustomerAddressErrCode = -12;
-    static int passwordsDontMatchErrCode = -13;
+    public static int noCustomerFirstNameErrCode = -10;
+    public static int noCustomerLastNameErrCode = -11;
+    public static int noCustomerAddressErrCode = -12;
     /*
      * Creates a new customer entry in the database and generates them a user
      * account.
      */
     public static long addNewCustomer(String firstName, String lastName,
-            String address, String password, String passwordConfirm, Jdbc jdbc){
+            String address, Jdbc jdbc){
         Customer customer;
         long customerId;
-        long userId;
-        long newUserErr;
         
-        // Check parameters for a new customer and user account. Note a method
-        // in UserManager is used for validating parameters for a new user
-        // account.
+        // Check parameters for a new customer.
         if (firstName.isEmpty()){
             return noCustomerFirstNameErrCode;
         }
@@ -39,15 +36,7 @@ public class CustomerManager {
         }
         else if (address.isEmpty()){
             return noCustomerAddressErrCode;
-        }
-        else if (password.equals(passwordConfirm) == false){
-            return passwordsDontMatchErrCode;
-        }        
-        newUserErr = UserManager.validateNewUserAttribs(firstName, lastName,
-                password);
-        if (newUserErr < 0){
-            return newUserErr;
-        }
+        }     
         
         // All parameters are valid if this point is reached.
         
@@ -56,20 +45,31 @@ public class CustomerManager {
         customerId = jdbc.insert(customer);
         customer.setId(customerId);
         
-        // Create a user account for the customer. But by default it is
-        // deactivated until an admin can approve it.
-        userId = UserManager.newCustomerUser(password, customer,
-                    new GenericItem(1, "Unappoved"), jdbc);        
+        return customerId;
+    }
+    
+    /*
+    * Returns a customer record for a given customer ID in the form of a
+    * customer object.
+    */
+    public static Customer getCustomer(long customerID, Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        HashMap<String, String> customerRecord;
         
-        if (userId < 0){
-            // Something unexpected has happend whilst creating a user account
-            // and may of corrupted the DB as a result, so raise an exception.
-            // The use and handling of the UserManager validation method earlier
-            // in this method should prevent such a thing from happening.
-            throw new RuntimeException("failed to create user account for "+
-                                       "customer, error: " + userId);
+        results = jdbc.retrieve(Customer.TABLE_NAME_CUSTOMERS, customerID);
+        
+        if (results.isEmpty()){
+            // No record was found with customer ID
+            return null;
         }
         
-        return customerId;
+        // We are retriving by ID so their should only be one item in the
+        // array list.
+        customerRecord = results.get(0);
+        
+        return new Customer(customerID,
+                            customerRecord.get("FIRSTNAME"),
+                            customerRecord.get("LASTNAME"),
+                            customerRecord.get("ADDRESS"));
     }
 }

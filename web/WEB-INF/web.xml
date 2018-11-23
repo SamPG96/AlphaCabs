@@ -28,6 +28,26 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BookingFormServlet</servlet-name>
+        <servlet-class>com.BookingFormServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <servlet-class>com.RegistrationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminApproveCustomer</servlet-name>
+        <servlet-class>com.AdminDashCustomerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminDashBookingsServlet</servlet-name>
+        <servlet-class>com.AdminDashBookingsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.LogoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserServLet</servlet-name>
         <url-pattern>/UserService.do</url-pattern>
@@ -43,6 +63,22 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegistrationServlet</servlet-name>
+        <url-pattern>/RegistrationServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashBookingsServlet</servlet-name>
+        <url-pattern>/AdminDashBookingsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingFormServlet</servlet-name>
+        <url-pattern>/BookingFormServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

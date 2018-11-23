@@ -57,16 +57,6 @@ public class Jdbc {
     * Sets the ReturnSet to the rows in the DB that meet criteria
     * specified in the param.
      */
-    private void select(String tableName, long id) {
-        String query = "SELECT * FROM " + tableName + " WHERE ID = " + id + "";
-
-        this.executeSelect(query);
-    }
-
-    /*
-    * Sets the ReturnSet to the rows in the DB that meet criteria
-    * specified in the param.
-     */
     private void select(String tableName, String colName, String value,
             boolean usePar) {
         String query;
@@ -114,7 +104,7 @@ public class Jdbc {
     public ArrayList<HashMap<String, String>> retrieve(String tableName, long id) {
 
         //GET Qualifiing Rows from DB
-        select(tableName, id);
+        select(tableName, "Id", String.valueOf(id), false);
 
         return this.processRetrieve();
     }

@@ -11,7 +11,6 @@ package model.tableclasses;
  */
 public class User {
     public static final String TABLE_NAME_USERS = "Users";
-    
     private long id;
     private String username;
     private String password;
@@ -21,16 +20,9 @@ public class User {
     private GenericItem userStatus;
 
     /*
-    * Constructor for creating a customer user representation where the User ID
-    * and username is not known yet.
+    * Empty constructor
     */
-    public User(String password, GenericItem userType, Customer customer,
-            GenericItem userStatus) {
-        this.password = password;
-        this.userType = userType;
-        this.customer = customer;
-        this.driver = null;
-        this.userStatus = userStatus;
+    public User() {
     }
     
     /*

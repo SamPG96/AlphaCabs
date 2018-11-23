@@ -4,12 +4,71 @@
     Author     : Alex, Sam
 --%>
 
+<%@page import="model.tableclasses.GenericItem"%>
+<%@page import="model.tableclasses.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>AlphaCabs</title>
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
-    <jsp:include page="login.jsp"/>
+    <jsp:include page="/common/head.jsp"/>
+     
+        <div class="main">
+            
+            
+            
+            <%
+        try {
+            if(session != null && session.getAttribute("userID") != null)  {
+                
+           GenericItem userType = (GenericItem)session.getAttribute("userType");
+            
+           if(userType.getId() == 1){
+
+            %>
+            <%@include file="loginAdmin.jsp"%>
+            <%
+            }
+           if(userType.getId() == 2){ 
+            %>
+            <%@include file="loginDriver.jsp"%>
+            <%
+            }
+            if(userType.getId() == 4){ 
+            %>
+            <%@include file="loginCustomer.jsp"%>
+            <%
+            }
+              
+            } else {
+    %>
+            
+           
+            
+        <jsp:include page="booking.jsp"/>
+           
+        
+        
+       
+            
+            
+            <%
+       
+            }
+        } catch (Exception e) {
+
+        }
+    %>
+            
+            
+         
+        
+        
+        
+        </div>
+    <jsp:include page="/common/foot.jsp"/>
+    
 </html>
