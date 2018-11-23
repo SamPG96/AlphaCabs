@@ -92,8 +92,9 @@ public class BookingFormServlet extends HttpServlet {
         
         //Already logged in.
         if (session != null && session.getAttribute("userID") != null) {
-            Jdbc jdbc = (Jdbc)session.getAttribute("jdbc");
-            Customer customer = UserManager.getUser((long)session.getAttribute("userID"), jdbc).getCustomer();
+            Jdbc jdbc = (Jdbc)session.getAttribute("dbbean");
+            long userID = (long)session.getAttribute("userID");
+            Customer customer = UserManager.getUser(userID, jdbc).getCustomer();
         
             Booking booking = bookingMan.generateNewBooking(
                 customer,
@@ -133,9 +134,10 @@ public class BookingFormServlet extends HttpServlet {
                 }
             
             request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("Booking.jsp").forward(request, response);
+            request.getRequestDispatcher("booking.jsp").forward(request, response);
         } else{
             jdbc.insert(booking);
+            request.getRequestDispatcher("invoice.jsp").forward(request, response);
         }
         
         }
