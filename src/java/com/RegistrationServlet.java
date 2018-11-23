@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.CustomerManager;
 import model.Jdbc;
 import model.UserManagement;
 import model.tableclasses.User;
@@ -82,31 +83,31 @@ public class RegistrationServlet extends HttpServlet {
         Jdbc dbBean = new Jdbc();
         dbBean.connect((Connection)sc.getAttribute("connection"));
          // Values from Booking.jsp
-        long errorCodes = CustomerManager.addNewCustomer (
+        long customerID = CustomerManager.addNewCustomer (
                 request.getParameter("firstname"), //whatever alex has named them
                 request.getParameter("lastname"),
                 request.getParameter("address"),
                 request.getParameter("password"),
                 request.getParameter("passwordConfirm"),
                 dbBean);
-
-        if (errorCodes == -10) {
+            //TO DO: use error var
+        if (customerID == -10) {
             // Firstname not entered
             String message = "Firstname not entered. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
 
-        } else if (errorCodes == -11){
+        } else if (customerID == -11){
             // lastname not entered
             String message = "Lastname not entered. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else if (errorCodes == -12){
+        } else if (customerID == -12){
             // Address not entered
             String message = "Address not entered. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else if (errorCodes == -13){
+        } else if (customerID == -13){
             // passwords do not match
             String message = "passwords do not match. Please try again";
             request.setAttribute("errMsg", message + "</br>");
