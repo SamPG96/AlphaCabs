@@ -11,6 +11,7 @@ import java.util.HashMap;
 import model.tableclasses.Booking;
 import model.tableclasses.GenericItem;
 import model.tableclasses.Customer;
+import model.tableclasses.Driver;
 
 /**
  *
@@ -92,24 +93,24 @@ public class BookingManager {
         Timestamp depTime;
         GenericItem bookingStatus;
 
-        if (sourceAddress == null) {
+        if (sourceAddress == null || sourceAddress.isEmpty()) {
             this.error = ERR_SRC_ADDR_NULL;
             return null;
         }
 
-        if (destinationAddress == null) {
+        if (destinationAddress == null || destinationAddress.isEmpty()) {
             this.error = ERR_DEST_ADDR_NULL;
             return null;
         }
 
-        if (numOfPassengers == null) {
+        if (numOfPassengers == null || numOfPassengers.isEmpty()) {
             this.error = ERR_N_PAS_NULL;
             return null;
         } else {
             nPassengers = Integer.parseInt(numOfPassengers);
         }
 
-        if (departureTime == null) {
+        if (departureTime == null || departureTime.isEmpty()) {
             this.error = ERR_DEP_TIME_NULL;
             return null;
         } else {
@@ -122,15 +123,41 @@ public class BookingManager {
                 nPassengers, new Timestamp(System.currentTimeMillis()),
                 depTime, bookingStatus);
     }
-    
-    public static Booking[] getAllBookings(Jdbc jdbc){
-        ArrayList<HashMap<String, String>> bookingsMap = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
-        Booking[] bookingsArr = new Booking[bookingsMap.size()];
-        
+
+    public static Booking[] getAllBookings(Jdbc jdbc) {
+        ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
+        Booking[] bookingsArr = new Booking[bookingsMaps.size()];
+
         //Map bookingsMaps to BookingsArr
-        
+        int i = 0;
+        Customer customer;
+        Driver driver;
+        GenericItem bookingStatus;
+        for (HashMap<String, String> map : bookingsMaps) {
+            customer = CustomerManager.getCustomer(
+                    Long.parseLong(map.get("CUSTOMERID")), jdbc);
+            
+            driver = DriverManager.getDriver(
+                    Long.parseLong(map.get("DRIVERID")), jdbc);
+            
+            bookingStatus = new GenericItem(
+                    Integer.parseInt(map.get("BOOKINGSTATUS")));
+            
+            bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),
+                    customer,
+                    driver,
+                    map.get("SOURCEADDRESS"),
+                    map.get("DESTINATIONADDRESS"),
+                    Integer.parseInt(map.get("NUMOFPASSENGERS")),
+                    Double.parseDouble(map.get("DISTANCEKM")),
+                    Timestamp.valueOf(map.get("TIMEBOOKED")),
+                    Timestamp.valueOf(map.get("DEPARTURETIME")),
+                    Timestamp.valueOf(map.get("ARRIVALTIME")),
+                    bookingStatus);
+        }
+
         return bookingsArr;
-    } 
+    }
 
     private double calcDistanceKM(String source, String dest) {
         //TODO with Google Maps API
