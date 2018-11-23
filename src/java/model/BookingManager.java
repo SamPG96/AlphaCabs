@@ -92,24 +92,24 @@ public class BookingManager {
         Timestamp depTime;
         GenericItem bookingStatus;
 
-        if (sourceAddress == null) {
+        if (sourceAddress == null || sourceAddress.isEmpty()) {
             this.error = ERR_SRC_ADDR_NULL;
             return null;
         }
 
-        if (destinationAddress == null) {
+        if (destinationAddress == null || destinationAddress.isEmpty()) {
             this.error = ERR_DEST_ADDR_NULL;
             return null;
         }
 
-        if (numOfPassengers == null) {
+        if (numOfPassengers == null || numOfPassengers.isEmpty()) {
             this.error = ERR_N_PAS_NULL;
             return null;
         } else {
             nPassengers = Integer.parseInt(numOfPassengers);
         }
 
-        if (departureTime == null) {
+        if (departureTime == null || departureTime.isEmpty()) {
             this.error = ERR_DEP_TIME_NULL;
             return null;
         } else {
