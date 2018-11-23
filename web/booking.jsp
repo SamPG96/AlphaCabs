@@ -23,24 +23,24 @@
             
             
             <center><form method="POST" action="BookingFormServlet.do">
-            <table>
-                <tr>
-                    <td>Source:</td><td></td><td>Destination</td>
-                </tr>
-                <tr>
-                    <td><input type="text" name="source"/></td><td></td><td><input type="text" name="destination"/></td>
-                </tr>
-                <tr>
-                    <td>Date:</td><td>Time:</td><td>Passengers:</td>
-                </tr><tr>
-                    <td><input type="date" name="date"/></td><td><input type="time" name="time"/></td><td><input type="value" name="passengers"/></td>
-                </tr><tr>
-                    <td></td><td><input type="submit" value="Submit"/></td><td></td>
-                </tr>
-                
-            </table>
-                </form>
-                <%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%>
+                <table>
+                    <tr>
+                        <td>Source:</td><td></td><td>Destination</td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="source"/></td><td></td><td><input type="text" name="destination"/></td>
+                    </tr>
+                    <tr>
+                        <td>Date:</td><td>Time:</td><td>Passengers:</td>
+                    </tr><tr>
+                        <td><input type="date" name="date"/></td><td><input type="time" name="time"/></td><td><input type="value" name="passengers"/></td>
+                    </tr><tr>
+                        <td></td><td><input type="submit" value="Submit"/></td><td></td>
+                    </tr>
+
+                </table>
+            </form>
+            <div class="errMessage"><%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%></div>
             </center>
                             
                 
