@@ -11,19 +11,19 @@ import java.util.HashMap;
 import model.tableclasses.Customer;
 import model.tableclasses.Driver;
 import model.tableclasses.GenericItem;
-import static model.tableclasses.User.userStatusTableName;
-import static model.tableclasses.User.userTableName;
-import static model.tableclasses.User.userTypesTableName;
+import static model.tableclasses.GenericItem.TABLE_NAME_USERSTATUS;
+import static model.tableclasses.GenericItem.TABLE_NAME_USERTYPE;
+import static model.tableclasses.User.TABLE_NAME_USERS;
 
 /**
  *
  * @author Sam
  */
 public class UserManager {
-    private static final long noFirstNameErrCode = -1;
-    private static final long noLastNameErrCode = -2;
-    private static final long noPasswordErrCode = -3;
-    private static final int passwordsDontMatchErrCode = -4;
+    public static final long noFirstNameErrCode = -1;
+    public static final long noLastNameErrCode = -2;
+    public static final long noPasswordErrCode = -3;
+    public static final int passwordsDontMatchErrCode = -4;
 
     /*
      * Creates a user account for a customer. The ID of the new user is returned
@@ -147,7 +147,7 @@ public class UserManager {
         ArrayList<HashMap<String, String>> results;
         
         // Query the DB for the existance of the username
-        results = jdbc.retrieve(userTableName, "USERNAME", username); 
+        results = jdbc.retrieve(TABLE_NAME_USERS, "USERNAME", username); 
         
         return results.isEmpty() == false;
     }
@@ -161,7 +161,7 @@ public class UserManager {
         HashMap<String, String> userDBInfo;
         
         // Retrieve user information from the DB
-        results = jdbc.retrieve(userTableName, "USERNAME", user);        
+        results = jdbc.retrieve(TABLE_NAME_USERS, "USERNAME", user);        
         
         // If no user was found with given username then return failure
         if (results.isEmpty()){
@@ -200,10 +200,11 @@ public class UserManager {
 
         // Retrieve user information from the DB. Note ID is primary key so
         // their should only ever be one result.
-        userDBInfo = jdbc.retrieve(userTableName, userID).get(0);
+        ArrayList<HashMap<String, String>> results = jdbc.retrieve(TABLE_NAME_USERS, userID);
+        userDBInfo = results.get(0);
 
         // Identify the name of the user type for user
-        userTypeOpts = jdbc.retrieve(userTypesTableName);
+        userTypeOpts = jdbc.retrieve(TABLE_NAME_USERTYPE);
         for (HashMap<String, String> row: userTypeOpts){
             if (row.get("ID").equals(userDBInfo.get("USERTYPEID"))){
                 userTypeName = row.get("USERTYPE");
@@ -211,7 +212,7 @@ public class UserManager {
         }
         
         // Identify the name of status set for the user
-        userStatusOpts = jdbc.retrieve(userStatusTableName);
+        userStatusOpts = jdbc.retrieve(TABLE_NAME_USERSTATUS);
          for (HashMap<String, String> row: userStatusOpts){
             if (row.get("ID").equals(userDBInfo.get("USERSTATUSID"))){
                 userStatusName = row.get("STATUS");
@@ -246,7 +247,7 @@ public class UserManager {
     public static String getUsernameForCustomer(long customerId, Jdbc jdbc){
         ArrayList<HashMap<String, String>> results;
         results = jdbc.retrieve(
-                userTableName,
+                TABLE_NAME_USERS,
                 "CUSTOMERID",
                 customerId);
         

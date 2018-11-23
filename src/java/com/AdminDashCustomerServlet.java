@@ -5,26 +5,23 @@
  */
 package com;
 
-import com.AlphacabListener;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Statement;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import javax.servlet.http.HttpSession;
-import model.Jdbc;
 import model.UserManager;
-import model.tableclasses.User;
-
+import model.Jdbc;
 
 /**
  *
- * @author Sam,Jake
+ * @author jakec
  */
-public class LoginServlet extends HttpServlet {
+public class AdminDashCustomerServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,6 +35,7 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -53,7 +51,6 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-
     }
 
     /**
@@ -69,7 +66,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-        ServletContext sc = request.getServletContext();
+         ServletContext sc = request.getServletContext();
         
         // Go straight to an error page if their where problems connecting to
         // the DB.
@@ -80,44 +77,31 @@ public class LoginServlet extends HttpServlet {
         // Connect Jdbc to the DB
         Jdbc dbBean = new Jdbc();
         dbBean.connect((Connection)sc.getAttribute("connection"));
+         // Values from Booking.jsp
         
-        // Attempt to login the user, -1 is returned if the password or
-        // username is inccorect  
-        long loggedInUserID = UserManager.loginUser(
-                request.getParameter("username"),
-                request.getParameter("password"),
+        if (request.getAttribute("buttonHit").equals("approve")) {
+          int CustomertoApprove = UserManager.approveUser(
+                request.getParameter("userId"),
                 dbBean);
-
-        // Handle result of login attempt
-        if (loggedInUserID == -1) {
-            // Login failure!
-            String message = "Incorrect username or password, try again";
-            request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-
-        } else {
-            // Login success!
-            User user = UserManager.getUser(loggedInUserID, dbBean);
-
-            // Create a new session
-            HttpSession session = request.getSession();
-            session.setAttribute("userID", loggedInUserID);
-            session.setAttribute("dbbean", dbBean);
-            session.setAttribute("userType", user.getUserType());
+          
+          request.getRequestDispatcher("AdminDashCustomer.jsp").forward(request, response);
+          
+        }else if (request.getAttribute("buttonHit").equals("edit")){
+            int CustomertoEdit = UserManager.editUser(
+                request.getParameter("userId"),
+                dbBean);
             
-            request.getRequestDispatcher("index.jsp").forward(
-                         request, response);
-            // Move to the page associated with the user type
+            request.getRequestDispatcher("EditCustomer.jsp").forward(request, response);
         }
+        
     }
 
-
-/**
- * Returns a short description of the servlet.
- *
- * @return a String containing servlet description
- */
-@Override
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>

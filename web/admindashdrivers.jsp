@@ -23,51 +23,31 @@
     </head>
     <body>
         
-        <table border="1">
-            <!--TOP ROW Column Headers-->
-            <tr>
-                <td>Forename</td>
-                <td>Surname</td>
-                <td>Registration</td>
-                <!--<td>Outstanding Status</td>-->
-            </tr>
-            
-            <!--Rows to be generated-->
-            <% //while (resultSet.next()) { %>
-            <tr>
-                <td><%= // %></td>
-                <td><%= // %></td>
-                <td><%= // %></td>              
-            </tr>
-            <% //} %>
-            
-        </table>        
         
-        <!--
         
         <input type="radio" name="select"/>
-        <% //out.println("DISPLAY DRIVER HERE - row 1");%>
+        <% out.println("DISPLAY DRIVER HERE - row 1");%>
 
         <br><input type="radio" name="select"/>
-        <% //out.println("DISPLAY DRIVER HERE - row 2");%>
+        <% out.println("DISPLAY DRIVER HERE - row 2");%>
 
         <br><input type="radio" name="select"/>
-        <% //out.println("DISPLAY DRIVER HERE - row 3");%>
+        <% out.println("DISPLAY DRIVER HERE - row 3");%>
 
         <br><input type="radio" name="select"/>
-        <% //out.println("DISPLAY DRIVER HERE - row 4");%>
+        <% out.println("DISPLAY DRIVER HERE - row 4");%>
         
         <br><input type="radio" name="select"/>
-        <% //out.println("etc.");%>
+        <% out.println("etc.");%>
 
         <br><input type="submit" value="Create New Driver" name="newDriver"/>
         <input type="submit" value="Change Details" name="detailsChange"/>
         
         <form method="POST" action="AdminDashDriversServlet.do"></form>
 
-        -->
         
-        <jsp:include page="foot.jsp"/>
+        
+    <jsp:include page="/common/foot.jsp"/>
 
     </body>
 </html>

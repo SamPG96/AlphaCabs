@@ -26,33 +26,16 @@
     </head>
     <body>
         
-        <table border="1">
-            <!--TOP ROW Column Headers-->
-            <tr>
-                <td>Source Address</td>
-                <td>Destination Address</td>
-                <td>Distance (KM)</td>
-                <td>Time Booked</td>
-                <td>Number of Passengers</td>
-                <td>Booking Status</td>
-                <!--<td>Outstanding Status</td>-->
-            </tr>
-            
-            <!--Rows to be generated-->
-            <% //while (resultSet.next()) { %>
-            <tr>
-                <td><%= // %></td>
-                <td><%= // %></td>
-                <td><%= // %></td>
-                <td><%= // %></td>
-                <td><%= // %></td>
-                <td><%= // %></td>                
-            </tr>
-            <% //} %>
-            
-        </table>
-        
         <form action="admindashbookings.jsp">
+           <%
+            // FOR ALEX!!!
+            // ArrayList<Booking> allBookings = BookingManager.getAllBookings(jdbc);
+            //for (Booking booking: allBookings){
+            //   booking.getSourceAddress();
+            //   booking.getDestinationAddress();
+            // }
+           
+           %>
             <!-- TODO The drop down list should appear for the first booking in the list (least recent),
             and give a list of drivers that can be assigned to that job-->
             <% out.println("DISPLAY LIST OF BOOKINGS"); %>
@@ -69,7 +52,7 @@
 
             <form method="POST" action="AdminDashBookingsServlet.do">
 
-        <jsp:include page="foot.jsp"/>
+    <jsp:include page="/common/foot.jsp"/>
 
     </body>
 </html>

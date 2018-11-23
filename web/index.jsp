@@ -23,25 +23,23 @@
             <%
         try {
             if(session != null && session.getAttribute("userID") != null)  {
-
                 
            GenericItem userType = (GenericItem)session.getAttribute("userType");
             
-           if(userType.getId() == 1){            
+           if(userType.getId() == 1){
 
             %>
-            <jsp:include page="loginAdmin.jsp"/>
+            <%@include file="loginAdmin.jsp"%>
             <%
             }
-            
            if(userType.getId() == 2){ 
             %>
-            <jsp:include page="loginDriver.jsp"/>
+            <%@include file="loginDriver.jsp"%>
             <%
             }
             if(userType.getId() == 4){ 
             %>
-            <jsp:include page="loginCustomer.jsp"/>
+            <%@include file="loginCustomer.jsp"%>
             <%
             }
               
