@@ -74,40 +74,39 @@ public class BookingFormServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
+
         ServletContext sc = request.getServletContext();
-        
+
         BookingManager bookingMan = new BookingManager();
-        
+
         // Go straight to an error page if their where problems connecting to
         // the DB.
-       // if (sc.getAttribute("dBConnectionError") != null){
+        // if (sc.getAttribute("dBConnectionError") != null){
         //    request.getRequestDispatcher("conErr.jsp").forward(request, response);
         //}
-        
         // Connect Jdbc to the DB
         //Jdbc dbBean = new Jdbc();
         //dbBean.connect((Connection)sc.getAttribute("connection"));
         HttpSession session = request.getSession(false);
-        
+
         //Already logged in.
         if (session != null && session.getAttribute("userID") != null) {
-            Jdbc jdbc = (Jdbc)session.getAttribute("dbbean");
-            long userID = (long)session.getAttribute("userID");
-            Customer customer = UserManager.getUser(userID, jdbc).getCustomer();
-        
+            Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+            long userID = (long) session.getAttribute("userID");
+            Customer customer = UserManager.getUser(userID, jdbc).getCustomer();            
+                
             Booking booking = bookingMan.generateNewBooking(
-                customer,
-                request.getParameter("source"),
-                request.getParameter("destination"),
-                request.getParameter("date"),
-                request.getParameter("time"),
-                request.getParameter("passengers"));
+                    customer,
+                    "false", // TODO: add support for arg in JSP
+                    request.getParameter("source"),
+                    request.getParameter("destination"),
+                    request.getParameter("passengers"),
+                    request.getParameter("time"));
 
-        // Handle result of login attempt
-        //check for errors from booking manager
-        if (booking == null) {
-            String message;
+            // Handle result of login attempt
+            //check for errors from booking manager
+            if (booking == null) {
+                String message;
                 //error with booking information
                 switch (bookingMan.getError()) {
                     case ERR_CUST_NULL:
@@ -132,16 +131,15 @@ public class BookingFormServlet extends HttpServlet {
                         message = "booking form error";
                         break;
                 }
-            
-            request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-        } else{
-            jdbc.insert(booking);
-            request.getRequestDispatcher("invoice.jsp").forward(request, response);
+
+                request.setAttribute("errMsg", message + "</br>");
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            } else {
+                jdbc.insert(booking);
+                request.getRequestDispatcher("invoice.jsp").forward(request, response);
+            }
         }
-        
-        }
-        
+
     }
 
     /**

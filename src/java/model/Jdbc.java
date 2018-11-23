@@ -319,7 +319,7 @@ public class Jdbc {
 
         try {
             ps = connection.prepareStatement(
-                    "INSERT INTO Bookings VALUES (?,?,?,?,?,?,?,?)",
+                    "INSERT INTO Bookings VALUES (?,?,?,?,?,?,?,?,?,?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write booking values to statement
