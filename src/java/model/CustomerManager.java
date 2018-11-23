@@ -56,7 +56,7 @@ public class CustomerManager {
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> customerRecord;
         
-        results = jdbc.retrieve(Customer.customerTable, customerID);
+        results = jdbc.retrieve(Customer.TABLE_NAME_CUSTOMERS, customerID);
         
         if (results.isEmpty()){
             // No record was found with customer ID

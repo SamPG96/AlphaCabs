@@ -56,7 +56,7 @@ public class DriverManager {
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> driverRecord;
         
-        results = jdbc.retrieve(Driver.driverTable, driverID);
+        results = jdbc.retrieve(Driver.TABLE_NAME_DRIVERS, driverID);
         
         if (results.isEmpty()){
             // No record was found with driver ID
