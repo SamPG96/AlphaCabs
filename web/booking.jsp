@@ -39,7 +39,9 @@
                 </tr>
                 
             </table>
-                </form></center>
+                </form>
+                <%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%>
+            </center>
                             
                 
         </div>
