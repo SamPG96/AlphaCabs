@@ -14,10 +14,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Jdbc;
-import model.UserManagement;
-import model.tableclasses.User;
 import model.BookingManager;
+import static model.BookingManager.ERR_CUST_NULL;
+import static model.BookingManager.ERR_SRC_HOME_NULL;
+import static model.BookingManager.ERR_SRC_ADDR_NULL;
+import static model.BookingManager.ERR_DEST_ADDR_NULL;
+import static model.BookingManager.ERR_N_PAS_NULL;
+import static model.BookingManager.ERR_DEP_TIME_NULL;
+
+import model.Jdbc;
+import model.UserManager;
+import model.tableclasses.Booking;
+import model.tableclasses.Customer;
+import model.tableclasses.User;
 
 /**
  *
@@ -68,6 +77,8 @@ public class BookingFormServlet extends HttpServlet {
         
         ServletContext sc = request.getServletContext();
         
+        BookingManager bookingMan = new BookingManager();
+        
         // Go straight to an error page if their where problems connecting to
         // the DB.
        // if (sc.getAttribute("dBConnectionError") != null){
@@ -79,40 +90,54 @@ public class BookingFormServlet extends HttpServlet {
         //dbBean.connect((Connection)sc.getAttribute("connection"));
         HttpSession session = request.getSession(false);
         
+        //Already logged in.
         if (session != null && session.getAttribute("userID") != null) {
             Jdbc jdbc = (Jdbc)session.getAttribute("jdbc");
-            Customer customer = UserManager.getUser(session.getAttribute("userID"), jdbc).getCustomer();
-            ERR_CUST_NULL;
-        }
-        // Values from Booking.jsp
-        Booking booking = BookingManager.generateNewBooking(
-                
+            Customer customer = UserManager.getUser((long)session.getAttribute("userID"), jdbc).getCustomer();
+        
+            Booking booking = bookingMan.generateNewBooking(
+                customer,
                 request.getParameter("source"),
                 request.getParameter("destination"),
-                request.getParameter("Date Booked"),
+                request.getParameter("date"),
+                request.getParameter("time"),
                 request.getParameter("passengers"));
 
         // Handle result of login attempt
         //check for errors from booking manager
-        if (booking == -1) {
-            //Booking incomplete
-            String message = "form incomplete. Please try again";
+        if (booking == null) {
+            String message;
+                //error with booking information
+                switch (bookingMan.getError()) {
+                    case ERR_CUST_NULL:
+                        message = "Customer not given";
+                        break;
+                    case ERR_SRC_HOME_NULL:
+                        message = "Source home not given";
+                        break;
+                    case ERR_SRC_ADDR_NULL:
+                        message = "Source Address not given";
+                        break;
+                    case ERR_DEST_ADDR_NULL:
+                        message = "Destination Address not given";
+                        break;
+                    case ERR_N_PAS_NULL:
+                        message = "Passengers not given";
+                        break;
+                    case ERR_DEP_TIME_NULL:
+                        message = "Departure Time not given";
+                        break;
+                    default:
+                        message = "booking form error";
+                        break;
+                }
+            
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("Booking.jsp").forward(request, response);
-
-        } else {
-               HttpSession session = request.getSession(false);
-               request.setAttribute("booking", booking);
-               
-            if (session != null && session.getAttribute("userID") != null)  {
-                //User Logged in
-                //publish booking to DB
-                request.getRequestDispatcher("Invoice.jsp").forward(request, response);
-            } else {
-                //User not logged in
-                request.getRequestDispatcher("bookingIdentity.jsp").forward(request, response);
-            }
-
+        } else{
+            jdbc.insert(booking);
+        }
+        
         }
         
     }
