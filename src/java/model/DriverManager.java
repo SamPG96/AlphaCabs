@@ -7,7 +7,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import model.tableclasses.Customer;
 import model.tableclasses.Driver;
 
 
@@ -16,9 +15,9 @@ import model.tableclasses.Driver;
  * @author Sam
  */
 public class DriverManager {
-    static int noDriverFirstNameErrCode = -20;
-    static int noDriverLastNameErrCode = -21;
-    static int noDriverRegistrationErrCode = -22;
+    public static int noDriverFirstNameErrCode = -20;
+    public static int noDriverLastNameErrCode = -21;
+    public static int noDriverRegistrationErrCode = -22;
     
     /*
     * Add a new record driver to the DB
@@ -57,7 +56,7 @@ public class DriverManager {
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> driverRecord;
         
-        results = jdbc.retrieve(Driver.driverTable, driverID);
+        results = jdbc.retrieve(Driver.TABLE_NAME_DRIVERS, driverID);
         
         if (results.isEmpty()){
             // No record was found with driver ID

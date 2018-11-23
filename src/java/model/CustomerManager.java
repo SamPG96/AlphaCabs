@@ -15,9 +15,9 @@ import model.tableclasses.GenericItem;
  * @author Sam
  */
 public class CustomerManager {
-    static int noCustomerFirstNameErrCode = -10;
-    static int noCustomerLastNameErrCode = -11;
-    static int noCustomerAddressErrCode = -12;
+    public static int noCustomerFirstNameErrCode = -10;
+    public static int noCustomerLastNameErrCode = -11;
+    public static int noCustomerAddressErrCode = -12;
     /*
      * Creates a new customer entry in the database and generates them a user
      * account.
@@ -56,7 +56,7 @@ public class CustomerManager {
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> customerRecord;
         
-        results = jdbc.retrieve(Customer.customerTable, customerID);
+        results = jdbc.retrieve(Customer.TABLE_NAME_CUSTOMERS, customerID);
         
         if (results.isEmpty()){
             // No record was found with customer ID
