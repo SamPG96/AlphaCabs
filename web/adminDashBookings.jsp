@@ -26,7 +26,7 @@
     </head>
     <body>
         
-        <form action="admindashbookings.jsp">
+        <form action="adminDashBookings.jsp">
            <%
             // FOR ALEX!!!
             // ArrayList<Booking> allBookings = BookingManager.getAllBookings(jdbc);

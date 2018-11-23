@@ -29,17 +29,17 @@
            if(userType.getId() == 1){
 
             %>
-            <%@include file="loginAdmin.jsp"%>
+            <%@include file="adminDash.jsp"%>
             <%
             }
            if(userType.getId() == 2){ 
             %>
-            <%@include file="loginDriver.jsp"%>
+            <%@include file="driverDash.jsp"%>
             <%
             }
             if(userType.getId() == 4){ 
             %>
-            <%@include file="loginCustomer.jsp"%>
+            <%@include file="customerDash.jsp"%>
             <%
             }
               

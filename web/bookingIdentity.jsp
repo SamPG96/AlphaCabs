@@ -1,5 +1,5 @@
 <%-- 
-    Document   : bookingidentity
+    Document   : bookingIdentity
     Created on : 21-Nov-2018, 01:21:37
     Author     : yuugy
 --%>

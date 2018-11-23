@@ -66,7 +66,7 @@ and open the template in the editor.
         
         <div id="Bookings" class="tabcontent">
             <h3>Assign Drivers to Bookings</h3>
-            <p><//%@include file='admindashbookings.jsp' %></p>
+            <p><//%@include file='adminDashBookings.jsp' %></p>
             <p>INPUT JSP FILE HERE</p>
         </div>
         
@@ -169,13 +169,13 @@ and open the template in the editor.
         
         <div id="Drivers" class="tabcontent">
             <h3>Manage Drivers</h3>
-            <jsp:include page="admindashdrivers.jsp"/>
+            <jsp:include page="adminDashDrivers.jsp"/>
             <p>INPUT JSP FILE HERE - For viewing drivers</p>
         </div>
 
         <div id="Bookings" class="tabcontent">
             <h3>Assign Drivers to Bookings</h3>
-            <p><%@include file='admindashbookings.jsp' %></p>
+            <p><%@include file='adminDashBookings.jsp' %></p>
             <p>INPUT JSP FILE HERE - For assigning drivers to bookings</p>
         </div>
 
