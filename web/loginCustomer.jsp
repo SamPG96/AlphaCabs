@@ -50,7 +50,7 @@ and open the template in the editor.
         <h1>CUSTOMER Dashboard</h1>
         
         <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'Booking')">Booking</button>
+            <button class="tablinks" onclick="openTab(event, 'Booking')" id="bookingTab">Booking</button>
             <button class="tablinks" onclick="openTab(event, 'Details')">Edit Details</button>
         </div>
         
@@ -77,7 +77,9 @@ and open the template in the editor.
                 }
                 document.getElementById(option).style.display = "block";
                 evt.currentTarget.className += " active";
-            }            
+            }
+            // Open booking tab by default
+            document.getElementById("bookingTab").click();
         </script>
 			
     </body>
