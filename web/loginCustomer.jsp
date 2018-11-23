@@ -53,7 +53,7 @@ and open the template in the editor.
         
         <div id="Booking" class="tabcontent">
             <h3>Make a Booking</h3>
-            <p>INPUT JSP FILE HERE - Make a Booking here</p>
+            <jsp:include page="booking.jsp"/>
         </div>
         
         <div id="Details" class="tabcontent">
