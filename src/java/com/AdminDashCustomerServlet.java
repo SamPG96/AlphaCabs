@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.UserManager;
 import model.Jdbc;
 
 /**
@@ -50,14 +51,6 @@ public class AdminDashCustomerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-        response.setContentType("text/html");
-        PrintWriter pw = response.getWriter();
-        Connection conn = null;
-        Statement st=null;
-        
-        
-        String url = "jdbc:mysql//localhost:8080/"
     }
 
     /**
@@ -85,14 +78,21 @@ public class AdminDashCustomerServlet extends HttpServlet {
         Jdbc dbBean = new Jdbc();
         dbBean.connect((Connection)sc.getAttribute("connection"));
          // Values from Booking.jsp
-        int CustomertoApprove = CustomerManager.approveCustomer(
-                request.getParameter("customerID"),
-                request.getParameter("approveBT"), //whatever alex has named these
-                dbBean);
         
-        //GET ID from the JSP??
-        //Give ID to model.
-        //
+        if (request.getAttribute("buttonHit").equals("approve")) {
+          int CustomertoApprove = UserManager.approveUser(
+                request.getParameter("userId"),
+                dbBean);
+          
+          request.getRequestDispatcher("AdminDashCustomer.jsp").forward(request, response);
+          
+        }else if (request.getAttribute("buttonHit").equals("edit")){
+            int CustomertoEdit = UserManager.editUser(
+                request.getParameter("userId"),
+                dbBean);
+            
+            request.getRequestDispatcher("EditCustomer.jsp").forward(request, response);
+        }
         
     }
 
