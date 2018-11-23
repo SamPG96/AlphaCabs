@@ -47,7 +47,7 @@
 
         
         
-        <jsp:include page="foot.jsp"/>
+    <jsp:include page="/common/foot.jsp"/>
 
     </body>
 </html>

@@ -8,6 +8,8 @@ and open the template in the editor.
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Customer Dashboard</title>
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
+        
         
         <style>
             .tab {
@@ -40,6 +42,7 @@ and open the template in the editor.
                 border: 1px solid #ccc;
                 border-top: none;
             }            
+        
         </style>
         
     </head>
@@ -53,7 +56,7 @@ and open the template in the editor.
         
         <div id="Booking" class="tabcontent">
             <h3>Make a Booking</h3>
-            <p>INPUT JSP FILE HERE - Make a Booking here</p>
+            <jsp:include page="booking.jsp"/>
         </div>
         
         <div id="Details" class="tabcontent">
@@ -76,8 +79,6 @@ and open the template in the editor.
                 evt.currentTarget.className += " active";
             }            
         </script>
-        
-        <jsp:include page="foot.jsp"/>
 			
     </body>
     <jsp:include page="/common/foot.jsp"/>

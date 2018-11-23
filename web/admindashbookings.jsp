@@ -27,6 +27,15 @@
     <body>
         
         <form action="admindashbookings.jsp">
+           <%
+            // FOR ALEX!!!
+            // ArrayList<Booking> allBookings = BookingManager.getAllBookings(jdbc);
+            //for (Booking booking: allBookings){
+            //   booking.getSourceAddress();
+            //   booking.getDestinationAddress();
+            // }
+           
+           %>
             <!-- TODO The drop down list should appear for the first booking in the list (least recent),
             and give a list of drivers that can be assigned to that job-->
             <% out.println("DISPLAY LIST OF BOOKINGS"); %>
@@ -43,7 +52,7 @@
 
             <form method="POST" action="AdminDashBookingsServlet.do">
 
-        <jsp:include page="foot.jsp"/>
+    <jsp:include page="/common/foot.jsp"/>
 
     </body>
 </html>
