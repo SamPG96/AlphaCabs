@@ -19,6 +19,10 @@ public class GenericItem {
 
     public GenericItem() {
     }
+    
+    public GenericItem(long id) {
+        this.id = id;
+    }
 
     public GenericItem(long id, String name) {
         this.id = id;
