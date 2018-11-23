@@ -13,6 +13,7 @@
          <link rel="stylesheet" type="text/css" href="stylesheet.css">
         <title>Login</title>
     </head>
+    <jsp:include page="/common/head.jsp"/>
     
        <div class="main">
         <h2>Login:</h2>
