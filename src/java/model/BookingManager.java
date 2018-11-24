@@ -123,7 +123,7 @@ public class BookingManager {
                 depTimestamp, bookingStatus);
     }
 
-    public static Booking[] getAllBookings(Jdbc jdbc) {
+    public static Booking[] getBookings(Jdbc jdbc) {
         ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
         Booking[] bookingsArr = new Booking[bookingsMaps.size()];
 
@@ -158,6 +158,48 @@ public class BookingManager {
         return bookingsArr;
     }
 
+    public static Booking[] getBookings(Jdbc jdbc, int bookingStatusId) {
+        ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
+        Booking[] bookingsArr = new Booking[bookingsMaps.size()];
+
+        //Map bookingsMaps to BookingsArr
+        int i = 0;
+        Customer customer;
+        Driver driver;
+        GenericItem bookingStatus;
+        for (HashMap<String, String> map : bookingsMaps) {
+            
+            bookingStatus = new GenericItem(
+                    Integer.parseInt(map.get("BOOKINGSTATUS")));
+            
+            if(bookingStatus.getId() != bookingStatusId){
+                continue;
+            }
+            
+            customer = CustomerManager.getCustomer(
+                    Long.parseLong(map.get("CUSTOMERID")), jdbc);
+            
+            driver = DriverManager.getDriver(
+                    Long.parseLong(map.get("DRIVERID")), jdbc);
+            
+            
+            
+            bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),
+                    customer,
+                    driver,
+                    map.get("SOURCEADDRESS"),
+                    map.get("DESTINATIONADDRESS"),
+                    Integer.parseInt(map.get("NUMOFPASSENGERS")),
+                    Double.parseDouble(map.get("DISTANCEKM")),
+                    Timestamp.valueOf(map.get("TIMEBOOKED")),
+                    Timestamp.valueOf(map.get("DEPARTURETIME")),
+                    Timestamp.valueOf(map.get("ARRIVALTIME")),
+                    bookingStatus);
+        }
+
+        return bookingsArr;
+    }
+    
     private double calcDistanceKM(String source, String dest) {
         //TODO with Google Maps API
         return 0.0;
