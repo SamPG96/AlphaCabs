@@ -24,104 +24,103 @@ public class BookingManager {
             ERR_SRC_ADDR_NULL = -3,
             ERR_DEST_ADDR_NULL = -4,
             ERR_N_PAS_NULL = -5,
-            ERR_DEP_TIME_NULL = -6;
+            ERR_DEP_DATE_NULL = -6,
+            ERR_DEP_TIME_NULL = -7;
 
     private int error;
 
     public Booking generateNewBooking(Customer customer,
             String isSourceSameAsHome, String sourceAddress,
             String destinationAddress, String numOfPassengers,
-            String departureTime) {
+            String departureDate, String departureTime) {
 
-        boolean isSSAH;
-        int nPassengers;
-        Timestamp depTime;
-        GenericItem bookingStatus;
-
+        //SET appropriate error value and return null if a param is null or empty
         if (customer == null) {
             this.error = ERR_CUST_NULL;
             return null;
         }
-
         if (isSourceSameAsHome == null || isSourceSameAsHome.isEmpty()) {
             this.error = ERR_SRC_HOME_NULL;
             return null;
-        } else {
-            isSSAH = Boolean.parseBoolean(isSourceSameAsHome);
         }
-
         if (sourceAddress == null || sourceAddress.isEmpty()) {
             this.error = ERR_SRC_ADDR_NULL;
             return null;
         }
-
         if (destinationAddress == null || destinationAddress.isEmpty()) {
             this.error = ERR_DEST_ADDR_NULL;
             return null;
         }
-
         if (numOfPassengers == null || numOfPassengers.isEmpty()) {
             this.error = ERR_N_PAS_NULL;
             return null;
-        } else {
-            nPassengers = Integer.parseInt(numOfPassengers);
         }
-
+        if (departureDate == null || departureDate.isEmpty()) {
+            this.error = ERR_DEP_DATE_NULL;
+            return null;
+        }
         if (departureTime == null || departureTime.isEmpty()) {
             this.error = ERR_DEP_TIME_NULL;
             return null;
-        } else {
-            depTime = Timestamp.valueOf(departureTime);
         }
-
+        
+        //Resolve if source destination is the customers home address
+        boolean isSSAH = Boolean.parseBoolean(isSourceSameAsHome);
         if (isSSAH) {
             sourceAddress = customer.getAddress();
         }
-
-        bookingStatus = new GenericItem(1, "Outstanding");
-
+        //Resolve data types from string params
+        //Num of Passengers
+        int nPassengers = Integer.parseInt(numOfPassengers);
+        //Departure Time
+        String depDateTime = departureDate + " " + departureTime;
+        Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
+        //Booking Status
+        GenericItem bookingStatus = new GenericItem(1, "Outstanding");
+        
         return new Booking(customer, sourceAddress, destinationAddress,
                 nPassengers, new Timestamp(System.currentTimeMillis()),
-                depTime, bookingStatus);
+                depTimestamp, bookingStatus);
     }
 
     public Booking generateNewBooking(String sourceAddress,
-            String destinationAddress, String numOfPassengers,
-            String timeBooked, String departureTime) {
+            String destinationAddress, String numOfPassengers, 
+            String departureDate, String departureTime) {
 
-        int nPassengers;
-        Timestamp depTime;
-        GenericItem bookingStatus;
-
+        //SET appropriate error value and return null if a param is null or empty
         if (sourceAddress == null || sourceAddress.isEmpty()) {
             this.error = ERR_SRC_ADDR_NULL;
             return null;
         }
-
         if (destinationAddress == null || destinationAddress.isEmpty()) {
             this.error = ERR_DEST_ADDR_NULL;
             return null;
         }
-
         if (numOfPassengers == null || numOfPassengers.isEmpty()) {
             this.error = ERR_N_PAS_NULL;
             return null;
-        } else {
-            nPassengers = Integer.parseInt(numOfPassengers);
         }
-
+        if (departureDate == null || departureDate.isEmpty()) {
+            this.error = ERR_DEP_DATE_NULL;
+            return null;
+        }
         if (departureTime == null || departureTime.isEmpty()) {
             this.error = ERR_DEP_TIME_NULL;
             return null;
-        } else {
-            depTime = Timestamp.valueOf(departureTime);
         }
-
-        bookingStatus = new GenericItem(1, "Outstanding");
-
+        
+        //Resolve data types from string params
+        //Num of Passengers
+        int nPassengers = Integer.parseInt(numOfPassengers);
+        //Departure Time
+        String depDateTime = departureDate + " " + departureTime;
+        Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
+        //Booking Status
+        GenericItem bookingStatus = new GenericItem(1, "Outstanding");
+        
         return new Booking(sourceAddress, destinationAddress,
                 nPassengers, new Timestamp(System.currentTimeMillis()),
-                depTime, bookingStatus);
+                depTimestamp, bookingStatus);
     }
 
     public static Booking[] getAllBookings(Jdbc jdbc) {
