@@ -158,7 +158,7 @@ public class BookingManager {
             }
             
             arrivalStr = map.get("ARRIVALTIME");
-            if (driverIdStr != null) {
+            if (arrivalStr != null) {
                 arrivalTime = Timestamp.valueOf(arrivalStr);
             }
 
