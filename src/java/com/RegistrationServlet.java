@@ -15,9 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.CustomerManager;
+import static model.CustomerManager.noCustomerAddressErrCode;
+import static model.CustomerManager.noCustomerFirstNameErrCode;
+import static model.CustomerManager.noCustomerLastNameErrCode;
 import model.Jdbc;
-import model.UserManagement;
-import model.tableclasses.User;
+import model.UserManager;
+import static model.UserManager.noPasswordErrCode;
+import static model.UserManager.passwordsDontMatchErrCode;
+import model.tableclasses.GenericItem;
+
 
 /**
  *
@@ -69,58 +75,70 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        
-                ServletContext sc = request.getServletContext();
-        
+
+        long customerId;
+        long userId;
+
+        ServletContext sc = request.getServletContext();
+
         // Go straight to an error page if their where problems connecting to
         // the DB.
-        if (sc.getAttribute("dBConnectionError") != null){
+        if (sc.getAttribute("dBConnectionError") != null) {
             request.getRequestDispatcher("conErr.jsp").forward(request, response);
         }
-        
+
         // Connect Jdbc to the DB
         Jdbc dbBean = new Jdbc();
-        dbBean.connect((Connection)sc.getAttribute("connection"));
-         // Values from Booking.jsp
-        long customerID = CustomerManager.addNewCustomer (
+        dbBean.connect((Connection) sc.getAttribute("connection"));
+        // Values from Booking.jsp
+        customerId = CustomerManager.addNewCustomer(
                 request.getParameter("firstname"), //whatever alex has named them
                 request.getParameter("lastname"),
                 request.getParameter("address"),
-                request.getParameter("password"),
-                request.getParameter("passwordConfirm"),
                 dbBean);
-            //TO DO: use error var
-        if (customerID == -10) {
+        if (customerId == noCustomerFirstNameErrCode) {
             // Firstname not entered
             String message = "Firstname not entered. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
 
-        } else if (customerID == -11){
+        } else if (customerId == noCustomerLastNameErrCode) {
             // lastname not entered
             String message = "Lastname not entered. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else if (customerID == -12){
+        } else if (customerId == noCustomerAddressErrCode) {
             // Address not entered
             String message = "Address not entered. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else if (customerID == -13){
+        }
+
+        userId = UserManager.newCustomerUser(request.getParameter("password"),
+                request.getParameter("passwordConfirm"), customerId, new GenericItem(1), dbBean);
+
+        if (userId == noPasswordErrCode) {
             // passwords do not match
-            String message = "passwords do not match. Please try again";
+            String message = "No password given. Please try again";
+            request.setAttribute("errMsg", message + "</br>");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+        } else if (userId == passwordsDontMatchErrCode) {
+            String message = "No password given. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
         }
-        else {
-            // Registration success!
-            String username = UserManager.generateUsername();
-            request.getParameter("Username", username);
-            request.getRequestDispatcher("registerConfirmation.jsp").forward(request, response);
-
-        }
+        //create session for logged in customer user.
+        HttpSession session = request.getSession();
+            session.setAttribute("userID", userId);
+            session.setAttribute("dbbean", dbBean);
+            session.setAttribute("userType", new GenericItem(4));
         
+        // Registration success!
+        String username = UserManager.getUsernameForCustomer(customerId, dbBean);
+        request.setAttribute("username", username);
+        request.getRequestDispatcher("registerConfirmation.jsp").forward(request, response);
+
+        processRequest(request, response);
     }
 
     /**
