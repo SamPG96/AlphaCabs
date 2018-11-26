@@ -71,4 +71,24 @@ public class CustomerManager {
                             customerRecord.get("LASTNAME"),
                             customerRecord.get("ADDRESS"));
     }
+    
+    /*
+    * Return a list of all customers in the database
+    */
+    public static Customer[] getAllCustomers(Jdbc jdbc){
+        ArrayList<HashMap<String, String>> customersMap = jdbc.retrieve(Customer.TABLE_NAME_CUSTOMERS);
+        Customer[] customerArr = new Customer[customersMap.size()];
+
+        int i = 0;
+
+        // Map each row to a customer object
+        for (HashMap<String, String> map : customersMap) {
+            customerArr[i++] = new Customer(Long.parseLong(map.get("ID")),
+                     map.get("FIRSTNAME"),
+                     map.get("LASTNAME"),
+                     map.get("ADDRESS"));
+        }   
+        
+        return customerArr;
+    }
 }
