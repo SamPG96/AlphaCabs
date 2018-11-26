@@ -20,10 +20,10 @@ import static model.tableclasses.User.TABLE_NAME_USERS;
  * @author Sam
  */
 public class UserManager {
-    public static final long noFirstNameErrCode = -1;
-    public static final long noLastNameErrCode = -2;
-    public static final long noPasswordErrCode = -3;
-    public static final int passwordsDontMatchErrCode = -4;
+    public static final long NO_FIRST_NAME_ERR_CODE = -1;
+    public static final long NO_LAST_NAME_ERR_CODE = -2;
+    public static final long NO_PASSWORD_ERR_CODE = -3;
+    public static final int PASSWORDS_DONT_MATCH_ERR_CODE = -4;
 
     /*
     * Set the status of a user account to 'active'
@@ -119,16 +119,16 @@ public class UserManager {
     public static long validateNewUserAttribs(String userFirstName,
             String userLastName, String password, String passwordConfirm){
         if (userFirstName.isEmpty()){
-            return noFirstNameErrCode;
+            return NO_FIRST_NAME_ERR_CODE;
         }
         if (userLastName.isEmpty()){
-            return noLastNameErrCode;
+            return NO_LAST_NAME_ERR_CODE;
         }
         else if (password.isEmpty()){
-            return noPasswordErrCode;
+            return NO_PASSWORD_ERR_CODE;
         }
         else if (password.equals(passwordConfirm) == false){
-            return passwordsDontMatchErrCode;
+            return PASSWORDS_DONT_MATCH_ERR_CODE;
         }   
         return 0;
     }
