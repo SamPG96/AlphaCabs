@@ -101,6 +101,7 @@ public class BookingFormServlet extends HttpServlet {
                     request.getParameter("source"),
                     request.getParameter("destination"),
                     request.getParameter("passengers"),
+                    request.getParameter("date"),
                     request.getParameter("time"));
 
             // Handle result of login attempt

@@ -8,16 +8,15 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import model.tableclasses.Customer;
-import model.tableclasses.GenericItem;
 
 /**
  *
  * @author Sam
  */
 public class CustomerManager {
-    public static int noCustomerFirstNameErrCode = -10;
-    public static int noCustomerLastNameErrCode = -11;
-    public static int noCustomerAddressErrCode = -12;
+    public static int NO_CUSTOMER_FIRST_NAME_ERR_CODE = -10;
+    public static int NO_CUSTOMER_LAST_NAME_ERR_CODE = -11;
+    public static int NO_CUSTOMER_ADDRESS_ERR_CODE = -12;
     /*
      * Creates a new customer entry in the database and generates them a user
      * account.
@@ -29,13 +28,13 @@ public class CustomerManager {
         
         // Check parameters for a new customer.
         if (firstName.isEmpty()){
-            return noCustomerFirstNameErrCode;
+            return NO_CUSTOMER_FIRST_NAME_ERR_CODE;
         }
         else if (lastName.isEmpty()){
-            return noCustomerLastNameErrCode;
+            return NO_CUSTOMER_LAST_NAME_ERR_CODE;
         }
         else if (address.isEmpty()){
-            return noCustomerAddressErrCode;
+            return NO_CUSTOMER_ADDRESS_ERR_CODE;
         }     
         
         // All parameters are valid if this point is reached.
