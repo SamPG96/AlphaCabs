@@ -277,7 +277,7 @@ public class BookingManager {
 
     private double calcDistanceKM(String source, String dest) {
         //TODO with Google Maps API
-        return 0.0;
+        return 10.0;
     }
 
     public int getError() {
