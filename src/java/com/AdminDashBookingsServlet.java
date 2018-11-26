@@ -43,6 +43,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("test test 1 2 3");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,11 +59,58 @@ public class AdminDashBookingsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
+        HttpSession session = request.getSession(false);
+
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+        //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
+
+        Booking[] aBooking = BookingManager.getBookings(jdbc);
         
-        //try {
+          String message = "<tr>\n"
+                + "                    <th>Source address</th>\n"
+                + "                    <th>Destination address</th>\n"
+                + "                    <th>Passengers</th>\n"
+                + "                    <th>Date</th>\n"
+                + "                    <th>Depature time</th>\n"
+                  + "                    <th>Arrival time</th>\n"
+                + "                    <th>Customer username</th>\n"
+                + "                    <th>Driver</th>\n"
+                + "                </tr>";
+        
+        
+        for (Booking booking: aBooking) {
             
-        //}
-        
+            
+            
+            message +=  "<tr>";
+            message +="<td>" + booking.getSourceAddress() + "</td>";
+            message +="<td>" + booking.getDestinationAddress() + "</td>";
+            message +="<td>" + booking.getNumOfPassengers() + "</td>";
+            message +="<td>" + booking.getTimeBooked()+ "</td>";
+             message +="<td>" + booking.getDepartureTime()+ "</td>";
+             message +="<td>" + booking.getTimeArrived()+ "</td>";
+             message +="<td>" + booking.getCustomer().getLastName() + "</td>";
+             message +="<td>" + booking.getDriver().getLastName() + "</td>";
+            message += "</tr>";
+        }
+
+        request.setAttribute("bookingsTable", message);
+
+     
+//
+//        request.setAttribute("bookingsTable", message + "</br>");
+        request.getRequestDispatcher("/adminDashBookings.jsp").forward(request, response);
+
+        //BUTTON PUSHES - not activity
+        //getFullBooking constructor to be made
+//        Booking booking = BookingManager.getFullBooking(
+//        request.getParameter("SourceAddress"));
+//        request.getParameter("DestinationAddress");
+//        request.getParameter("DistanceKM");
+//        request.getParameter("TimeBooked");
+//        request.getParameter("Number Of Passengers");
+//        request.getParameter("BookingStatusId");
     }
 
     /**
@@ -76,24 +124,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
 
-        HttpSession session = request.getSession(false);
-
-        Jdbc jdbc = (Jdbc) session.getAttribute("dbean");
-
-        request.getRequestDispatcher("/admindashdrivers.jsp").forward(request, response);
-        
-        //BUTTON PUSHES - not activity
-        //getFullBooking constructor to be made
-//        Booking booking = BookingManager.getFullBooking(
-//        request.getParameter("SourceAddress"));
-//        request.getParameter("DestinationAddress");
-//        request.getParameter("DistanceKM");
-//        request.getParameter("TimeBooked");
-//        request.getParameter("Number Of Passengers");
-//        request.getParameter("BookingStatusId");
-        
     }
 
     /**
@@ -105,5 +136,9 @@ public class AdminDashBookingsServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String BookingsTable() {
+        return "Some output";
+    }
 
 }
