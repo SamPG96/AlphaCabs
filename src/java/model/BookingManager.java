@@ -79,7 +79,7 @@ public class BookingManager {
         //Distance KM
         double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
         //Departure Time
-        String depDateTime = departureDate + " " + departureTime;
+        String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
         //Booking Status
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
@@ -121,7 +121,7 @@ public class BookingManager {
         //Distance KM
         double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
         //Departure Time
-        String depDateTime = departureDate + " " + departureTime;
+        String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
         //Booking Status
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
@@ -140,24 +140,28 @@ public class BookingManager {
         //Map bookingsMaps to BookingsArr
         int i = 0;
         Customer customer;
-        Driver driver;
+        String driverIdStr, arrivalStr;
+        Driver driver = null;
+        Timestamp arrivalTime = null;
         GenericItem bookingStatus;
         for (HashMap<String, String> map : bookingsMaps) {
             customer = CustomerManager.getCustomer(
                     Long.parseLong(map.get("CUSTOMERID")), jdbc);
 
-            driver = DriverManager.getDriver(
-                    Long.parseLong(map.get("DRIVERID")), jdbc);
-
             bookingStatus = new GenericItem(
                     Integer.parseInt(map.get("BOOKINGSTATUSID")));
 
-            if (map.get("ARRIVALTIME") == null) {
-                arrTime = null;
-            } else {
-                arrTime = Timestamp.valueOf(map.get("ARRIVALTIME"));
+            driverIdStr = map.get("DRIVERID");
+            if (driverIdStr != null) {
+                driver = DriverManager.getDriver(
+                        Long.parseLong(driverIdStr), jdbc);
             }
             
+            arrivalStr = map.get("ARRIVALTIME");
+            if (arrivalStr != null) {
+                arrivalTime = Timestamp.valueOf(arrivalStr);
+            }
+
             bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),
                     customer,
                     driver,
@@ -167,7 +171,7 @@ public class BookingManager {
                     Double.parseDouble(map.get("DISTANCEKM")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
-                    arrTime,
+                    arrivalTime,
                     bookingStatus);
         }
 
@@ -181,7 +185,9 @@ public class BookingManager {
         //Map bookingsMaps to BookingsArr
         int i = 0;
         Customer customer;
-        Driver driver;
+        String driverIdStr, arrivalStr;
+        Driver driver = null;
+        Timestamp arrivalTime = null;
         GenericItem bookingStatus;
         for (HashMap<String, String> map : bookingsMaps) {
 
@@ -195,8 +201,16 @@ public class BookingManager {
             customer = CustomerManager.getCustomer(
                     Long.parseLong(map.get("CUSTOMERID")), jdbc);
 
-            driver = DriverManager.getDriver(
-                    Long.parseLong(map.get("DRIVERID")), jdbc);
+            driverIdStr = map.get("DRIVERID");
+            if (driverIdStr != null) {
+                driver = DriverManager.getDriver(
+                        Long.parseLong(driverIdStr), jdbc);
+            }
+            
+            arrivalStr = map.get("ARRIVALTIME");
+            if (driverIdStr != null) {
+                arrivalTime = Timestamp.valueOf(arrivalStr);
+            }
 
             bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),
                     customer,
@@ -207,7 +221,7 @@ public class BookingManager {
                     Double.parseDouble(map.get("DISTANCEKM")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
-                    Timestamp.valueOf(map.get("ARRIVALTIME")),
+                    arrivalTime,
                     bookingStatus);
         }
 
@@ -277,7 +291,7 @@ public class BookingManager {
 
     private double calcDistanceKM(String source, String dest) {
         //TODO with Google Maps API
-        return 0.0;
+        return 10.0;
     }
 
     public int getError() {

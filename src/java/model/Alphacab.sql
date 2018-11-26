@@ -24,7 +24,8 @@ INSERT INTO Customers (FirstName, LastName, Address) VALUES
 ('Jim', 'Hunter', '765 High Road, London, N12'),
 ('Phil', 'Johnson', '75 Squires Lane, London, N3'),
 ('Saim', 'Soyler', '2 Rosemary Ave, London, N3'),
-('Gul', 'Hikmet', '31 Clifton Rd, London, N3 2SG');
+('Gul', 'Hikmet', '31 Clifton Rd, London, N3 2SG'),
+('FirstNameTest', 'LastNameTest', 'AddressTest');
 
 -- --------------------------------------------------------
 CREATE TABLE Drivers (
@@ -40,7 +41,8 @@ INSERT INTO Drivers (FirstName, LastName, Registration) VALUES
 ('John', 'Smith', 'AK52VZV'),
 ('Mehmet', 'Aydin', 'BN60WKA'),
 ('Mark', 'Johnson','R34AKP'),
-('Chris', 'Simmons', 'B23GFE');
+('Chris', 'Simmons', 'B23GFE'),
+('FirstNameTest', 'LastNameTest', 'T00TTT');
 
 -- --------------------------------------------------------
 CREATE TABLE UserType (
@@ -96,7 +98,10 @@ INSERT INTO Users (Username, Password, UserTypeId, CustomerId, DriverId, UserSta
 ('jhunter', '124956', 4, 4, NULL, 2),
 ('pjohnson', '258467', 4, 5, NULL, 2),
 ('ssoyler', '988654', 4, 6, NULL, 2),
-('ghikmet', '224969', 4, 7, NULL, 2);
+('ghikmet', '224969', 4, 7, NULL, 2),
+('testa', 'test', 1, NULL, NULL, 2),
+('testd', 'test', 2, NULL, 5, 2),
+('testc', 'test', 4, 8, NULL, 2);
 
 -- --------------------------------------------------------
 CREATE TABLE BookingStatus (
