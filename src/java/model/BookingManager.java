@@ -140,7 +140,9 @@ public class BookingManager {
         //Map bookingsMaps to BookingsArr
         int i = 0;
         Customer customer;
-        Driver driver;
+        String driverIdStr, arrivalStr;
+        Driver driver = null;
+        Timestamp arrivalTime = null;
         GenericItem bookingStatus;
         for (HashMap<String, String> map : bookingsMaps) {
             customer = CustomerManager.getCustomer(
@@ -152,10 +154,15 @@ public class BookingManager {
             bookingStatus = new GenericItem(
                     Integer.parseInt(map.get("BOOKINGSTATUSID")));
 
-            if (map.get("ARRIVALTIME") == null) {
-                arrTime = null;
-            } else {
-                arrTime = Timestamp.valueOf(map.get("ARRIVALTIME"));
+            driverIdStr = map.get("DRIVERID");
+            if (driverIdStr != null) {
+                driver = DriverManager.getDriver(
+                        Long.parseLong(driverIdStr), jdbc);
+            }
+            
+            arrivalStr = map.get("ARRIVALTIME");
+            if (driverIdStr != null) {
+                arrivalTime = Timestamp.valueOf(arrivalStr);
             }
 
             bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),
@@ -167,7 +174,7 @@ public class BookingManager {
                     Double.parseDouble(map.get("DISTANCEKM")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
-                    arrTime,
+                    arrivalTime,
                     bookingStatus);
         }
 
