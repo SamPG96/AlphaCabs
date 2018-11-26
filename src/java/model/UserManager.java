@@ -26,6 +26,29 @@ public class UserManager {
     public static final int passwordsDontMatchErrCode = -4;
 
     /*
+    * Set the status of a user account to 'active'
+    */
+    public static int approveUser(long userId, Jdbc jdbc){
+        User user;
+        
+        user = getUser(userId, jdbc);
+        
+        if (user == null){
+            // User could not be found
+            return -1;
+        }
+        
+        // Retrieve existing info about the user and replace the status of the
+        // user to active.
+        user.setUserStatus(new GenericItem(2));
+        
+        // Update the database
+        jdbc.update(user);
+        
+        return 0;
+    }
+    
+    /*
      * Creates a user account for a customer. The ID of the new user is returned
      * or an error code if their is an issue with the paramers.
      */
