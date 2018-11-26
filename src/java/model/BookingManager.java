@@ -79,7 +79,7 @@ public class BookingManager {
         //Distance KM
         double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
         //Departure Time
-        String depDateTime = departureDate + " " + departureTime;
+        String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
         //Booking Status
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
@@ -121,7 +121,7 @@ public class BookingManager {
         //Distance KM
         double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
         //Departure Time
-        String depDateTime = departureDate + " " + departureTime;
+        String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
         //Booking Status
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
@@ -277,7 +277,7 @@ public class BookingManager {
 
     private double calcDistanceKM(String source, String dest) {
         //TODO with Google Maps API
-        return 0.0;
+        return 10.0;
     }
 
     public int getError() {
