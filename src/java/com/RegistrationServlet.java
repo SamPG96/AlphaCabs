@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.CustomerManager;
-import static model.CustomerManager.noCustomerAddressErrCode;
-import static model.CustomerManager.noCustomerFirstNameErrCode;
-import static model.CustomerManager.noCustomerLastNameErrCode;
+import static model.CustomerManager.NO_CUSTOMER_FIRST_NAME_ERR_CODE;
+import static model.CustomerManager.NO_CUSTOMER_LAST_NAME_ERR_CODE;
+import static model.CustomerManager.NO_CUSTOMER_ADDRESS_ERR_CODE;
 import model.Jdbc;
 import model.UserManager;
-import static model.UserManager.noPasswordErrCode;
-import static model.UserManager.passwordsDontMatchErrCode;
+import static model.UserManager.NO_PASSWORD_ERR_CODE;
+import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
 import model.tableclasses.GenericItem;
 
 
@@ -96,18 +96,18 @@ public class RegistrationServlet extends HttpServlet {
                 request.getParameter("lastname"),
                 request.getParameter("address"),
                 dbBean);
-        if (customerId == noCustomerFirstNameErrCode) {
+        if (customerId == NO_CUSTOMER_FIRST_NAME_ERR_CODE) {
             // Firstname not entered
             String message = "Firstname not entered. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
 
-        } else if (customerId == noCustomerLastNameErrCode) {
+        } else if (customerId == NO_CUSTOMER_LAST_NAME_ERR_CODE) {
             // lastname not entered
             String message = "Lastname not entered. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else if (customerId == noCustomerAddressErrCode) {
+        } else if (customerId == NO_CUSTOMER_ADDRESS_ERR_CODE) {
             // Address not entered
             String message = "Address not entered. Please try again";
             request.setAttribute("errMsg", message + "</br>");
@@ -117,12 +117,12 @@ public class RegistrationServlet extends HttpServlet {
         userId = UserManager.newCustomerUser(request.getParameter("password"),
                 request.getParameter("passwordConfirm"), customerId, new GenericItem(1), dbBean);
 
-        if (userId == noPasswordErrCode) {
+        if (userId == NO_PASSWORD_ERR_CODE) {
             // passwords do not match
             String message = "No password given. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else if (userId == passwordsDontMatchErrCode) {
+        } else if (userId == PASSWORDS_DONT_MATCH_ERR_CODE) {
             String message = "No password given. Please try again";
             request.setAttribute("errMsg", message + "</br>");
             request.getRequestDispatcher("register.jsp").forward(request, response);
