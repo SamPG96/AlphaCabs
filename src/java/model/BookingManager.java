@@ -19,112 +19,115 @@ import model.tableclasses.Driver;
  */
 public class BookingManager {
 
+    //Generator Error codes
     public static final int ERR_CUST_NULL = -1,
             ERR_SRC_HOME_NULL = -2,
             ERR_SRC_ADDR_NULL = -3,
             ERR_DEST_ADDR_NULL = -4,
             ERR_N_PAS_NULL = -5,
-            ERR_DEP_TIME_NULL = -6;
+            ERR_DEP_DATE_NULL = -6,
+            ERR_DEP_TIME_NULL = -7;
+    //Driver Assignment Error Codes
+    public static final int ERR_DRIVER_NULL = -1,
+            ERR_BOOKING_NULL = -2;
 
     private int error;
 
     public Booking generateNewBooking(Customer customer,
             String isSourceSameAsHome, String sourceAddress,
             String destinationAddress, String numOfPassengers,
-            String departureTime) {
+            String departureDate, String departureTime) {
 
-        boolean isSSAH;
-        int nPassengers;
-        Timestamp depTime;
-        GenericItem bookingStatus;
-
+        //SET appropriate error value and return null if a param is null or empty
         if (customer == null) {
             this.error = ERR_CUST_NULL;
             return null;
         }
-
         if (isSourceSameAsHome == null || isSourceSameAsHome.isEmpty()) {
             this.error = ERR_SRC_HOME_NULL;
             return null;
-        } else {
-            isSSAH = Boolean.parseBoolean(isSourceSameAsHome);
         }
-
         if (sourceAddress == null || sourceAddress.isEmpty()) {
             this.error = ERR_SRC_ADDR_NULL;
             return null;
         }
-
         if (destinationAddress == null || destinationAddress.isEmpty()) {
             this.error = ERR_DEST_ADDR_NULL;
             return null;
         }
-
         if (numOfPassengers == null || numOfPassengers.isEmpty()) {
             this.error = ERR_N_PAS_NULL;
             return null;
-        } else {
-            nPassengers = Integer.parseInt(numOfPassengers);
         }
-
+        if (departureDate == null || departureDate.isEmpty()) {
+            this.error = ERR_DEP_DATE_NULL;
+            return null;
+        }
         if (departureTime == null || departureTime.isEmpty()) {
             this.error = ERR_DEP_TIME_NULL;
             return null;
-        } else {
-            depTime = Timestamp.valueOf(departureTime);
         }
 
+        //Resolve if source destination is the customers home address
+        boolean isSSAH = Boolean.parseBoolean(isSourceSameAsHome);
         if (isSSAH) {
             sourceAddress = customer.getAddress();
         }
-
-        bookingStatus = new GenericItem(1, "Outstanding");
+        //Resolve data types from string params
+        //Num of Passengers
+        int nPassengers = Integer.parseInt(numOfPassengers);
+        //Departure Time
+        String depDateTime = departureDate + " " + departureTime;
+        Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
+        //Booking Status
+        GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(customer, sourceAddress, destinationAddress,
                 nPassengers, new Timestamp(System.currentTimeMillis()),
-                depTime, bookingStatus);
+                depTimestamp, bookingStatus);
     }
 
     public Booking generateNewBooking(String sourceAddress,
             String destinationAddress, String numOfPassengers,
-            String timeBooked, String departureTime) {
+            String departureDate, String departureTime) {
 
-        int nPassengers;
-        Timestamp depTime;
-        GenericItem bookingStatus;
-
+        //SET appropriate error value and return null if a param is null or empty
         if (sourceAddress == null || sourceAddress.isEmpty()) {
             this.error = ERR_SRC_ADDR_NULL;
             return null;
         }
-
         if (destinationAddress == null || destinationAddress.isEmpty()) {
             this.error = ERR_DEST_ADDR_NULL;
             return null;
         }
-
         if (numOfPassengers == null || numOfPassengers.isEmpty()) {
             this.error = ERR_N_PAS_NULL;
             return null;
-        } else {
-            nPassengers = Integer.parseInt(numOfPassengers);
         }
-
+        if (departureDate == null || departureDate.isEmpty()) {
+            this.error = ERR_DEP_DATE_NULL;
+            return null;
+        }
         if (departureTime == null || departureTime.isEmpty()) {
             this.error = ERR_DEP_TIME_NULL;
             return null;
-        } else {
-            depTime = Timestamp.valueOf(departureTime);
         }
 
-        bookingStatus = new GenericItem(1, "Outstanding");
+        //Resolve data types from string params
+        //Num of Passengers
+        int nPassengers = Integer.parseInt(numOfPassengers);
+        //Departure Time
+        String depDateTime = departureDate + " " + departureTime;
+        Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
+        //Booking Status
+        GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(sourceAddress, destinationAddress,
                 nPassengers, new Timestamp(System.currentTimeMillis()),
-                depTime, bookingStatus);
+                depTimestamp, bookingStatus);
     }
 
-    public static Booking[] getAllBookings(Jdbc jdbc) {
+    public static Booking[] getBookings(Jdbc jdbc) {
         ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
         Booking[] bookingsArr = new Booking[bookingsMaps.size()];
 
@@ -136,13 +139,13 @@ public class BookingManager {
         for (HashMap<String, String> map : bookingsMaps) {
             customer = CustomerManager.getCustomer(
                     Long.parseLong(map.get("CUSTOMERID")), jdbc);
-            
+
             driver = DriverManager.getDriver(
                     Long.parseLong(map.get("DRIVERID")), jdbc);
-            
+
             bookingStatus = new GenericItem(
                     Integer.parseInt(map.get("BOOKINGSTATUS")));
-            
+
             bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),
                     customer,
                     driver,
@@ -157,6 +160,107 @@ public class BookingManager {
         }
 
         return bookingsArr;
+    }
+
+    public static Booking[] getBookings(Jdbc jdbc, int bookingStatusId) {
+        ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
+        Booking[] bookingsArr = new Booking[bookingsMaps.size()];
+
+        //Map bookingsMaps to BookingsArr
+        int i = 0;
+        Customer customer;
+        Driver driver;
+        GenericItem bookingStatus;
+        for (HashMap<String, String> map : bookingsMaps) {
+
+            bookingStatus = new GenericItem(
+                    Integer.parseInt(map.get("BOOKINGSTATUS")));
+
+            if (bookingStatus.getId() != bookingStatusId) {
+                continue;
+            }
+
+            customer = CustomerManager.getCustomer(
+                    Long.parseLong(map.get("CUSTOMERID")), jdbc);
+
+            driver = DriverManager.getDriver(
+                    Long.parseLong(map.get("DRIVERID")), jdbc);
+
+            bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),
+                    customer,
+                    driver,
+                    map.get("SOURCEADDRESS"),
+                    map.get("DESTINATIONADDRESS"),
+                    Integer.parseInt(map.get("NUMOFPASSENGERS")),
+                    Double.parseDouble(map.get("DISTANCEKM")),
+                    Timestamp.valueOf(map.get("TIMEBOOKED")),
+                    Timestamp.valueOf(map.get("DEPARTURETIME")),
+                    Timestamp.valueOf(map.get("ARRIVALTIME")),
+                    bookingStatus);
+        }
+
+        return bookingsArr;
+    }
+
+    public static Booking getBooking(Jdbc jdbc, long bookingId) {
+        ArrayList<HashMap<String, String>> results;
+        HashMap<String, String> bookingMap;
+
+        results = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS, bookingId);
+
+        if (results.isEmpty()) {
+            //No record was found with bookingId
+            return null;
+        }
+
+        bookingMap = results.get(0);
+
+        //Map bookingsMap to Booking object
+        Customer customer = CustomerManager.getCustomer(
+                Long.parseLong(bookingMap.get("CUSTOMERID")), jdbc);
+
+        Driver driver = DriverManager.getDriver(
+                Long.parseLong(bookingMap.get("DRIVERID")), jdbc);
+
+        GenericItem bookingStatus = new GenericItem(
+                Integer.parseInt(bookingMap.get("BOOKINGSTATUS")));
+
+        return new Booking(Long.parseLong(bookingMap.get("ID")),
+                customer,
+                driver,
+                bookingMap.get("SOURCEADDRESS"),
+                bookingMap.get("DESTINATIONADDRESS"),
+                Integer.parseInt(bookingMap.get("NUMOFPASSENGERS")),
+                Double.parseDouble(bookingMap.get("DISTANCEKM")),
+                Timestamp.valueOf(bookingMap.get("TIMEBOOKED")),
+                Timestamp.valueOf(bookingMap.get("DEPARTURETIME")),
+                Timestamp.valueOf(bookingMap.get("ARRIVALTIME")),
+                bookingStatus);
+    }
+
+    public Booking assignDriver(long driverId, long bookingId, Jdbc jdbc) {
+        Driver driver = DriverManager.getDriver(driverId, jdbc);
+        if(driver == null){
+            this.error = ERR_DRIVER_NULL;
+            return null;
+        }
+        Booking booking = getBooking(jdbc, bookingId);
+        if(booking == null){
+            this.error = ERR_BOOKING_NULL;
+            return null;
+        }
+        
+        booking.setDriver(driver);
+        
+        long updBookingId = jdbc.update(booking);
+        
+        booking = getBooking(jdbc, updBookingId);
+        if(booking == null){
+            this.error = ERR_BOOKING_NULL;
+            return null;
+        }
+        
+        return booking;
     }
 
     private double calcDistanceKM(String source, String dest) {
