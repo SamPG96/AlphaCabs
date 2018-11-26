@@ -15,9 +15,9 @@ import model.tableclasses.Driver;
  * @author Sam
  */
 public class DriverManager {
-    public static int noDriverFirstNameErrCode = -20;
-    public static int noDriverLastNameErrCode = -21;
-    public static int noDriverRegistrationErrCode = -22;
+    public static int NO_DRIVER_FIRST_NAME_ERR_CODE = -20;
+    public static int NO_DRIVER_LAST_NAME_ERR_CODE = -21;
+    public static int NO_DRIVER_REGISTRATION_ERR_CODE = -22;
     
     /*
     * Add a new record driver to the DB
@@ -29,13 +29,13 @@ public class DriverManager {
         
         // Check parameters for a new driver.
         if (firstName.isEmpty()){
-            return noDriverFirstNameErrCode;
+            return NO_DRIVER_FIRST_NAME_ERR_CODE;
         }
         else if (lastName.isEmpty()){
-            return noDriverLastNameErrCode;
+            return NO_DRIVER_LAST_NAME_ERR_CODE;
         }
         else if (registration.isEmpty()){
-            return noDriverRegistrationErrCode;
+            return NO_DRIVER_REGISTRATION_ERR_CODE;
         }     
         
         // All parameters are valid if this point is reached.

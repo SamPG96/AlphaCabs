@@ -28,9 +28,8 @@
             <h2>Thank you for using Alphacabs</h2>
             
             <%-- DATE  ORDER ID--%>  
-            
-            <h2>Thank you for using Alphacabs</h2>
-            
+            <table>
+                        
             <tr>
                 <td>Details of the trip:</td><td></td>
             </tr>
@@ -60,7 +59,7 @@
                 <td>Total including VAT:</td><td></td>
             </tr>
                       
-              
+            </table> 
               
              
         </div>

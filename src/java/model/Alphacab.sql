@@ -24,7 +24,8 @@ INSERT INTO Customers (FirstName, LastName, Address) VALUES
 ('Jim', 'Hunter', '765 High Road, London, N12'),
 ('Phil', 'Johnson', '75 Squires Lane, London, N3'),
 ('Saim', 'Soyler', '2 Rosemary Ave, London, N3'),
-('Gul', 'Hikmet', '31 Clifton Rd, London, N3 2SG');
+('Gul', 'Hikmet', '31 Clifton Rd, London, N3 2SG'),
+('FirstNameTest', 'LastNameTest', 'AddressTest');
 
 -- --------------------------------------------------------
 CREATE TABLE Drivers (
@@ -40,7 +41,8 @@ INSERT INTO Drivers (FirstName, LastName, Registration) VALUES
 ('John', 'Smith', 'AK52VZV'),
 ('Mehmet', 'Aydin', 'BN60WKA'),
 ('Mark', 'Johnson','R34AKP'),
-('Chris', 'Simmons', 'B23GFE');
+('Chris', 'Simmons', 'B23GFE'),
+('FirstNameTest', 'LastNameTest', 'T00TTT');
 
 -- --------------------------------------------------------
 CREATE TABLE UserType (
@@ -96,7 +98,10 @@ INSERT INTO Users (Username, Password, UserTypeId, CustomerId, DriverId, UserSta
 ('jhunter', '124956', 4, 4, NULL, 2),
 ('pjohnson', '258467', 4, 5, NULL, 2),
 ('ssoyler', '988654', 4, 6, NULL, 2),
-('ghikmet', '224969', 4, 7, NULL, 2);
+('ghikmet', '224969', 4, 7, NULL, 2),
+('testa', 'test', 1, NULL, NULL, 2),
+('testd', 'test', 2, NULL, 5, 2),
+('testc', 'test', 4, 8, NULL, 2);
 
 -- --------------------------------------------------------
 CREATE TABLE BookingStatus (
@@ -120,7 +125,7 @@ CREATE TABLE Bookings (
   SourceAddress varchar(60) NOT NULL,
   DestinationAddress varchar(60) NOT NULL,
   NumOfPassengers int NOT NULL,
-  DistanceKM decimal DEFAULT NULL,
+  DistanceKM decimal NOT NULL,
   TimeBooked timestamp NOT NULL,
   DepartureTime timestamp NOT NULL,
   ArrivalTime timestamp DEFAULT NULL,
@@ -133,9 +138,9 @@ Alter table Bookings add foreign key (DriverId) references Drivers;
 Alter table Bookings add foreign key (BookingStatusId) references BookingStatus;
 
 INSERT INTO Bookings (CustomerId, DriverId, SourceAddress, DestinationAddress, NumOfPassengers, DistanceKM, TimeBooked, DepartureTime, ArrivalTime, BookingStatusId) VALUES
-(1, 1, '129 Station Rd, London, N3 2AS', 'King''s Cross Station, London', 2, 5, '2015-10-13 12:30:00', '2015-10-14 09:00:00', '2015-10-14 09:30:00', 4),
-(2, 1, '23 Bow Lane, London, N3', 'Heathrow Terminal 3, London', 1, 20, '2015-10-14 09:30:00', '2015-10-14 10:00:00', '2015-10-14 12:00:00', 4),
-(3, 4, '54 Teignmouth Rd, London, NW2', '120 Green Lanes, London, N13', 2, 7, '2015-10-14 18:00:00', '2015-10-15 05:00:00', '2015-10-15 06:00:00', 4),
-(4, 4, '765 High Road, London, N12', '131 Stoke Newington High Road, London, N12', 3, 8, '2015-10-15 09:00:00', '2015-10-15 11:30:00', '2015-10-15 12:00:00', 4),
-(5, 2, '75 Squires Lane, London, N3', 'Luton Airport, Luton', 4, 30, '2015-10-21 14:30:00', '2015-10-22 09:00:00', '2015-10-22 10:00:00', 4),
-(6, 1, 'Finchley, London', 'King''s Cross, London', 1, NULL, '2015-11-02 09:22:18', '2015-11-05 09:00:00', NULL, 1);
+(1, 1, '129 Station Rd, London, N3 2AS', 'King''s Cross Station, London', 2, 5.0, '2015-10-13 12:30:00', '2015-10-14 09:00:00', '2015-10-14 09:30:00', 4),
+(2, 1, '23 Bow Lane, London, N3', 'Heathrow Terminal 3, London', 1, 20.0, '2015-10-14 09:30:00', '2015-10-14 10:00:00', '2015-10-14 12:00:00', 4),
+(3, 4, '54 Teignmouth Rd, London, NW2', '120 Green Lanes, London, N13', 2, 7.0, '2015-10-14 18:00:00', '2015-10-15 05:00:00', '2015-10-15 06:00:00', 4),
+(4, 4, '765 High Road, London, N12', '131 Stoke Newington High Road, London, N12', 3, 8.0, '2015-10-15 09:00:00', '2015-10-15 11:30:00', '2015-10-15 12:00:00', 4),
+(5, 2, '75 Squires Lane, London, N3', 'Luton Airport, Luton', 4, 30.0, '2015-10-21 14:30:00', '2015-10-22 09:00:00', '2015-10-22 10:00:00', 4),
+(6, 1, 'Finchley, London', 'King''s Cross, London', 1, 5.0, '2015-11-02 09:22:18', '2015-11-05 09:00:00', NULL, 1);
