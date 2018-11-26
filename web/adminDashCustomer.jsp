@@ -15,40 +15,26 @@
     
    
      
-        <div class="main">
-        
-            <Center><h1>Approve new accounts:</h1></Center>
             
-            <center><form method="POST" action="???.do">
-                    <table>
-                        <tr>
-                            <th>Customer ID</th><th>Name</th><th>Address</th><th>Approve?</th>
-                            
-                        </tr>
-                        
-                        
- <%--                       
-                        <% 
-                        
-//Servlet input dynamic table
-                            
-//the table should be in the format (each new line):
-                            //<tr>   (row tag)
-                            //<td>(cell tag)get.(customerID)%</td>
-                            //<td>get.(name)</td>
-                            //<td>get.(address)</td>
-                            //<td>input type="checkbox" value="checkFlag"</td>
-                            //</tr>
-                      
-                        %>
-  --%>                        
-                                        
-                        <tr> <input type="submit" value="submit"/></tr>
-                        
-                </form>
-                    </table>
-            </center>
+
+    <body>
+             <form method="GET" action="AdminDashCustomerServlet.do">
+
+            <table>
+                <tr><input type="submit" value="Display all customers"/></tr>                
+            
+               <c:out value="customerTable"/>
+                       ${customerTable}
+            
+            
+            </table>
+
+                   </form>
+            
+            
+            
        
-        </div>
-    
-   
+            <jsp:include page="/common/foot.jsp"/>
+
+    </body>
+</html>

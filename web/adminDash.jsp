@@ -170,19 +170,16 @@ and open the template in the editor.
         <div id="Drivers" class="tabcontent">
             <h3>Manage Drivers</h3>
             <jsp:include page="adminDashDrivers.jsp"/>
-            <p>INPUT JSP FILE HERE - For viewing drivers</p>
         </div>
 
         <div id="Bookings" class="tabcontent">
             <h3>Assign Drivers to Bookings</h3>
             <p><%@include file='adminDashBookings.jsp' %></p>
-            <p>INPUT JSP FILE HERE - For assigning drivers to bookings</p>
         </div>
 
         <div id="Details" class="tabcontent">
             <h3>Change User Details</h3>
-            <!--<p>< %@include file='.jsp' %></p>-->
-            <p>INPUT JSP FILE HERE - For changing and approving new customers upon request</p>
+            <p><%@include file='adminDashCustomer.jsp' %></p>
         </div>        
              
         
