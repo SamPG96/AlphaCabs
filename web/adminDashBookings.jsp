@@ -34,7 +34,7 @@
 
         <form method="GET" action="AdminDashBookingsServlet.do">
 
-            <table>
+            <table class="tableLine">
                 <tr><input type="submit" value="Display Bookings"/></tr>                
             
                <c:out value="bookingsTable"/>
