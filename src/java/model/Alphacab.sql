@@ -96,7 +96,8 @@ INSERT INTO Users (Username, Password, UserTypeId, CustomerId, DriverId, UserSta
 ('jhunter', '124956', 4, 4, NULL, 2),
 ('pjohnson', '258467', 4, 5, NULL, 2),
 ('ssoyler', '988654', 4, 6, NULL, 2),
-('ghikmet', '224969', 4, 7, NULL, 2);
+('ghikmet', '224969', 4, 7, NULL, 2),
+('test', 'test', 1, NULL, NULL, 2);
 
 -- --------------------------------------------------------
 CREATE TABLE BookingStatus (
