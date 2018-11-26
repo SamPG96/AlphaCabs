@@ -148,9 +148,6 @@ public class BookingManager {
             customer = CustomerManager.getCustomer(
                     Long.parseLong(map.get("CUSTOMERID")), jdbc);
 
-            driver = DriverManager.getDriver(
-                    Long.parseLong(map.get("DRIVERID")), jdbc);
-
             bookingStatus = new GenericItem(
                     Integer.parseInt(map.get("BOOKINGSTATUSID")));
 
