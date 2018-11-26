@@ -20,7 +20,7 @@
     <body>
              <form method="GET" action="AdminDashCustomerServlet.do">
 
-            <table>
+            <table class="tableLine">
                 <tr><input type="submit" value="Display all customers"/></tr>                
             
                <c:out value="customerTable"/>

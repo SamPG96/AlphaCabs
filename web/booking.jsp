@@ -23,7 +23,7 @@
             
             
             <center><form method="POST" action="BookingFormServlet.do">
-                <table>
+               <table>
                     <tr>
                         <td>Source:</td><td></td><td>Destination</td>
                     </tr>
