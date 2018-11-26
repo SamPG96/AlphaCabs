@@ -76,6 +76,8 @@ public class BookingManager {
         //Resolve data types from string params
         //Num of Passengers
         int nPassengers = Integer.parseInt(numOfPassengers);
+        //Distance KM
+        double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
         //Departure Time
         String depDateTime = departureDate + " " + departureTime;
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
@@ -83,7 +85,7 @@ public class BookingManager {
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(customer, sourceAddress, destinationAddress,
-                nPassengers, new Timestamp(System.currentTimeMillis()),
+                nPassengers, distanceKM, new Timestamp(System.currentTimeMillis()),
                 depTimestamp, bookingStatus);
     }
 
@@ -116,6 +118,8 @@ public class BookingManager {
         //Resolve data types from string params
         //Num of Passengers
         int nPassengers = Integer.parseInt(numOfPassengers);
+        //Distance KM
+        double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
         //Departure Time
         String depDateTime = departureDate + " " + departureTime;
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
@@ -123,11 +127,13 @@ public class BookingManager {
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(sourceAddress, destinationAddress,
-                nPassengers, new Timestamp(System.currentTimeMillis()),
+                nPassengers, distanceKM,
+                new Timestamp(System.currentTimeMillis()),
                 depTimestamp, bookingStatus);
     }
 
     public static Booking[] getBookings(Jdbc jdbc) {
+        Timestamp arrTime;
         ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
         Booking[] bookingsArr = new Booking[bookingsMaps.size()];
 
@@ -144,8 +150,14 @@ public class BookingManager {
                     Long.parseLong(map.get("DRIVERID")), jdbc);
 
             bookingStatus = new GenericItem(
-                    Integer.parseInt(map.get("BOOKINGSTATUS")));
+                    Integer.parseInt(map.get("BOOKINGSTATUSID")));
 
+            if (map.get("ARRIVALTIME") == null) {
+                arrTime = null;
+            } else {
+                arrTime = Timestamp.valueOf(map.get("ARRIVALTIME"));
+            }
+            
             bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),
                     customer,
                     driver,
@@ -155,7 +167,7 @@ public class BookingManager {
                     Double.parseDouble(map.get("DISTANCEKM")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
-                    Timestamp.valueOf(map.get("ARRIVALTIME")),
+                    arrTime,
                     bookingStatus);
         }
 
@@ -240,26 +252,26 @@ public class BookingManager {
 
     public Booking assignDriver(long driverId, long bookingId, Jdbc jdbc) {
         Driver driver = DriverManager.getDriver(driverId, jdbc);
-        if(driver == null){
+        if (driver == null) {
             this.error = ERR_DRIVER_NULL;
             return null;
         }
         Booking booking = getBooking(jdbc, bookingId);
-        if(booking == null){
+        if (booking == null) {
             this.error = ERR_BOOKING_NULL;
             return null;
         }
-        
+
         booking.setDriver(driver);
-        
+
         long updBookingId = jdbc.update(booking);
-        
+
         booking = getBooking(jdbc, updBookingId);
-        if(booking == null){
+        if (booking == null) {
             this.error = ERR_BOOKING_NULL;
             return null;
         }
-        
+
         return booking;
     }
 
