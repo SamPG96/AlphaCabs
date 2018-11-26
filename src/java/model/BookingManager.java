@@ -152,14 +152,22 @@ public class BookingManager {
                     Integer.parseInt(map.get("BOOKINGSTATUSID")));
 
             driverIdStr = map.get("DRIVERID");
+            // Driver ID can be null ifno driver assigned, so handle this.
             if (driverIdStr != null) {
                 driver = DriverManager.getDriver(
                         Long.parseLong(driverIdStr), jdbc);
             }
+            else{
+                driver = null;
+            }
             
             arrivalStr = map.get("ARRIVALTIME");
+            // Arrival time can be null, so handle this.
             if (arrivalStr != null) {
                 arrivalTime = Timestamp.valueOf(arrivalStr);
+            }
+            else{
+                arrivalTime = null;
             }
 
             bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),

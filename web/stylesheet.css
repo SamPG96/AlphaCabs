@@ -56,7 +56,10 @@ border-bottom: 1px solid black;
 .errMessage{
     color: red;
 }
-
+table.tableLine,table.tableLine th,table.tableLine td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
 
 
 

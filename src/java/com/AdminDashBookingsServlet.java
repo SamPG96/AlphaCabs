@@ -66,38 +66,50 @@ public class AdminDashBookingsServlet extends HttpServlet {
         //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
 
         Booking[] aBooking = BookingManager.getBookings(jdbc);
-        
-          String message = "<tr>\n"
+
+        String message = "<tr>\n"
                 + "                    <th>Source address</th>\n"
                 + "                    <th>Destination address</th>\n"
                 + "                    <th>Passengers</th>\n"
                 + "                    <th>Date</th>\n"
                 + "                    <th>Depature time</th>\n"
-                  + "                    <th>Arrival time</th>\n"
-                + "                    <th>Customer username</th>\n"
+                + "                    <th>Arrival time</th>\n"
+                + "                    <th>Customer lastname</th>\n"
                 + "                    <th>Driver</th>\n"
                 + "                </tr>";
-        
-        
-        for (Booking booking: aBooking) {
+
+        for (Booking booking : aBooking) {
+
+            message += "<tr>";
+            message += "<td>" + booking.getSourceAddress() + "</td>";
+            message += "<td>" + booking.getDestinationAddress() + "</td>";
+            message += "<td>" + booking.getNumOfPassengers() + "</td>";
+            message += "<td>" + booking.getTimeBooked() + "</td>";
+            message += "<td>" + booking.getDepartureTime() + "</td>";
+
+            // Arrival time can be null, so handle this.
+            if (booking.getTimeArrived() == null){
+                message += "<td>N/A</td>";
+            }
+            else{
+                message += "<td>" + booking.getTimeArrived() + "</td>";
+            }
+                
+            message += "<td>" + booking.getCustomer().getLastName() + "</td>";
             
+            // Driver ID can be null if no driver assigned, so handle this.
+            if (booking.getDriver() == null){
+                message += "<td>Not assigned</td>";
+            }
+            else{
+                message += "<td>" + booking.getDriver().getLastName() + "</td>";
+            }
             
-            
-            message +=  "<tr>";
-            message +="<td>" + booking.getSourceAddress() + "</td>";
-            message +="<td>" + booking.getDestinationAddress() + "</td>";
-            message +="<td>" + booking.getNumOfPassengers() + "</td>";
-            message +="<td>" + booking.getTimeBooked()+ "</td>";
-             message +="<td>" + booking.getDepartureTime()+ "</td>";
-             message +="<td>" + booking.getTimeArrived()+ "</td>";
-             message +="<td>" + booking.getCustomer().getLastName() + "</td>";
-             message +="<td>" + booking.getDriver().getLastName() + "</td>";
             message += "</tr>";
         }
 
         request.setAttribute("bookingsTable", message);
 
-     
 //
 //        request.setAttribute("bookingsTable", message + "</br>");
         request.getRequestDispatcher("/adminDashBookings.jsp").forward(request, response);
