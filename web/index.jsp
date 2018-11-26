@@ -29,7 +29,7 @@
            if(userType.getId() == 1){
 
             %>
-            <%@include file="adminDash.jsp"%>
+            <%@include file="/adminDash.jsp"%>
             <%
             }
            if(userType.getId() == 2){ 

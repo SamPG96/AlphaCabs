@@ -26,7 +26,7 @@
     </head>
     <body>
         
-        <form action="adminDashBookings.jsp">
+        <form method="POST" action="AdminDashBookingsServlet.do">
            <%
             // FOR ALEX!!!
             // ArrayList<Booking> allBookings = BookingManager.getAllBookings(jdbc);
@@ -46,11 +46,12 @@
                 <option value="driver3">Driver 3</option>
             </select>
             <br>
+            
             <!-- TODO press submit changes database so selected driver is assigned to job -->
             <input type="Submit" name="Submit" value="Submit">
         </form>
 
-            <form method="POST" action="AdminDashBookingsServlet.do">
+
 
     <jsp:include page="/common/foot.jsp"/>
 
