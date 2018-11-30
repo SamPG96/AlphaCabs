@@ -12,11 +12,6 @@
         <title></title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
-    
-   
-     
-            
-
     <body>
              <form method="GET" action="AdminDashCustomerServlet.do">
 
@@ -25,16 +20,9 @@
             
                <c:out value="customerTable"/>
                        ${customerTable}
-            
-            
             </table>
 
                    </form>
-            
-            
-            
-       
             <jsp:include page="/common/foot.jsp"/>
-
     </body>
 </html>

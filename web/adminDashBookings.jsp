@@ -3,8 +3,6 @@
     Created on : 19-Nov-2018, 12:49:54
     Author     : tc2-buxton
 --%>
-
-
 <!DOCTYPE html>
 <html>
 
@@ -18,22 +16,8 @@
     </head>
     <body>
         <form method="POST" action="AdminDashBookingsServlet.do">
-           <%
-
-        <%
-            // FOR ALEX!!!
-            // ArrayList<Booking> allBookings = BookingManager.getAllBookings(jdbc);
-            //for (Booking booking: allBookings){
-            //   booking.getSourceAddress();
-            //   booking.getDestinationAddress();
-            // }
-
-        %>
         <!-- TODO The drop down list should appear for the first booking in the list (least recent),
         and give a list of drivers that can be assigned to that job-->
-
-
-
         <form method="GET" action="AdminDashBookingsServlet.do">
 
             <table class="tableLine">
@@ -41,13 +25,10 @@
             
                <c:out value="bookingsTable"/>
                        ${bookingsTable}
-            
-            
             </table>
 
                    </form>
-
-
+            
         <jsp:include page="/common/foot.jsp"/>
 
     </body>
