@@ -15,7 +15,6 @@
 
     </head>
     <body>
-        <form method="POST" action="AdminDashBookingsServlet.do">
         <!-- TODO The drop down list should appear for the first booking in the list (least recent),
         and give a list of drivers that can be assigned to that job-->
         <form method="GET" action="AdminDashBookingsServlet.do">

@@ -63,7 +63,8 @@ public class AdminDashCustomerServlet extends HttpServlet {
 
         Customer[] aCustomer = CustomerManager.getAllCustomers(jdbc);
         
-          String message = "<tr>\n"
+            
+        String message = "<tr>\n"
                 + "                    <th>First name</th>\n"
                 + "                    <th>Last name</th>\n"
                 + "                    <th>Address</th>\n"                   
@@ -87,7 +88,8 @@ public class AdminDashCustomerServlet extends HttpServlet {
      
 //
 //        request.setAttribute("bookingsTable", message + "</br>");
-        request.getRequestDispatcher("/adminDashCustomer.jsp").forward(request, response);
+        //response.setIntHeader("Refresh", 0);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     
     
     }

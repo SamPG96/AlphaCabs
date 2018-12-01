@@ -31,12 +31,12 @@
 
         <div id="Bookings" class="tabcontent">
             <h3>Assign Drivers to Bookings</h3>
-            <p><%@include file='adminDashBookings.jsp' %></p>
+            <%@include file='adminDashBookings.jsp' %>
         </div>
 
         <div id="Details" class="tabcontent">
             <h3>Change User Details</h3>
-            <p><%@include file='adminDashCustomer.jsp' %></p>
+            <%@include file='adminDashCustomer.jsp' %>
         </div>        
              
         
@@ -65,7 +65,20 @@
                 }
                 document.getElementById(option).style.display = "block";
                 evt.currentTarget.className += " active";
-            }            
+            }
+        </script>
+        <script>
+        function displayTables(){
+            if (window.location.href.indexOf("AdminDashCustomerServlet.do") > -1) {
+                openTab(event,'Details');
+            }else if (window.location.href.indexOf("AdminDashBookingsServlet.do") > -1) {
+            
+                openTab(event,'Bookings');
+            
+            }
+
+        }
+        window.onload = displayTables;
         </script>
 			
     </body>
