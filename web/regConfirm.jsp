@@ -12,17 +12,19 @@
         <title>Register confirmation</title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
-    
+
     <jsp:include page="/common/head.jsp"/>
-     
-        <div class="main">
-            <h1>Account created!</h1>
-       Issued username: ???
-       Your details have been sent to an admin for your approval
-       
-       <button type="button">Invoice</button>
-        </div>
-    
+
+    <div class="main">
+        <h1>Account created!</h1>
+        <p>Issued username: <%= request.getAttribute("newUsername") %></p>
+        <p>Your details have been sent to an Admin for approval</p>
+
+        <form method="POST" action="BookingFormServlet.do">
+            <input type="submit" value="Confirm booking" />
+        </form>
+    </div>
+
     <jsp:include page="/common/foot.jsp"/>
-    
+
 </html>

@@ -6,6 +6,7 @@
 package com;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,23 +19,12 @@ import static model.CustomerManager.NO_CUSTOMER_ADDRESS_ERR_CODE;
 import static model.CustomerManager.NO_CUSTOMER_FIRST_NAME_ERR_CODE;
 import static model.CustomerManager.NO_CUSTOMER_LAST_NAME_ERR_CODE;
 import model.Jdbc;
-import model.UserManager;
-import static model.UserManager.NO_FIRST_NAME_ERR_CODE;
-import static model.UserManager.NO_LAST_NAME_ERR_CODE;
-import static model.UserManager.NO_PASSWORD_ERR_CODE;
-import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
-import model.tableclasses.GenericItem;
-
 
 /**
  *
- * @author jakec
+ * @author Sam
  */
-//TO DO:
-// Take first and last names from booking servlet then create username
-// Pass Username and Password onto model
-// 
-public class RegistrationServlet extends HttpServlet {
+public class GuestServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,7 +37,7 @@ public class RegistrationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        response.setContentType("text/html;charset=UTF-8");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -77,42 +67,27 @@ public class RegistrationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int newCustErrCode;
-        int newUserErrCode;
         String errMsgStr;
-        long userId;
         long customerId;
         HttpSession session;
-       
-        // Validate entry for a new user and customer before it is inserted into
-        // the DB.
+
+        processRequest(request, response);
+        
+        // Validate entry for a new customer before it is inserted into the DB.
         newCustErrCode = CustomerManager.validateNewCustomerAttribs(
                 request.getParameter("firstName"),
                 request.getParameter("lastName"),
-                request.getParameter("homeAddress"));
-        
-        newUserErrCode = UserManager.validateNewUserAttribs(
-                request.getParameter("firstName"),
-                request.getParameter("lastName"),
-                request.getParameter("password"),
-                request.getParameter("passwordConfirm"));  
-        
+                request.getParameter("homeAddress"));        
+
         // Display an error message if their is a problem the user entry
-        if (newCustErrCode != 0 || newUserErrCode != 0){
-            if (newCustErrCode != 0){
-                // Input error related to creating a new customer
-                errMsgStr = convertNewCustErrCodeToMessageStr(newCustErrCode);
-            }
-            else{
-                // Input error related to creating a new user
-                errMsgStr = convertNewUserErrCodeToMessageStr(newUserErrCode);
-            }
-            
+        if (newCustErrCode != 0){
+            errMsgStr = convertNewCustErrCodeToMessageStr(newCustErrCode);
             request.setAttribute("errMsg", errMsgStr + "</br>");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-        }
+            request.getRequestDispatcher("guest.jsp").forward(request, response);
+        }       
 
         ServletContext sc = request.getServletContext();
-        
+                
         // Go straight to an error page if their where problems connecting to
         // the DB. Normally this would be checked by the login servlet, but as
         // the customer hasnt logged in to this point the check is never made.
@@ -131,27 +106,14 @@ public class RegistrationServlet extends HttpServlet {
                 request.getParameter("homeAddress"),
                 dbBean);
         
-        // Create user account for customer. Set account to require approval.
-        userId = UserManager.newCustomerUser(
-                request.getParameter("password"),
-                request.getParameter("passwordConfirm"),
-                customerId,
-                new GenericItem(1),
-                dbBean);
-        
-        // By default the user account for the customer is not active. So cache
-        // the customer ID for the booking servlet to access.
+        // Cache the customer ID and store the Jdbc instance for the booking
+        // servlet to access.
         session = request.getSession();
         session.setAttribute("cachedCustomerID", customerId);
         session.setAttribute("dbbean", dbBean);
         
-        // Go to a page that informs the customer of their registration success,
-        // also inform them of there automated username.
-        String username = UserManager.getUsernameForCustomer(customerId, dbBean);
-        request.setAttribute("newUsername", username);
-        request.getRequestDispatcher("regConfirm.jsp").forward(request, response);
+        request.getRequestDispatcher("BookingFormServlet.do").forward(request, response);
 
-        processRequest(request, response);
     }
 
     /*
@@ -178,48 +140,13 @@ public class RegistrationServlet extends HttpServlet {
                 break;
 
             default:
-                errMsg += "registration form error";
+                errMsg += "customer form error";
                 break;
         }
         
         return errMsg;
-    }
-
-    /*
-    * Convert error codes generated by creating a new user to a human
-    * readable message.
-    */
-    private String convertNewUserErrCodeToMessageStr(int errCode){
-        String errMsg = "Oops! - ";
-        
-        switch(errCode){
-            case NO_FIRST_NAME_ERR_CODE:
-                // First name not entered
-                errMsg += "First name not entered";
-                break;
-
-            case NO_LAST_NAME_ERR_CODE:
-                // Last name not entered
-                errMsg += "Last name not entered";
-                break;
-
-            case NO_PASSWORD_ERR_CODE:
-                // Password not entered
-                errMsg += "Password not entered";
-                break;
-
-            case PASSWORDS_DONT_MATCH_ERR_CODE:
-                // Passwords dont match
-                errMsg += "Passwords do not match";
-                break;
-                
-            default:
-                errMsg += "registration form error";
-                break;
-        }
-        
-        return errMsg;
-    }
+    }    
+    
     /**
      * Returns a short description of the servlet.
      *

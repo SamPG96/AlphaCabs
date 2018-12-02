@@ -20,7 +20,7 @@
             Please enter the following details for the new account:
             
             
-            <center><form method="POST" action="???.do">
+            <center><form method="POST" action="RegistrationServlet.do">
             <table>
                  <tr>
                 <td>First name:</td><td>Last name:</td>
@@ -38,21 +38,18 @@
                 <td>Password:</td><td>Confirm password:</td>
             </tr>
             <tr>
-                <td><input type="password" name="password"/></td><td><input type="password" name="password"/></td>
+                <td><input type="password" name="password"/></td><td><input type="password" name="passwordConfirm"/></td>
             </tr>
             
-            <tr>
-                <td><input type="password" name="password"/></td><td><input type="password" name="password"/></td>
-            </tr>
             <tr
-                ><td><input type="submit" value="Create and book"/></td><td></td>
+                ><td><input type="submit" value="Register"/></td><td></td>
             </tr>
             
                 
             </table>
                 </form>
             
-            <%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%>
+                <div class="errMessage"><%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%></div>
             </center>
        
                
