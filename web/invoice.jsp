@@ -4,6 +4,7 @@
     Author     : yuugy
 --%>
 
+<%@page import="model.tableclasses.Booking"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,53 +14,32 @@
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
     
-    
+    <%Booking booking = (Booking)request.getAttribute("booking");%>
      
         <div class="main">
             <center><h1>Alphacab: Invoice</h1></center>
             
-           <%--
-<%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%>
-           --%>
-            
+         
+           
+<left> <%booking.getTimeBooked();%></left> <%-- DATE  ORDER ID--%><right>Order Reference: <%booking.getId();%></right>
             
             <div class="line"></div>
               
             <h2>Thank you for using Alphacabs</h2>
-            
-            <%-- DATE  ORDER ID--%>  
-            <table>
-                        
-            <tr>
-                <td>Details of the trip:</td><td></td>
-            </tr>
-            <tr>
-                <td>Name:</td><td></td>
-            </tr>
-            <tr>
-                <td>Source:</td><td></td>
-            </tr>
-            <tr>
-                <td>Destination:</td><td></td>
-            </tr>
-            <tr>
-                <td>Passengers:</td><td></td>
-            </tr>
+                
+            <h3>   Details of the trip: <h3>
+           
+           Name: <%booking.getCustomer().getLastName(); %>
+           Source: <%booking.getSourceAddress(); %>
+           Destination: <%booking.getDestinationAddress();%>
+           Passengers: <%booking.getNumOfPassengers();%>
+           
                      <div class="line"></div>
-            <tr>
-                <td>Miles:</td><td></td>
-            </tr>
-            <tr>
-                <td>Price per mile:</td><td></td>
-            </tr>
-            <tr>
-                <td>VAT:</td><td></td>
-            </tr>
-            <tr>
-                <td>Total including VAT:</td><td></td>
-            </tr>
-                      
-            </table> 
+            Miles:
+            Price per mile:
+            VAT:
+            Total including VAT:
+            
               
              
         </div>
