@@ -41,7 +41,7 @@ public class UserManager {
         
         // Retrieve existing info about the user and replace the status of the
         // user to active.
-        user.setUserStatus(new GenericItem(2));
+        user.setUserStatus(getUserStatusObj(2, jdbc));
         
         // Update the database
         jdbc.update(user);
@@ -60,7 +60,7 @@ public class UserManager {
         
         user = new User();
         user.setPassword(password);
-        user.setUserType(new GenericItem(4, "Customer"));
+        user.setUserType(getUserTypeObj(4, jdbc));
         
         customer = CustomerManager.getCustomer(customerID, jdbc);
         user.setCustomer(customer);
@@ -80,7 +80,7 @@ public class UserManager {
         
         user = new User();
         user.setPassword(password);
-        user.setUserType(new GenericItem(2, "Driver"));
+        user.setUserType(getUserTypeObj(2, jdbc));
         
         driver = DriverManager.getDriver(driverId, jdbc);
         user.setDriver(driver);
@@ -356,6 +356,26 @@ public class UserManager {
     * Retrieves the username of a customer.
     */
     public static String getUsernameForCustomer(long customerId, Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        results = jdbc.retrieve(
+                TABLE_NAME_USERS,
+                "CUSTOMERID",
+                customerId);
+        
+        if (results.isEmpty()){
+            // Cannot find a user with the given customerID
+            return null;
+        }
+        
+        // Fetch the first result (their should only be one) and return the
+        // username
+        return results.get(0).get("USERNAME");
+    }
+
+    /*
+    * Retrieves the username of a driver.
+    */
+    public static String getUsernameForDriver(long customerId, Jdbc jdbc){
         ArrayList<HashMap<String, String>> results;
         results = jdbc.retrieve(
                 TABLE_NAME_USERS,
