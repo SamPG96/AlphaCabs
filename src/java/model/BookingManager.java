@@ -329,5 +329,4 @@ public class BookingManager {
         this.error = error;
     }
     
-    
 }
