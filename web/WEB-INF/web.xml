@@ -56,6 +56,10 @@
         <servlet-class>com.AdminDashCustomerServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AdminDashReportServlet</servlet-name>
+        <servlet-class>com.AdminDashReportServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GuestServlet</servlet-name>
         <servlet-class>com.GuestServlet</servlet-class>
     </servlet>
@@ -98,6 +102,10 @@
     <servlet-mapping>
         <servlet-name>AdminDashCustomerServlet</servlet-name>
         <url-pattern>/AdminDashCustomerServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashReportServlet</servlet-name>
+        <url-pattern>/AdminDashReportServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GuestServlet</servlet-name>
