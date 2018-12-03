@@ -9,30 +9,16 @@ package model.tableclasses;
  *
  * @author Conor
  */
-public class Customer {
-    public static final String TABLE_NAME_CUSTOMERS = "Customers";
+public class Configuration {
+    public static final String TABLE_NAME_CONFIGURATIONS = "Configurations";
     private long id;
-    private String firstName;
-    private String lastName;
-    private String address;
+    private String configName;
+    private String configValue;
 
-    /*
-    * Constructor that takes all customer information apart from the customer ID
-    */
-    public Customer(String firstName, String lastName, String address) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-    }
-
-    /*
-    * Constructor that takes all customer information
-    */
-    public Customer(long id, String firstName, String lastName, String address) {
+    public Configuration(long id, String configName, String configValue) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
+        this.configName = configName;
+        this.configValue = configValue;
     }
 
     public long getId() {
@@ -43,29 +29,21 @@ public class Customer {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getConfigName() {
+        return configName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setConfigName(String configName) {
+        this.configName = configName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getConfigValue() {
+        return configValue;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setConfigValue(String configValue) {
+        this.configValue = configValue;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    
     
 }
