@@ -18,8 +18,6 @@ and open the template in the editor.
 .navbar {     
     overflow: hidden;
     background-color: white;
-    position: fixed; 
-    top: 0; 
     width: 100%; 
 }
 .navbar a {
@@ -30,7 +28,7 @@ and open the template in the editor.
 }
 
 .main {
-    margin-top: 150px;
+    margin-top: 30px;
     margin-bottom: 30px; 
 }
 
@@ -46,6 +44,11 @@ and open the template in the editor.
   border-left: 1px solid #CCCCCC;
 }
 
+.banner{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+}
 
 .line{
 width: 100%;
