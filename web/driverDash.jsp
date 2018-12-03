@@ -12,26 +12,26 @@
         <title>Driver Dashboard</title>
 
     </head>
-   
+
+
+
     <form method="GET" action="DriverDashServlet.do">
 
-            <table class="tableLine">
-                <tr><input type="submit" value="Display Bookings"/></tr>                
-            
-               <c:out value="bookingsTable"/>
-                       ${bookingsTable}
-            
-            
-            </table>
+        <table class="tableLine">
+            <tr><input type="submit" value="Display Bookings"/></tr>                
 
-                   </form>
-    
-    
-    
-    
-    
-   <% //driver manager update booking status = 4 %>
-    
+            <c:out value="bookingsTable"/>
+            ${bookingsTable}
+
+
+        </table>
+
+    </form>
+
+
     <jsp:include page="/common/foot.jsp"/>
+
+    
+    
     
 </html>

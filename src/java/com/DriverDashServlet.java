@@ -70,6 +70,8 @@ public class DriverDashServlet extends HttpServlet {
 
         Booking[] aBooking = BookingManager.getBookings(jdbc);
 
+         
+        
         String message = "<tr>\n"
                 + "                    <th>Source address</th>\n"
                 + "                    <th>Destination address</th>\n"
@@ -103,7 +105,7 @@ public class DriverDashServlet extends HttpServlet {
 
                 message += "<td>" + booking.getCustomer().getLastName() + "</td>";
 
-                GenericItem bookingStatus = booking.getBookingStatus();
+               GenericItem bookingStatus = booking.getBookingStatus();
                 if (bookingStatus == null) {
                     message += "<td>N/A</td>";
 
@@ -122,12 +124,12 @@ public class DriverDashServlet extends HttpServlet {
                     }
                     if (bookingStatus.getId() == 2 ) {
 
-                        message += "<td>" + "<button type=\"button\">Complete</button>" + "</td>";
+                        message += "<td>" + "<input type=\"submit\" name=\""+booking.getId()+"\" value=\"Complete\"/>" + "</td>";
 
                     }
                     if (bookingStatus.getId() == 1 ) {
 
-                        message += "<td>" + "<button type=\"button\">In Progress</button>" + "</td>";
+                        message += "<td>" + "<input type=\"submit\" name=\""+booking.getId()+"\" value=\"In Progress\"/>" + "</td>";
 
                     }
                 }
@@ -138,8 +140,25 @@ public class DriverDashServlet extends HttpServlet {
 
 //
 //        request.setAttribute("bookingsTable", message + "</br>");
-        request.getRequestDispatcher("/driverDash.jsp").forward(request, response);
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
 //JDBC.update 
+
+
+    
+    
+   // <input type="submit" name="Complete" value="delete"/>
+//<input type="submit" name="In Progress" value="update"/>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     }
 
     /**
