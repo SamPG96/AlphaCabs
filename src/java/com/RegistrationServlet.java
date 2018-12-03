@@ -19,7 +19,9 @@ import static model.CustomerManager.NO_CUSTOMER_LAST_NAME_ERR_CODE;
 import static model.CustomerManager.NO_CUSTOMER_ADDRESS_ERR_CODE;
 import model.Jdbc;
 import model.UserManager;
-import static model.UserManager.NO_PASSWORD_ERR_CODE;
+import static model.UserManager.NO_USER_FIRST_NAME_ERR_CODE;
+import static model.UserManager.NO_USER_LAST_NAME_ERR_CODE;
+import static model.UserManager.NO_USER_PASSWORD_ERR_CODE;
 import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
 import model.tableclasses.GenericItem;
 
@@ -129,49 +131,12 @@ public class RegistrationServlet extends HttpServlet {
                 request.getParameter("homeAddress"),
                 dbBean);
 
-        if (customerId == NO_CUSTOMER_FIRST_NAME_ERR_CODE) {
-            // Firstname not entered
-            String message = "Firstname not entered. Please try again";
-            request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-
-        } else if (customerId == NO_CUSTOMER_LAST_NAME_ERR_CODE) {
-            // lastname not entered
-            String message = "Lastname not entered. Please try again";
-            request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else if (customerId == NO_CUSTOMER_ADDRESS_ERR_CODE) {
-            // Address not entered
-            String message = "Address not entered. Please try again";
-            request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-        }
-
-        userId = UserManager.newCustomerUser(request.getParameter("password"),
-                request.getParameter("passwordConfirm"), customerId, new GenericItem(1), dbBean);
-
-        if (userId == NO_PASSWORD_ERR_CODE) {
-            // passwords do not match
-            String message = "No password given. Please try again";
-            request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-        } else if (userId == PASSWORDS_DONT_MATCH_ERR_CODE) {
-            String message = "No password given. Please try again";
-            request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-        }
-        //create session for logged in customer user.
-        HttpSession session = request.getSession();
-            session.setAttribute("userID", userId);
-            session.setAttribute("dbbean", dbBean);
-            session.setAttribute("userType", new GenericItem(4));
-        
         // Create user account for customer. Set account to require approval.
         userId = UserManager.newCustomerUser(
                 request.getParameter("password"),
                 request.getParameter("passwordConfirm"),
                 customerId,
-                new GenericItem(1),
+                UserManager.getUserStatusObj(1, dbBean),
                 dbBean);
         
         // By default the user account for the customer is not active. So cache
@@ -228,17 +193,17 @@ public class RegistrationServlet extends HttpServlet {
         String errMsg = "Oops! - ";
         
         switch(errCode){
-            case NO_FIRST_NAME_ERR_CODE:
+            case NO_USER_FIRST_NAME_ERR_CODE:
                 // First name not entered
                 errMsg += "First name not entered";
                 break;
 
-            case NO_LAST_NAME_ERR_CODE:
+            case NO_USER_LAST_NAME_ERR_CODE:
                 // Last name not entered
                 errMsg += "Last name not entered";
                 break;
 
-            case NO_PASSWORD_ERR_CODE:
+            case NO_USER_PASSWORD_ERR_CODE:
                 // Password not entered
                 errMsg += "Password not entered";
                 break;

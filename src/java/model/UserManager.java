@@ -21,9 +21,9 @@ import static model.tableclasses.User.TABLE_NAME_USERS;
  * @author Sam
  */
 public class UserManager {
-    public static final int NO_FIRST_NAME_ERR_CODE = -1;
-    public static final int NO_LAST_NAME_ERR_CODE = -2;
-    public static final int NO_PASSWORD_ERR_CODE = -3;
+    public static final int NO_USER_FIRST_NAME_ERR_CODE = -1;
+    public static final int NO_USER_LAST_NAME_ERR_CODE = -2;
+    public static final int NO_USER_PASSWORD_ERR_CODE = -3;
     public static final int PASSWORDS_DONT_MATCH_ERR_CODE = -4;
 
     /*
@@ -119,13 +119,13 @@ public class UserManager {
     public static int validateNewUserAttribs(String userFirstName,
             String userLastName, String password, String passwordConfirm){
         if (userFirstName == null || userFirstName.isEmpty()){
-            return NO_FIRST_NAME_ERR_CODE;
+            return NO_USER_FIRST_NAME_ERR_CODE;
         }
         if (userLastName == null || userLastName.isEmpty()){
-            return NO_LAST_NAME_ERR_CODE;
+            return NO_USER_LAST_NAME_ERR_CODE;
         }
         else if (password == null || password.isEmpty()){
-            return NO_PASSWORD_ERR_CODE;
+            return NO_USER_PASSWORD_ERR_CODE;
         }
         else if (passwordConfirm == null || password.equals(passwordConfirm) == false){
             return PASSWORDS_DONT_MATCH_ERR_CODE;

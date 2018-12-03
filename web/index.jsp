@@ -1,8 +1,9 @@
-<%-- 
+<%--
     Document   : index
     Created on : 09-Nov-2018, 13:05:42
     Author     : Alex, Sam
 --%>
+
 <%@page import="model.tableclasses.GenericItem"%>
 <%@page import="model.tableclasses.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -38,6 +39,7 @@
         %>
                     <%@include file="customerDash.jsp"%>
         <%
+                }
             } else {
                 // Reset cached objects
                 session.removeAttribute("cachedCustomerID");
