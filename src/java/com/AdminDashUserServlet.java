@@ -63,6 +63,7 @@ public class AdminDashUserServlet extends HttpServlet {
                 + "                    <th>CustomerId</th>\n"
                 + "                    <th>DriverId</th>\n"
                 + "                    <th>UserStatus</th>\n"
+                + "                    <th>Approve</th>\n"
                 + "                </tr>";
         
         
@@ -76,6 +77,7 @@ public class AdminDashUserServlet extends HttpServlet {
             message +="<td>" + user.getCustomerId() + "</td>";
             message +="<td>" + user.getDriverId() + "</td>";
             message +="<td>" + user.getUserStatus() + "</td>";
+            message +="<td input type='checkbox' value='approve'></td>";
           
             message += "</tr>";
         }
