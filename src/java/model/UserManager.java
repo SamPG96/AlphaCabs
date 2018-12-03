@@ -20,9 +20,9 @@ import static model.tableclasses.User.TABLE_NAME_USERS;
  * @author Sam
  */
 public class UserManager {
-    public static final long NO_FIRST_NAME_ERR_CODE = -1;
-    public static final long NO_LAST_NAME_ERR_CODE = -2;
-    public static final long NO_PASSWORD_ERR_CODE = -3;
+    public static final int NO_FIRST_NAME_ERR_CODE = -1;
+    public static final int NO_LAST_NAME_ERR_CODE = -2;
+    public static final int NO_PASSWORD_ERR_CODE = -3;
     public static final int PASSWORDS_DONT_MATCH_ERR_CODE = -4;
 
     /*
@@ -97,7 +97,6 @@ public class UserManager {
             GenericItem userStatus, Jdbc jdbc){
         long err;
 
-        // TODO: set user status here!
         user.setUserStatus(userStatus);
         
         // Validate parameters for the new user account
@@ -116,18 +115,18 @@ public class UserManager {
     /*
      * Validates parameters required for a new user account.
      */
-    public static long validateNewUserAttribs(String userFirstName,
+    public static int validateNewUserAttribs(String userFirstName,
             String userLastName, String password, String passwordConfirm){
-        if (userFirstName.isEmpty()){
+        if (userFirstName == null || userFirstName.isEmpty()){
             return NO_FIRST_NAME_ERR_CODE;
         }
-        if (userLastName.isEmpty()){
+        if (userLastName == null || userLastName.isEmpty()){
             return NO_LAST_NAME_ERR_CODE;
         }
-        else if (password.isEmpty()){
+        else if (password == null || password.isEmpty()){
             return NO_PASSWORD_ERR_CODE;
         }
-        else if (password.equals(passwordConfirm) == false){
+        else if (passwordConfirm == null || password.equals(passwordConfirm) == false){
             return PASSWORDS_DONT_MATCH_ERR_CODE;
         }   
         return 0;
@@ -174,12 +173,34 @@ public class UserManager {
         
         return results.isEmpty() == false;
     }
-    
+
     /*
-     * Verify a users login details and return the associated ID of the user,
-     * If the username of password is invalid then -1 is returned.
+     * Login users of any type with their login details and return the
+     * associated ID of the user. If the user is unrecognised or incorrect
+     * details have been given then an error code is returned.
      */
-    public static long loginUser(String user, String pass, Jdbc jdbc){
+    public static long loginAnyUserType(String user, String pass, Jdbc jdbc){  
+        // Stores all supported user types
+        // TODO: get all types from DB
+        ArrayList<Integer> allTypes = new ArrayList();
+        // Add admin
+        allTypes.add(1);
+        // Add driver
+        allTypes.add(2);
+        // Add customer
+        allTypes.add(4);
+        
+        return loginSpecificUserTypes(user, pass, allTypes, jdbc);
+    }
+
+    /*
+     * Login users of a specific type with their login details and return the
+     * associated ID of the user. If the user is unrecognised or incorrect
+     * details have been given or a user was found but is not of the given types
+     * then an error code is returned.
+     */
+    public static long loginSpecificUserTypes(String user, String pass,
+            ArrayList<Integer> validTypes, Jdbc jdbc){
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> userDBInfo;
         
@@ -201,12 +222,14 @@ public class UserManager {
         // Should only be one result, so index the first
         userDBInfo = results.get(0);
         
-        // Check the password is correct
-        if (userDBInfo.get("PASSWORD").equals(pass) == false){
+        // Incorrect login attempt if the password is correct or that the user
+        // is not of the valid types given to the method.
+        if (userDBInfo.get("PASSWORD").equals(pass) == false ||
+                validTypes.contains(Integer.valueOf(userDBInfo.get("USERTYPEID"))) == false){
             return -1;
         }
         
-        return Long.valueOf(userDBInfo.get("ID"));
+        return Long.valueOf(userDBInfo.get("ID"));        
     }
 
     /*

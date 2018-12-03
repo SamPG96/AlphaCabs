@@ -1,159 +1,17 @@
-<!--<!DOCTYPE html>
+<%-- 
+    Document   : adminDash
+    Created on : 23-Nov-2018, 10:39:15
+    Author     : yuugy
+--%>
 
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Admin Dashboard</title>
-        <link rel="stylesheet" type="text/css" href="stylesheet.css">
- 
-        <style>
-            .tab {
-                overflow: hidden;
-                border: 1px solid #ccc;
-                background-color: #f1f1f1;                
-            }
-            
-            .tab button {
-                background-color: inherit;
-                float: left;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                padding: 14px 16px;
-                transition: 0.3s;
-                font-size: 17px;
-            }
-            
-            .tab button:hover {
-                background-color: #ddd
-            }
-            .tab button.active {
-                background-color: #ccc
-            }
-            
-            .tabcontent {
-                display: none;
-                padding: 6px 12px;
-                border: 1px solid #ccc;
-                border-top: none;
-            }            
-        
-        </style>
-        
-    </head>
-    <body>
-        <h1>ADMIN Dashboard</h1>
-        
-        <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'Drivers')">Drivers</button>
-            <button class="tablinks" onclick="openTab(event, 'Bookings')">Bookings</button>
-            <button class="tablinks" onclick="openTab(event, 'Details')">Customer Details</button>
-            <button class="tablinks" onclick="openTab(event, 'Report')">Daily Report</button>            
-            <button class="tablinks" onclick="openTab(event, 'Settings')">Settings</button>            
-        </div>
-        
-        
-	
-        <div id="Drivers" class="tabcontent">
-            <h3>Manage Drivers</h3>
-            <p><//%@include file='admindashdrivers.jsp' %></p>
-            <p>INPUT JSP FILE HERE</p>
-        </div>
-        
-        <div id="Bookings" class="tabcontent">
-            <h3>Assign Drivers to Bookings</h3>
-            <p><//%@include file='adminDashBookings.jsp' %></p>
-            <p>INPUT JSP FILE HERE</p>
-        </div>
-        
-        <div id="Details" class="tabcontent">
-            <h3>Change User Details</h3>
-            <p>< %@include file='.jsp' %></p>
-            <p>INPUT JSP FILE HERE - For changing and approving new customers upon request</p>
-        </div>
-            
-        <div id="Report" class="tabcontent">
-            <h3>View Daily Report</h3>
-            <p>< %@include file='.jsp' %></p>
-            <p>INPUT JSP FILE HERE - For viewing daily report</p>
-        </div>            
-
-        <div id="Settings" class="tabcontent">
-            <h3>Manage Settings</h3>
-            <p>< %@include file='.jsp' %></p>
-            <p>INPUT JSP FILE HERE - For changing the Price per Mile</p>
-        </div>
-            
-        <script>
-            function openTab(evt, option) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                tablinks = document.getElementsByClassName("tablinks");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace("active", "");
-                }
-                document.getElementById(option).style.display = "block";
-                evt.currentTarget.className += " active";
-            }            
-        </script>
-        
-    </body>
-    <//jsp:include page="/common/foot.jsp"/>
-</html>-->
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Admin Dashboard</title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
-        
-        
-        <style>
-            .tab {
-                overflow: hidden;
-                border: 1px solid #ccc;
-                background-color: #f1f1f1;                
-            }
-            
-            .tab button {
-                background-color: inherit;
-                float: left;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                padding: 14px 16px;
-                transition: 0.3s;
-                font-size: 17px;
-            }
-            
-            .tab button:hover {
-                background-color: #ddd
-            }
-            .tab button.active {
-                background-color: #ccc
-            }
-            
-            .tabcontent {
-                display: none;
-                padding: 6px 12px;
-                border: 1px solid #ccc;
-                border-top: none;
-            }            
-        
-        </style>
+        <link rel="stylesheet" type="text/css" href="dashboards.css">
         
     </head>
     <body>
@@ -162,7 +20,8 @@ and open the template in the editor.
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'Drivers')">Drivers</button>
             <button class="tablinks" onclick="openTab(event, 'Bookings')">Bookings</button>
-            <button class="tablinks" onclick="openTab(event, 'Details')">Customers</button>
+            <button class="tablinks" onclick="openTab(event, 'Customers')">Customers</button>
+            <button class="tablinks" onclick="openTab(event, 'Users')">Users</button>
             <button class="tablinks" onclick="openTab(event, 'Report')">Daily Report</button>
             <button class="tablinks" onclick="openTab(event, 'Settings')">Settings</button>        
         </div>
@@ -174,14 +33,18 @@ and open the template in the editor.
 
         <div id="Bookings" class="tabcontent">
             <h3>Assign Drivers to Bookings</h3>
-            <p><%@include file='adminDashBookings.jsp' %></p>
+            <%@include file='adminDashBookings.jsp' %>
         </div>
 
-        <div id="Details" class="tabcontent">
-            <h3>Change User Details</h3>
-            <p><%@include file='adminDashCustomer.jsp' %></p>
+        <div id="Customers" class="tabcontent">
+            <h3>Change Customer Details</h3>
+            <%@include file='adminDashCustomer.jsp' %>
         </div>        
-             
+        
+        <div id="Users" class="tabcontent">
+            <h3>Approve Users</h3>
+            <%@include file='adminDashUsers.jsp' %>
+        </div>
         
         <div id="Report" class="tabcontent">
             <h3>View Daily Report</h3>
@@ -208,7 +71,20 @@ and open the template in the editor.
                 }
                 document.getElementById(option).style.display = "block";
                 evt.currentTarget.className += " active";
-            }            
+            }
+        </script>
+        <script>
+        function displayTables(){
+            if (window.location.href.indexOf("AdminDashCustomerServlet.do") > -1) {
+                openTab(event,'Customers');
+            }else if (window.location.href.indexOf("AdminDashBookingsServlet.do") > -1) {
+            
+                openTab(event,'Bookings');
+            
+            }
+
+        }
+        window.onload = displayTables;
         </script>
 			
     </body>

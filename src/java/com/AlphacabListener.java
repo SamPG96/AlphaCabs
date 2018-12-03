@@ -13,7 +13,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.ServletContext;
-import model.UserManager;
 
 /**
  * Web application lifecycle listener.
@@ -29,9 +28,7 @@ public class AlphacabListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext sc = sce.getServletContext();
 
-
         // Establish a connection to the database and store it
-
         String db = sc.getInitParameter("dbname");
         String dbpath = "jdbc:derby://localhost:1527/" + db.trim();
         String dbuser = sc.getInitParameter("dbuser");

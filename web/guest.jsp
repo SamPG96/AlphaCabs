@@ -17,7 +17,7 @@
      
         <div class="main">
             Please enter the following details:
-        <center><form method="POST" action="???.do">
+        <center><form method="POST" action="GuestServlet.do">
             <table>
                 <tr>
                 <td>First name:</td><td>Last name:</td>
@@ -38,7 +38,7 @@
                 
             </table>
                 </form>
-        <%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%>
+            <div class="errMessage"><%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%></div>
         </center>
             
             

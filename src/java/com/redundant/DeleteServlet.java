@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.usermanagement;
+package com.redundant;
 
 import java.io.IOException;
-//import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +19,8 @@ import model.Jdbc;
  *
  * @author me-aydin
  */
-public class UserServLet extends HttpServlet {
+@WebServlet(name = "Delete", urlPatterns = {"/Delete.do"})
+public class DeleteServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,52 +33,32 @@ public class UserServLet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String qry = "select * from users";
-       
-        HttpSession session = request.getSession();
-        
         response.setContentType("text/html;charset=UTF-8");
+           HttpSession session = request.getSession(false);
         
-        // Connect to database and use Jdbc to interface with it
-        Jdbc dbBean = new Jdbc();
-        dbBean.connect((Connection)request.getServletContext().getAttribute("connection"));
+        String [] query = new String[2];
+        query[0] = (String)request.getParameter("username");
+        query[1] = (String)request.getParameter("password");
+        //String insert = "INSERT INTO `Users` (`username`, `password`) VALUES ('";
+      
+        Jdbc jdbc = (Jdbc)session.getAttribute("dbbean"); 
         
-        // Store access to the database for the entire session
-        session.setAttribute("dbbean", dbBean);
-        
-        // Check is connection to database was successful
-        if((Connection)request.getServletContext().getAttribute("connection")==null)
+        if (jdbc == null)
             request.getRequestDispatcher("/conErr.jsp").forward(request, response);
         
-        // When which option was chosen and process request
-        if (request.getParameter("tbl").equals("List")){
-            // List users
-            String msg="No users";
-            
-            try {
-                msg = dbBean.retrieve(qry);
-            } catch (SQLException ex) {
-                Logger.getLogger(UserServLet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            request.setAttribute("query", msg);
-            request.getRequestDispatcher("/results.jsp").forward(request, response);
-        }
-        else if(request.getParameter("tbl").equals("NewUser")){
-            // Create a new user
-            request.getRequestDispatcher("/user.jsp").forward(request, response);
+        if(query[0]==null) {
+            request.setAttribute("message", "Username cannot be NULL");
         } 
-        else if(request.getParameter("tbl").equals("Update")){
-            // Update user details
-            request.getRequestDispatcher("/passwdChange.jsp").forward(request, response);    
+        else if(jdbc.exists(query[0])){
+            jdbc.delete(query[0]);
+            request.setAttribute("message", "User with "+query[0]+" username is deleted");
         }
         else {
-            // Delete user
-            request.setAttribute("msg", "del");
-            request.getRequestDispatcher("/user.jsp").forward(request, response); 
+            request.setAttribute("message", query[0]+" does not exist");
         }
+         
+        request.getRequestDispatcher("/user.jsp").forward(request, response);
     }
-      
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
