@@ -57,16 +57,6 @@ public class Jdbc {
     * Sets the ReturnSet to the rows in the DB that meet criteria
     * specified in the param.
      */
-    private void select(String tableName, long id) {
-        String query = "SELECT * FROM " + tableName + " WHERE ID = " + id + "";
-
-        this.executeSelect(query);
-    }
-
-    /*
-    * Sets the ReturnSet to the rows in the DB that meet criteria
-    * specified in the param.
-     */
     private void select(String tableName, String colName, String value,
             boolean usePar) {
         String query;
@@ -114,7 +104,7 @@ public class Jdbc {
     public ArrayList<HashMap<String, String>> retrieve(String tableName, long id) {
 
         //GET Qualifiing Rows from DB
-        select(tableName, id);
+        select(tableName, "Id", String.valueOf(id), false);
 
         return this.processRetrieve();
     }
@@ -282,7 +272,7 @@ public class Jdbc {
 
         try {
             ps = connection.prepareStatement(
-                    "INSERT INTO Drivers VALUES (?,?,?)",
+                    "INSERT INTO Drivers (FirstName, LastName, Registration) VALUES (?,?,?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write driver values to statement
@@ -329,42 +319,68 @@ public class Jdbc {
 
         try {
             ps = connection.prepareStatement(
-                    "INSERT INTO Bookings VALUES (?,?,?,?,?,?,?,?)",
+                    "INSERT INTO Bookings (CustomerId"
+                            + ", SourceAddress, DestinationAddress"
+                            + ", NumOfPassengers, DistanceKM, TimeBooked"
+                            + ", DepartureTime,  BookingStatusId)"
+                            + " VALUES (?,?,?,?,?,?,?,?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write booking values to statement
+            //CustomerID
             if (booking.getCustomer() != null) {
-                ps.setLong(1, booking.getCustomer().getCustomerId());
+                ps.setLong(1, booking.getCustomer().getId());
             } else {
                 throw new RuntimeException("Customer in Booking cannot be null");
             }
-            if (booking.getDriver() != null) {
-                ps.setLong(2, booking.getDriver().getDriverId());
-            }
+            //DriverID
+//            if (booking.getDriver() != null) {
+//                ps.setLong(2, booking.getDriver().getId());
+//            }
+            //SourceAddress
             if (booking.getSourceAddress() != null) {
-                ps.setString(3, booking.getSourceAddress().trim());
+                ps.setString(2, booking.getSourceAddress().trim());
             } else {
                 throw new RuntimeException("SourceAddress in Booking"
                         + " cannot be null");
             }
+            //DestinationAddress
             if (booking.getDestinationAddress() != null) {
-                ps.setString(4, booking.getDestinationAddress().trim());
+                ps.setString(3, booking.getDestinationAddress().trim());
             } else {
                 throw new RuntimeException("DestinationAddress in Booking"
                         + " cannot be null");
             }
+            //NumOfPassengers
+            if (booking.getNumOfPassengers() != 0) {
+                ps.setInt(4, booking.getNumOfPassengers());
+            } else {
+                throw new RuntimeException("NumOfPassengers in Booking"
+                        + " cannot be 0");
+            }
+            //DistanceKM
             if (booking.getDistanceKM() != 0.0) {
                 ps.setDouble(5, booking.getDistanceKM());
+            }else {
+                throw new RuntimeException("DistanceKM in Booking"
+                        + " cannot be 0.0");
             }
+            //TimeBooked
             if (booking.getTimeBooked() != null) {
                 ps.setTimestamp(6, booking.getTimeBooked());
             } else {
                 throw new RuntimeException("TimeBooked in Booking"
                         + " cannot be null");
             }
-            if (booking.getTimeArrived() != null) {
-                ps.setTimestamp(7, booking.getTimeArrived());
+            //DepartureTime
+            if (booking.getDepartureTime()!= null) {
+                ps.setTimestamp(7, booking.getDepartureTime());
             }
+            //ArrivalTime
+//            if (booking.getTimeArrived() != null) {
+//                ps.setTimestamp(9, booking.getTimeArrived());
+//            }
+            //BookingStatus
             if (booking.getBookingStatus() != null) {
                 ps.setLong(8, booking.getBookingStatus().getId());
             } else {
@@ -594,12 +610,12 @@ public class Jdbc {
 
             //Write booking values to statement
             if (booking.getCustomer() != null) {
-                ps.setLong(1, booking.getCustomer().getCustomerId());
+                ps.setLong(1, booking.getCustomer().getId());
             } else {
                 throw new RuntimeException("Customer in Booking cannot be null");
             }
             if (booking.getDriver() != null) {
-                ps.setLong(2, booking.getDriver().getDriverId());
+                ps.setLong(2, booking.getDriver().getId());
             }
             if (booking.getSourceAddress() != null) {
                 ps.setString(3, booking.getSourceAddress().trim());

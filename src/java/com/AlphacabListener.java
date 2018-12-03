@@ -13,7 +13,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.ServletContext;
-import model.UserManager;
 
 /**
  * Web application lifecycle listener.
@@ -40,8 +39,10 @@ public class AlphacabListener implements ServletContextListener {
             conn = DriverManager.getConnection(dbpath, dbuser, dbpass);
 
         } catch (ClassNotFoundException | SQLException e) {
+
             // unable to connect to database 
             sc.setAttribute("dBConnectionError", e);
+
         }
         sc.setAttribute("connection", conn);
     }

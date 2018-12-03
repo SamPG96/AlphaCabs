@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.usermanagement;
+package com.redundant;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +17,7 @@ import model.Jdbc;
  *
  * @author me-aydin
  */
-@WebServlet(name = "Delete", urlPatterns = {"/Delete.do"})
-public class DeleteServlet extends HttpServlet {
+public class NewUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,7 +31,8 @@ public class DeleteServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-           HttpSession session = request.getSession(false);
+        
+        HttpSession session = request.getSession(false);
         
         String [] query = new String[2];
         query[0] = (String)request.getParameter("username");
@@ -46,15 +44,15 @@ public class DeleteServlet extends HttpServlet {
         if (jdbc == null)
             request.getRequestDispatcher("/conErr.jsp").forward(request, response);
         
-        if(query[0]==null) {
+        if(query[0].equals("") ) {
             request.setAttribute("message", "Username cannot be NULL");
         } 
         else if(jdbc.exists(query[0])){
-            jdbc.delete(query[0]);
-            request.setAttribute("message", "User with "+query[0]+" username is deleted");
+            request.setAttribute("message", query[0]+" is already taken as username");
         }
         else {
-            request.setAttribute("message", query[0]+" does not exist");
+            jdbc.insert(query);
+            request.setAttribute("message", query[0]+" is added");
         }
          
         request.getRequestDispatcher("/user.jsp").forward(request, response);

@@ -4,7 +4,6 @@
     Author     : 
 --%>
 
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,6 +12,7 @@
          <link rel="stylesheet" type="text/css" href="stylesheet.css">
         <title>Login</title>
     </head>
+    <jsp:include page="/common/head.jsp"/>
     
        <div class="main">
         <h2>Login:</h2>
@@ -34,7 +34,7 @@
             </table>
         </form>
         
-        <%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%>
+        <div class="errMessage"><%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%></div>
     </div>
     
     

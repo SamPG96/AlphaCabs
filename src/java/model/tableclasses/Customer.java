@@ -10,6 +10,7 @@ package model.tableclasses;
  * @author Conor
  */
 public class Customer {
+    public static final String TABLE_NAME_CUSTOMERS = "Customers";
     private long id;
     private String firstName;
     private String lastName;

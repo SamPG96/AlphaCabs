@@ -5,7 +5,7 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
-    <jsp:include page="head.jsp"/>
+    <%--<jsp:include page="head.jsp"/>--%>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
@@ -20,5 +20,5 @@ and open the template in the editor.
            </div>
         
     
-    <jsp:include page="foot.jsp"/>
+    <%--<jsp:include page="foot.jsp"/>--%>
 </html>
