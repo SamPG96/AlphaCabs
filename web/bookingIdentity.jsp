@@ -16,10 +16,11 @@
     <jsp:include page="/common/head.jsp"/>
      
         <div class="main">
-        
+       
+       <!--Return back to the booking servlet if the customer signs in and ensure
+       the logging in process only allows users of type customers to login.-->
        <jsp:include page="login.jsp"/>
        <div class="line"></div>
-       
       
        <center><a href="guest.jsp" class="button">Book as guest</a>
        <a href="register.jsp" class="button">Book with a new AlphaCabs account</a></center>

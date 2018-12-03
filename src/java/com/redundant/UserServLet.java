@@ -3,10 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.usermanagement;
+package com.redundant;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +22,7 @@ import model.Jdbc;
  *
  * @author me-aydin
  */
-public class UpdateServlet extends HttpServlet {
+public class UserServLet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,32 +35,52 @@ public class UpdateServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        String qry = "select * from users";
        
-         HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         
-        Jdbc jdbc = (Jdbc)session.getAttribute("dbbean"); 
-        if (jdbc == null)
+        response.setContentType("text/html;charset=UTF-8");
+        
+        // Connect to database and use Jdbc to interface with it
+        Jdbc dbBean = new Jdbc();
+        dbBean.connect((Connection)request.getServletContext().getAttribute("connection"));
+        
+        // Store access to the database for the entire session
+        session.setAttribute("dbbean", dbBean);
+        
+        // Check is connection to database was successful
+        if((Connection)request.getServletContext().getAttribute("connection")==null)
             request.getRequestDispatcher("/conErr.jsp").forward(request, response);
-        else {
-            String [] query = new String[3];
         
-            query[0] = (String)request.getParameter("username");
-            query[1] = (String)request.getParameter("password");
-            query[2] = (String)request.getParameter("newpasswd");  
+        // When which option was chosen and process request
+        if (request.getParameter("tbl").equals("List")){
+            // List users
+            String msg="No users";
             
-            if(!query[1].trim().equals(query[2].trim())) {
-                request.setAttribute("msg", "Your two passwords are not the same. </br> Please make sure you confirm the password</br>");
-                request.getRequestDispatcher("/passwdChange.jsp").forward(request, response); 
+            try {
+                msg = dbBean.retrieve(qry);
+            } catch (SQLException ex) {
+                Logger.getLogger(UserServLet.class.getName()).log(Level.SEVERE, null, ex);
             }
-             else {
-                jdbc.update(query);
-                
-                request.setAttribute("msg", ""+query[0]+"'s passwd is changed</br>");
-                request.getRequestDispatcher("/passwdChange.jsp").forward(request, response);
-            }
+            
+            request.setAttribute("query", msg);
+            request.getRequestDispatcher("/results.jsp").forward(request, response);
+        }
+        else if(request.getParameter("tbl").equals("NewUser")){
+            // Create a new user
+            request.getRequestDispatcher("/user.jsp").forward(request, response);
+        } 
+        else if(request.getParameter("tbl").equals("Update")){
+            // Update user details
+            request.getRequestDispatcher("/passwdChange.jsp").forward(request, response);    
+        }
+        else {
+            // Delete user
+            request.setAttribute("msg", "del");
+            request.getRequestDispatcher("/user.jsp").forward(request, response); 
         }
     }
+      
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

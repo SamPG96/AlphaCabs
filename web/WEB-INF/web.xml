@@ -17,15 +17,15 @@
     </welcome-file-list>
     <servlet>
         <servlet-name>UserServLet</servlet-name>
-        <servlet-class>com.usermanagement.UserServLet</servlet-class>
+        <servlet-class>com.redundant.UserServLet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>NewUser</servlet-name>
-        <servlet-class>com.usermanagement.NewUserServlet</servlet-class>
+        <servlet-class>com.redundant.NewUserServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Update</servlet-name>
-        <servlet-class>com.usermanagement.UpdateServlet</servlet-class>
+        <servlet-class>com.redundant.UpdateServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
@@ -54,6 +54,10 @@
     <servlet>
         <servlet-name>AdminDashCustomerServlet</servlet-name>
         <servlet-class>com.AdminDashCustomerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GuestServlet</servlet-name>
+        <servlet-class>com.GuestServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminDashUserServlet</servlet-name>
@@ -94,6 +98,10 @@
     <servlet-mapping>
         <servlet-name>AdminDashCustomerServlet</servlet-name>
         <url-pattern>/AdminDashCustomerServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GuestServlet</servlet-name>
+        <url-pattern>/GuestServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminDashUserServlet</servlet-name>

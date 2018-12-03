@@ -33,7 +33,7 @@
                     <tr>
                         <td>Date:</td><td>Time:</td><td>Passengers:</td>
                     </tr><tr>
-                        <td><input type="date" name="date"/></td><td><input type="time" name="time"/></td><td><input type="value" name="passengers"/></td>
+                        <td><input type="date" name="date"/></td><td><input type="time" name="time"/></td><td><input type="number" name="passengers"/></td>
                     </tr><tr>
                         <td></td><td><input type="submit" value="Submit"/></td><td></td>
                     </tr>

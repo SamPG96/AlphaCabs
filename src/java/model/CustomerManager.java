@@ -14,9 +14,9 @@ import model.tableclasses.Customer;
  * @author Sam
  */
 public class CustomerManager {
-    public static int NO_CUSTOMER_FIRST_NAME_ERR_CODE = -10;
-    public static int NO_CUSTOMER_LAST_NAME_ERR_CODE = -11;
-    public static int NO_CUSTOMER_ADDRESS_ERR_CODE = -12;
+    public static final int NO_CUSTOMER_FIRST_NAME_ERR_CODE = -10;
+    public static final int NO_CUSTOMER_LAST_NAME_ERR_CODE = -11;
+    public static final int NO_CUSTOMER_ADDRESS_ERR_CODE = -12;
     /*
      * Creates a new customer entry in the database and generates them a user
      * account.
@@ -24,27 +24,38 @@ public class CustomerManager {
     public static long addNewCustomer(String firstName, String lastName,
             String address, Jdbc jdbc){
         Customer customer;
-        long customerId;
+        long customerId; 
+        int err;
         
-        // Check parameters for a new customer.
-        if (firstName.isEmpty()){
-            return NO_CUSTOMER_FIRST_NAME_ERR_CODE;
+        // Validate parameters for the new customer entry
+        err = validateNewCustomerAttribs(firstName, lastName, address);
+        if (err < 0){
+            return err;
         }
-        else if (lastName.isEmpty()){
-            return NO_CUSTOMER_LAST_NAME_ERR_CODE;
-        }
-        else if (address.isEmpty()){
-            return NO_CUSTOMER_ADDRESS_ERR_CODE;
-        }     
-        
-        // All parameters are valid if this point is reached.
-        
         // Create an entry in the database for the new customer
         customer = new Customer(firstName, lastName, address);
         customerId = jdbc.insert(customer);
         customer.setId(customerId);
         
         return customerId;
+    }
+ 
+    /*
+     * Validates parameters required for a new customer entry.
+     */
+    public static int validateNewCustomerAttribs(String firstName,
+            String lastName, String address){
+        // Check parameters for a new customer.
+        if (firstName == null || firstName.isEmpty()){
+            return NO_CUSTOMER_FIRST_NAME_ERR_CODE;
+        }
+        else if (lastName == null || lastName.isEmpty()){
+            return NO_CUSTOMER_LAST_NAME_ERR_CODE;
+        }
+        else if (address == null || address.isEmpty()){
+            return NO_CUSTOMER_ADDRESS_ERR_CODE;
+        }    
+        return 0;
     }
     
     /*
