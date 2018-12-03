@@ -129,7 +129,7 @@ public class BookingFormServlet extends HttpServlet {
             // booking object and validate its entry.
             if (session.getAttribute("cachedBooking") == null) {
                 // Generate a booking object and validate user entry
-                booking = bookingMan.generateNewBooking(
+                booking = bookingMan.addNewBooking(
                         customer,
                         "false", // TODO: add support for arg in JSP
                         request.getParameter("source"),
@@ -176,7 +176,7 @@ public class BookingFormServlet extends HttpServlet {
         // Generate a partial booking object that does not include any
         // details about the customer. Customer details will be added to the
         // booking once they are known.
-        booking = bookingMan.generateNewBooking(
+        booking = bookingMan.addNewBooking(
                 request.getParameter("source"),
                 request.getParameter("destination"),
                 request.getParameter("passengers"),

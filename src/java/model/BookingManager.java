@@ -30,13 +30,13 @@ public class BookingManager {
     //Driver Assignment Error Codes
     public static final int ERR_DRIVER_NULL = -1,
             ERR_BOOKING_NULL = -2;
-
-    private int error;
+    
+    public int error;
 
     public Booking generateNewBooking(Customer customer,
             String isSourceSameAsHome, String sourceAddress,
             String destinationAddress, String numOfPassengers,
-            String departureDate, String departureTime) {
+            String departureDate, String departureTime, Jdbc jdbc) {
 
         //SET appropriate error value and return null if a param is null or empty
         if (customer == null) {
@@ -79,7 +79,7 @@ public class BookingManager {
         //Distance KM
         double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
         //Charge
-        double charge = calcCharge(distanceKM);
+        double charge = calcCharge(distanceKM, jdbc);
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
@@ -93,7 +93,7 @@ public class BookingManager {
 
     public Booking generateNewBooking(String sourceAddress,
             String destinationAddress, String numOfPassengers,
-            String departureDate, String departureTime) {
+            String departureDate, String departureTime, Jdbc jdbc) {
 
         //SET appropriate error value and return null if a param is null or empty
         if (sourceAddress == null || sourceAddress.isEmpty()) {
@@ -123,7 +123,7 @@ public class BookingManager {
         //Distance KM
         double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
         //Charge
-        double charge = calcCharge(distanceKM);
+        double charge = calcCharge(distanceKM, jdbc);
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
@@ -278,16 +278,14 @@ public class BookingManager {
                 bookingStatus);
     }
 
-    public Booking assignDriver(long driverId, long bookingId, Jdbc jdbc) {
+    public static long assignDriver(long driverId, long bookingId, Jdbc jdbc) {
         Driver driver = DriverManager.getDriver(driverId, jdbc);
         if (driver == null) {
-            this.error = ERR_DRIVER_NULL;
-            return null;
+            return ERR_DRIVER_NULL;
         }
         Booking booking = getBooking(jdbc, bookingId);
         if (booking == null) {
-            this.error = ERR_BOOKING_NULL;
-            return null;
+            return ERR_BOOKING_NULL;
         }
 
         booking.setDriver(driver);
@@ -296,23 +294,33 @@ public class BookingManager {
 
         booking = getBooking(jdbc, updBookingId);
         if (booking == null) {
-            this.error = ERR_BOOKING_NULL;
-            return null;
+            return ERR_BOOKING_NULL;
         }
 
-        return booking;
+        return jdbc.update(booking);
     }
 
-    private double calcDistanceKM(String source, String dest) {
+    private static double calcDistanceKM(String source, String dest) {
         //TODO with Google Maps API
         return 10.0;
     }
 
-    private double calcCharge(double distanceKM){
-        int pricePerKM = 0;
-        return distanceKM * pricePerKM;
+    private static double calcCharge(double distanceKM, Jdbc jdbc){
+        int shortDistance = AdminManager.getShortDistance(jdbc);
+        double shortDistPrice = AdminManager.getShortDistPrice(jdbc);
+        
+        if(calcKMToMiles(distanceKM) > shortDistance){
+            double pricePerKM = AdminManager.getPricePerKM(jdbc);
+            return shortDistPrice + distanceKM * pricePerKM;
+        }else{
+            return shortDistPrice;
+        }
     }
     
+    private static double calcKMToMiles(double km){
+        return km * 0.621371;
+    }
+
     public int getError() {
         return error;
     }
@@ -320,5 +328,6 @@ public class BookingManager {
     public void setError(int error) {
         this.error = error;
     }
-
+    
+    
 }
