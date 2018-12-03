@@ -12,6 +12,9 @@
         <param-name>dbpass</param-name>
         <param-value>ateam</param-value>
     </context-param>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
     <servlet>
         <servlet-name>UserServLet</servlet-name>
         <servlet-class>com.usermanagement.UserServLet</servlet-class>
@@ -52,6 +55,10 @@
         <servlet-name>AdminDashCustomerServlet</servlet-name>
         <servlet-class>com.AdminDashCustomerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminDashUserServlet</servlet-name>
+        <servlet-class>com.AdminDashUserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserServLet</servlet-name>
         <url-pattern>/UserService.do</url-pattern>
@@ -87,6 +94,10 @@
     <servlet-mapping>
         <servlet-name>AdminDashCustomerServlet</servlet-name>
         <url-pattern>/AdminDashCustomerServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashUserServlet</servlet-name>
+        <url-pattern>/AdminDashUserServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
