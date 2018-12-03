@@ -405,10 +405,5 @@ public class UserManager {
         // username
         return results.get(0).get("USERNAME");
     }
-    /*
-     * Queries the database to check the status of a user account 
-     */
-//    public static int getUserAccountStatus(User user, Jdbc jdbc){
-//        
-//    }
+
 }

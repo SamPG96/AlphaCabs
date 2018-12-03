@@ -31,6 +31,7 @@
                                 <tr> 
                     <td> <input type="submit" value="Login"/></td>
                 </tr>
+                <input type='hidden' name='reDirectOnSuccess' value=${param.reDirectOnSuccess} />
             </table>
         </form>
         

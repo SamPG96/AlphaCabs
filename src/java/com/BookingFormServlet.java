@@ -71,22 +71,16 @@ public class BookingFormServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String prevServPath;
         HttpSession session = request.getSession();
-
-        // Fetch the caller URL
-        String[] prevURLPath =((String)request.getHeader("referer")).split("/");
-        prevServPath = prevURLPath[prevURLPath.length - 1];
+        String prevServPath;
         
         // Fully process booking if the customer entity is known. Otherwise
         // only validate user entry and then move on to another page to identify
         // the customer. This servlet will be returned to once the customer has
-        // been identified. If prevServPath equals 'AlphaCabs' then this servlet
-        // has been called from the index.jsp. This mean no prior attempt has
-        // been made to identify the customer if they arent already signed in.
+        // been identified. The identity can be derived from a logged in customer
+        // or a cached customer ID.
         if (session.getAttribute("userID") != null ||
-                (prevServPath.equals("AlphaCabs") == false &&
-                 session.getAttribute("cachedCustomerID") != null)){
+                 session.getAttribute("cachedCustomerID") != null){
             processBookingWithIdentity(request, response, session);
         }
         else {
