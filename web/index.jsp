@@ -34,12 +34,11 @@
         <%@include file="driverDash.jsp"%>
         <%
             }
-            if (userType.getId() == 4) {
+            if(userType.getId() == 4){ 
         %>
         <%@include file="customerDash.jsp"%>
         <%
             }
-
         } else {
         %>
         <jsp:include page="booking.jsp"/>
