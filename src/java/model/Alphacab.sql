@@ -5,7 +5,7 @@ DROP Table UserStatus;
 DROP Table UserType;
 DROP Table Drivers;
 DROP Table Customers;
-DROP Table Configuration;
+DROP Table Configurations;
 
 -- --------------------------------------------------------
 CREATE TABLE Customers (
@@ -160,4 +160,5 @@ CREATE TABLE Configurations (
 INSERT INTO Configurations (ConfigName, ConfigValue) VALUES
 ('VAT', '20'),
 ('PricePerKM', '1'),
-('ShortDistPriceIncrease', '2');
+('ShortDistPrice', '2'),
+('ShortDistance', '5');
