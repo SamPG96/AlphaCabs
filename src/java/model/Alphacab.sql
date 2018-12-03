@@ -148,7 +148,7 @@ INSERT INTO Bookings (CustomerId, DriverId, SourceAddress, DestinationAddress, N
 (6, 1, 'Finchley, London', 'King''s Cross, London', 1, 5.0, 5.0, '2015-11-02 09:22:18', '2015-11-05 09:00:00', NULL, 1);
 
 -- --------------------------------------------------------
-CREATE TABLE Configuration (
+CREATE TABLE Configurations (
   Id int NOT NULL GENERATED ALWAYS AS IDENTITY
         (START WITH 1, INCREMENT BY 1),
   ConfigName varchar(255),
@@ -157,7 +157,7 @@ CREATE TABLE Configuration (
 );
 
 
-INSERT INTO Configuration (ConfigName, ConfigValue) VALUES
+INSERT INTO Configurations (ConfigName, ConfigValue) VALUES
 ('VAT', '20'),
 ('PricePerKM', '1'),
 ('ShortDistPriceIncrease', '2');
