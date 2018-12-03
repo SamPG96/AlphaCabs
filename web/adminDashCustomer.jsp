@@ -11,18 +11,20 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
+        
     </head>
     <body>
-             <form method="GET" action="AdminDashCustomerServlet.do">
-
-            <table class="tableLine">
-                <tr><input type="submit" value="Display all customers"/></tr>                
+        <form method="GET" action="AdminDashCustomerServlet.do">
+        
+        <div class="mb-1">    
+        <input type="submit" value="Display all customers"/>
+        </div>
+            <table class="table table-hover">               
             
                <c:out value="customerTable"/>
                        ${customerTable}
             </table>
-
-                   </form>
-            <jsp:include page="/common/foot.jsp"/>
+        </form>
+    <jsp:include page="/common/foot.jsp"/>
     </body>
 </html>
