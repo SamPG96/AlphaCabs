@@ -29,17 +29,17 @@
                 
               <b>Details of the trip</b> <br><br>
            
-           <b>Name:</b> <%=booking.getCustomer().getLastName() %> <br><br>
+           <b>Name:</b> <%=booking.getCustomer().getFirstName() %> <%=booking.getCustomer().getLastName() %> <br><br>
            <b>Source:</b> <%=booking.getSourceAddress() %><br><br>
            <b>Destination:</b> <%=booking.getDestinationAddress()%><br><br>
            <b>Passengers:</b> <%=booking.getNumOfPassengers()%><br><br>
            
                      <div class="line"></div><br>
-            <b>Miles:</b><br><br>
-            <b>Price per mile:</b><br><br>
-            <b>VAT:</b><br><br>
-            <b>Total including </b><<br><br>
-              <b>  VAT:</b><br><br>
+            <b>Miles:</b> <br><br>
+            <b>Price per mile:</b> <br><br>
+            <b>VAT:</b> <br><br>
+            <b>Total including </b> <br><br>
+             <b>  VAT:</b> <br><br>
             
               
              

@@ -10,13 +10,33 @@ and open the template in the editor.
         <title>Driver Dashboard</title>
 
     </head>
-    <body>
-        <h1>DRIVER Dashboard</h1>
-        
-        Here lies the information to your salvation...
-        
-        <br>ACTIVE JOBS
+   
+    <form method="GET" action="DriverDashServlet.do">
 
-    </body>
-    <jsp:include page="/common/foot.jsp"/>
+            <table class="tableLine">
+                <tr><input type="submit" value="Display Bookings"/></tr>                
+            
+               <c:out value="bookingsTable"/>
+                       ${bookingsTable}
+            
+            
+            </table>
+
+                   </form>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   <% //driver manager update booking status = 4 %>
+    
+    
+    
 </html>
