@@ -72,7 +72,6 @@ public class BookingFormServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String prevServPath;
         
         // Fully process booking if the customer entity is known. Otherwise
         // only validate user entry and then move on to another page to identify
@@ -130,7 +129,8 @@ public class BookingFormServlet extends HttpServlet {
                         request.getParameter("destination"),
                         request.getParameter("passengers"),
                         request.getParameter("date"),
-                        request.getParameter("time"));
+                        request.getParameter("time"),
+                        jdbc);
 
                 if (booking == null) {
                     request.setAttribute("errMsg",
@@ -175,7 +175,8 @@ public class BookingFormServlet extends HttpServlet {
                 request.getParameter("destination"),
                 request.getParameter("passengers"),
                 request.getParameter("date"),
-                request.getParameter("time"));            
+                request.getParameter("time"),
+                (Jdbc) session.getAttribute("dbbean"));
 
         // If errors exist with the booking entry, display them. Otherwise
         // move to a page that allows the customer to identiy them selves
