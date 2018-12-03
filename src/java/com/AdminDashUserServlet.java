@@ -7,16 +7,12 @@ package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.Statement;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.CustomerManager;
-import model.UserManager;
 import model.Jdbc;
 import model.tableclasses.Customer;
 
@@ -24,7 +20,7 @@ import model.tableclasses.Customer;
  *
  * @author jakec
  */
-public class AdminDashCustomerServlet extends HttpServlet {
+public class AdminDashUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,8 +33,6 @@ public class AdminDashCustomerServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -53,37 +47,40 @@ public class AdminDashCustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          
-           processRequest(request, response);
+                processRequest(request, response);
 
         HttpSession session = request.getSession(false);
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
         //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
 
-        Customer[] aCustomer = CustomerManager.getAllCustomers(jdbc);
+        User[] aUser = UserManager.getAllUsers(jdbc);
         
             
         String message = "<tr>\n"
-                + "                    <th>First name</th>\n"
-                + "                    <th>Last name</th>\n"
-                + "                    <th>Address</th>\n"                   
+                + "                    <th>Username</th>\n"
+                + "                    <th>UserType</th>\n"
+                + "                    <th>CustomerId</th>\n"
+                + "                    <th>DriverId</th>\n"
+                + "                    <th>UserStatus</th>\n"
                 + "                </tr>";
         
         
-        for (Customer customer:aCustomer) {
+        for (User user:aUser) {
             
             
             
             message +=  "<tr>";
-            message +="<td>" + customer.getFirstName() + "</td>";
-            message +="<td>" + customer.getLastName() + "</td>";
-            message +="<td>" + customer.getAddress() + "</td>";
+            message +="<td>" + user.getUserName() + "</td>";
+            message +="<td>" + user.getUserType() + "</td>";
+            message +="<td>" + user.getCustomerId() + "</td>";
+            message +="<td>" + user.getDriverId() + "</td>";
+            message +="<td>" + user.getUserStatus() + "</td>";
           
             message += "</tr>";
         }
 
-        request.setAttribute("customerTable", message);
+        request.setAttribute("userTable", message);
 
      
 //
@@ -106,35 +103,6 @@ public class AdminDashCustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-         ServletContext sc = request.getServletContext();
-        
-//        // Go straight to an error page if their where problems connecting to
-//        // the DB.
-//        if (sc.getAttribute("dBConnectionError") != null){
-//            request.getRequestDispatcher("conErr.jsp").forward(request, response);
-//        }
-//        
-//        // Connect Jdbc to the DB
-//        Jdbc dbBean = new Jdbc();
-//        dbBean.connect((Connection)sc.getAttribute("connection"));
-//         // Values from Booking.jsp
-//        
-//        if (request.getAttribute("buttonHit").equals("approve")) {
-//          int CustomertoApprove = UserManager.approveUser(
-//                request.getParameter("userId"),
-//                dbBean);
-//          
-//          request.getRequestDispatcher("AdminDashCustomer.jsp").forward(request, response);
-//          
-//        }else if (request.getAttribute("buttonHit").equals("edit")){
-//            int CustomertoEdit = UserManager.editUser(
-//                request.getParameter("userId"),
-//                dbBean);
-//            
-//            request.getRequestDispatcher("EditCustomer.jsp").forward(request, response);
-//        }
-        
     }
 
     /**

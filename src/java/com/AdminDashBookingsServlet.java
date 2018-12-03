@@ -112,7 +112,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
 //
 //        request.setAttribute("bookingsTable", message + "</br>");
-        request.getRequestDispatcher("/adminDashBookings.jsp").forward(request, response);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
 
         //BUTTON PUSHES - not activity
         //getFullBooking constructor to be made

@@ -38,7 +38,6 @@
         %>
                     <%@include file="customerDash.jsp"%>
         <%
-                }
             } else {
                 // Reset cached objects
                 session.removeAttribute("cachedCustomerID");
