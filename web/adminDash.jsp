@@ -12,6 +12,7 @@
         <title>Admin Dashboard</title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
         <link rel="stylesheet" type="text/css" href="dashboards.css">
+        
     </head>
     <body>
         <h1>ADMIN Dashboard</h1>
@@ -19,7 +20,8 @@
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'Drivers')">Drivers</button>
             <button class="tablinks" onclick="openTab(event, 'Bookings')">Bookings</button>
-            <button class="tablinks" onclick="openTab(event, 'Details')">Customers</button>
+            <button class="tablinks" onclick="openTab(event, 'Customers')">Customers</button>
+            <button class="tablinks" onclick="openTab(event, 'Users')">Users</button>
             <button class="tablinks" onclick="openTab(event, 'Report')">Daily Report</button>
             <button class="tablinks" onclick="openTab(event, 'Settings')">Settings</button>        
         </div>
@@ -34,11 +36,15 @@
             <%@include file='adminDashBookings.jsp' %>
         </div>
 
-        <div id="Details" class="tabcontent">
-            <h3>Change User Details</h3>
+        <div id="Customers" class="tabcontent">
+            <h3>Change Customer Details</h3>
             <%@include file='adminDashCustomer.jsp' %>
         </div>        
-             
+        
+        <div id="Users" class="tabcontent">
+            <h3>Approve Users</h3>
+            <%@include file='adminDashUsers.jsp' %>
+        </div>
         
         <div id="Report" class="tabcontent">
             <h3>View Daily Report</h3>
@@ -70,7 +76,7 @@
         <script>
         function displayTables(){
             if (window.location.href.indexOf("AdminDashCustomerServlet.do") > -1) {
-                openTab(event,'Details');
+                openTab(event,'Customers');
             }else if (window.location.href.indexOf("AdminDashBookingsServlet.do") > -1) {
             
                 openTab(event,'Bookings');
