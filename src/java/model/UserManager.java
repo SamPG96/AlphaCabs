@@ -329,6 +329,20 @@ public class UserManager {
         return generateUserObj(userDBInfo, jdbc);
     }
     
+    /*
+    * Retrieve a user by a driver ID.
+    */
+    public static User getUserByDriverId(long driverId, Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        
+        results = jdbc.retrieve(TABLE_NAME_USERS, "DRIVERID", driverId);
+        
+        return getUser(Long.valueOf(results.get(0).get("ID")), jdbc);
+    }
+    
+    /*
+    * Generates a user object from the output of the DB
+    */
     private static User generateUserObj(HashMap<String, String> dbMap, Jdbc jdbc){
         User user;
         
@@ -375,12 +389,12 @@ public class UserManager {
     /*
     * Retrieves the username of a driver.
     */
-    public static String getUsernameForDriver(long customerId, Jdbc jdbc){
+    public static String getUsernameForDriver(long driverId, Jdbc jdbc){
         ArrayList<HashMap<String, String>> results;
         results = jdbc.retrieve(
                 TABLE_NAME_USERS,
-                "CUSTOMERID",
-                customerId);
+                "DRIVERID",
+                driverId);
         
         if (results.isEmpty()){
             // Cannot find a user with the given customerID
