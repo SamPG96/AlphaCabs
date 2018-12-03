@@ -6,9 +6,11 @@
 package com;
 
 import com.AlphacabListener;
+import com.fasterxml.classmate.GenericType;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Jdbc;
 import model.UserManager;
+import model.tableclasses.GenericItem;
 import model.tableclasses.User;
 
 
@@ -69,7 +72,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        ArrayList<Integer> allowedUserTypes;
+        ArrayList<GenericItem> allowedUserTypes;
         String nextPageAfterLogin;
         long loggedInUserID;
         String[] prevURLPath;
@@ -94,22 +97,20 @@ public class LoginServlet extends HttpServlet {
         // The page to go to after login and the types of users login will
         // allow is dependant upon where login was called. Default operation is
         // to return to 'index.jsp' and allow users of any type to login
-        allowedUserTypes = new ArrayList();
         if (prevServName.equals("BookingFormServlet.do")){
             // Login is being called by the booking process. Once complete
             // the booking servlet should be returned to.
             nextPageAfterLogin = "BookingFormServlet.do";
             // Only allow customers to sign in
-            allowedUserTypes.add(4);
+            allowedUserTypes = new ArrayList();
+            allowedUserTypes.add(UserManager.getUserTypeObj(4, dbBean));
             
         }
         else{
             // Default action
             nextPageAfterLogin = "index.jsp";
             // Allow all user types to login
-            allowedUserTypes.add(1);
-            allowedUserTypes.add(2);
-            allowedUserTypes.add(4);
+            allowedUserTypes = new ArrayList<>(Arrays.asList(UserManager.getAllUserTypes(dbBean)));
         }
         
         // Attempt to login the user, -1 is returned if the password or
