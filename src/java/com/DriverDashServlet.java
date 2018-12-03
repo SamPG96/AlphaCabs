@@ -23,8 +23,11 @@ import javax.servlet.http.HttpSession;
 import model.Jdbc;
 import model.tableclasses.Booking;
 import model.BookingManager;
+import model.UserManager;
+import model.tableclasses.GenericItem;
 //import model.UserManagement;
 import model.tableclasses.User;
+
 /**
  *
  * @author aj2-spooner
@@ -43,7 +46,7 @@ public class DriverDashServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -59,13 +62,8 @@ public class DriverDashServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-    
-    
-    
-    
-    
-    
-    HttpSession session = request.getSession(false);
+
+        HttpSession session = request.getSession(false);
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
         //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
@@ -80,44 +78,68 @@ public class DriverDashServlet extends HttpServlet {
                 + "                    <th>Depature time</th>\n"
                 + "                    <th>Arrival time</th>\n"
                 + "                    <th>Customer lastname</th>\n"
-                 + "                    <th>Completed?</th>\n"
-                                + "                </tr>";
+                + "                    <th>Status</th>\n"
+                + "                </tr>";
+        User user = UserManager.getUser((long) session.getAttribute("userID"), jdbc);
+        long loggedInDriver = 0;
+        loggedInDriver = user.getDriverId();
 
         for (Booking booking : aBooking) {
-//IF driver id = session is
-            message += "<tr>";
-            message += "<td>" + booking.getSourceAddress() + "</td>";
-            message += "<td>" + booking.getDestinationAddress() + "</td>";
-            message += "<td>" + booking.getNumOfPassengers() + "</td>";
-            message += "<td>" + booking.getTimeBooked() + "</td>";
-            message += "<td>" + booking.getDepartureTime() + "</td>";
 
-            // Arrival time can be null, so handle this.
-            if (booking.getTimeArrived() == null){
-                message += "<td>N/A</td>";
+            if (loggedInDriver == booking.getDriver().getId()) {
+                message += "<tr>";
+                message += "<td>" + booking.getSourceAddress() + "</td>";
+                message += "<td>" + booking.getDestinationAddress() + "</td>";
+                message += "<td>" + booking.getNumOfPassengers() + "</td>";
+                message += "<td>" + booking.getTimeBooked() + "</td>";
+                message += "<td>" + booking.getDepartureTime() + "</td>";
+
+                // Arrival time can be null, so handle this.
+                if (booking.getTimeArrived() == null) {
+                    message += "<td>N/A</td>";
+                } else {
+                    message += "<td>" + booking.getTimeArrived() + "</td>";
+                }
+
+                message += "<td>" + booking.getCustomer().getLastName() + "</td>";
+
+                GenericItem bookingStatus = booking.getBookingStatus();
+                if (bookingStatus == null) {
+                    message += "<td>N/A</td>";
+
+                } else {
+    
+                    if (bookingStatus.getId() == 8 ) {
+
+                        message += "<td>" + "<button type=\"button\">Cancelled</button>" + "</td>";
+
+                    }
+                    
+                    if (bookingStatus.getId() == 4 ) {
+
+                        message += "<td>" + "Completed" + "</td>";
+
+                    }
+                    if (bookingStatus.getId() == 2 ) {
+
+                        message += "<td>" + "<button type=\"button\">Complete</button>" + "</td>";
+
+                    }
+                    if (bookingStatus.getId() == 1 ) {
+
+                        message += "<td>" + "<button type=\"button\">In Progress</button>" + "</td>";
+
+                    }
+                }
+                message += "</tr>";
             }
-            else{
-                message += "<td>" + booking.getTimeArrived() + "</td>";
-            }
-                
-            message += "<td>" + booking.getCustomer().getLastName() + "</td>";
-            
-            //If booking sta
-            
-            message += "<td>" + booking.getBookingStatus() + "</td>";
-           
-            
-            
-            message += "</tr>";
         }
-
         request.setAttribute("bookingsTable", message);
 
 //
 //        request.setAttribute("bookingsTable", message + "</br>");
         request.getRequestDispatcher("/driverDash.jsp").forward(request, response);
-
-    
+//JDBC.update 
     }
 
     /**

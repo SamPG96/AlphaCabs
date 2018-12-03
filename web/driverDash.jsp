@@ -28,15 +28,8 @@ and open the template in the editor.
     
     
     
-    
-    
-    
-    
-    
-    
-    
    <% //driver manager update booking status = 4 %>
     
-    
+    <jsp:include page="/common/foot.jsp"/>
     
 </html>
