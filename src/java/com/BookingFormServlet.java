@@ -100,6 +100,7 @@ public class BookingFormServlet extends HttpServlet {
     private void processBookingWithIdentity(HttpServletRequest request,
             HttpServletResponse response, HttpSession session) throws ServletException, IOException{
             Booking booking;
+            long bookingId;
             BookingManager bookingMan;
             Customer customer;
             Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
@@ -156,7 +157,8 @@ public class BookingFormServlet extends HttpServlet {
             }
             
             // Add booking to database and issue invoive
-            jdbc.insert(booking);
+            bookingId = jdbc.insert(booking);
+            booking.setId(bookingId);
             request.setAttribute("booking", booking);
             request.getRequestDispatcher("invoice.jsp").forward(request, response);        
     }

@@ -21,24 +21,25 @@
             
          
            
-<left> <%booking.getTimeBooked();%></left> <%-- DATE  ORDER ID--%><right>Order Reference: <%booking.getId();%></right>
+<div style="float:left;"> <%=booking.getTimeBooked()%></div> <div style="float:right;">Order Reference: <%=booking.getId()%>       </div><br>
             
-            <div class="line"></div>
+            <div class="line"></div><br>
               
-            <h2>Thank you for using Alphacabs</h2>
+            <h2>Thank you for using Alphacabs</h2> <br><br>
                 
-            <h3>   Details of the trip: <h3>
+              <b>Details of the trip</b> <br><br>
            
-           Name: <%booking.getCustomer().getLastName(); %>
-           Source: <%booking.getSourceAddress(); %>
-           Destination: <%booking.getDestinationAddress();%>
-           Passengers: <%booking.getNumOfPassengers();%>
+           <b>Name:</b> <%=booking.getCustomer().getLastName() %> <br><br>
+           <b>Source:</b> <%=booking.getSourceAddress() %><br><br>
+           <b>Destination:</b> <%=booking.getDestinationAddress()%><br><br>
+           <b>Passengers:</b> <%=booking.getNumOfPassengers()%><br><br>
            
-                     <div class="line"></div>
-            Miles:
-            Price per mile:
-            VAT:
-            Total including VAT:
+                     <div class="line"></div><br>
+            <b>Miles:</b><br><br>
+            <b>Price per mile:</b><br><br>
+            <b>VAT:</b><br><br>
+            <b>Total including </b><<br><br>
+              <b>  VAT:</b><br><br>
             
               
              
