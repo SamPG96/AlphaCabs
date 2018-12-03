@@ -68,7 +68,4 @@ public class AdminManager {
         return -1;
     }
     
-    public static void UpdateVATValue(double VAT, Jdbc jdbc){
-        
-    }
 }
