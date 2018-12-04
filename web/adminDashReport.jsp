@@ -8,7 +8,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        
     </head>
     <body>
         <form method="GET" action="AdminDashReportServlet.do">
