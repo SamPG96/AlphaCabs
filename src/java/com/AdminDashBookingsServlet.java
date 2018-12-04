@@ -60,12 +60,24 @@ public class AdminDashBookingsServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
+        String x = request.getParameter("checkOutstanding");
+        if (x == null) {
+            x = "off";
+        }
+
         HttpSession session = request.getSession(false);
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
         //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
 
-        Booking[] aBooking = BookingManager.getBookings(jdbc);
+        //DISPLAY All Bookings
+        Booking[] bookings;
+
+        if (x.equals("on")) {
+            bookings = BookingManager.getBookings(jdbc, 1);
+        } else {
+            bookings = BookingManager.getBookings(jdbc);
+        }
 
         String message = "<tr>\n"
                 + "                    <th>Source address</th>\n"
@@ -78,7 +90,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
                 + "                    <th>Driver</th>\n"
                 + "                </tr>";
 
-        for (Booking booking : aBooking) {
+        for (Booking booking : bookings) {
 
             message += "<tr>";
             message += "<td>" + booking.getSourceAddress() + "</td>";
@@ -88,41 +100,28 @@ public class AdminDashBookingsServlet extends HttpServlet {
             message += "<td>" + booking.getDepartureTime() + "</td>";
 
             // Arrival time can be null, so handle this.
-            if (booking.getTimeArrived() == null){
+            if (booking.getTimeArrived() == null) {
                 message += "<td>N/A</td>";
-            }
-            else{
+            } else {
                 message += "<td>" + booking.getTimeArrived() + "</td>";
             }
-                
+
             message += "<td>" + booking.getCustomer().getLastName() + "</td>";
-            
+
             // Driver ID can be null if no driver assigned, so handle this.
-            if (booking.getDriver() == null){
+            if (booking.getDriver() == null) {
                 message += "<td>Not assigned</td>";
-            }
-            else{
+            } else {
                 message += "<td>" + booking.getDriver().getLastName() + "</td>";
             }
-            
+
             message += "</tr>";
         }
 
         request.setAttribute("bookingsTable", message);
 
-//
-//        request.setAttribute("bookingsTable", message + "</br>");
         request.getRequestDispatcher("index.jsp").forward(request, response);
 
-        //BUTTON PUSHES - not activity
-        //getFullBooking constructor to be made
-//        Booking booking = BookingManager.getFullBooking(
-//        request.getParameter("SourceAddress"));
-//        request.getParameter("DestinationAddress");
-//        request.getParameter("DistanceKM");
-//        request.getParameter("TimeBooked");
-//        request.getParameter("Number Of Passengers");
-//        request.getParameter("BookingStatusId");
     }
 
     /**

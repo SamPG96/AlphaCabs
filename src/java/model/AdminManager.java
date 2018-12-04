@@ -36,7 +36,7 @@ public class AdminManager {
         Configuration[] configs = getConfigurations(jdbc);
         
         for(Configuration config : configs){
-            if(config.getConfigName().equals("PricePerKM")){
+            if(config.getConfigName().equals("PricePerMile")){
                 return Double.parseDouble(config.getConfigValue());
             }
         }

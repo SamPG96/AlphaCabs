@@ -44,7 +44,4 @@
               
              
         </div>
-    
-    
-    <jsp:include page="/common/foot.jsp"/>
 </html>

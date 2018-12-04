@@ -1,34 +1,46 @@
 <%-- 
-    Document   : admindashbookings
-    Created on : 19-Nov-2018, 12:49:54
-    Author     : tc2-buxton
+    Document   : adminDashBookings
+    Created on : 02-Dec-2018, 14:11:54
+    Author     : Tom
 --%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-
     <head>
-
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="stylesheet.css">
 
-        <title>Booking Assignment Page</title>
+        <link rel="stylesheet" type="text/css" href="tables.css">
+
+        <title>Manage Bookings</title>
+
+        <!--<style>
+        </style>-->
 
     </head>
     <body>
-        <!-- TODO The drop down list should appear for the first booking in the list (least recent),
-        and give a list of drivers that can be assigned to that job-->
+
         <form method="GET" action="AdminDashBookingsServlet.do">
 
-            <table class="tableLine">
-                <tr><input type="submit" value="Display Bookings"/></tr>                
-            
-               <c:out value="bookingsTable"/>
-                       ${bookingsTable}
-            </table>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for='check'>Only outstanding bookings</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="checkbox" id="checkOutstanding" name="checkOutstanding">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <button type="submit" class="displayButton">Display Bookings</button>
+                    </div>
+                </div>
+            </div>
 
-                   </form>
-            
-        <jsp:include page="/common/foot.jsp"/>
-
+                <table class="tableLine">
+                    ${bookingsTable}
+                </table>
+        </form>
     </body>
 </html>

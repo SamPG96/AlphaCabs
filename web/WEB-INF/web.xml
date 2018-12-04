@@ -71,6 +71,14 @@
         <servlet-name>AdminDashUserServlet</servlet-name>
         <servlet-class>com.AdminDashUserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminDashSettingsServlet</servlet-name>
+        <servlet-class>com.AdminDashSettingsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminDashDriversServlet</servlet-name>
+        <servlet-class>com.AdminDashDriversServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserServLet</servlet-name>
         <url-pattern>/UserService.do</url-pattern>
@@ -122,6 +130,14 @@
     <servlet-mapping>
         <servlet-name>AdminDashUserServlet</servlet-name>
         <url-pattern>/AdminDashUserServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashSettingsServlet</servlet-name>
+        <url-pattern>/AdminDashSettingsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashDriversServlet</servlet-name>
+        <url-pattern>/AdminDashDriversServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

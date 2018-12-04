@@ -8,12 +8,15 @@
 <!DOCTYPE html>
 
 <head>
-<link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
 </head>
 
 
-
-<div class="footer">
-    <div class="line"></div>
- <a href="index.jsp"> Back to Main </a>
-</div>
+<footer class="footer" style="background: #db464b;">
+    <div class="container">
+        <div class="row row-30">
+            <!-- Rights-->
+            <p class="rights"><span>©  </span><span class="copyright-year">2018</span><span> </span><span>AlphaCabs</span><span>. </span><span>All Rights Reserved.</span></p>
+        </div>
+    </div>
+</footer>

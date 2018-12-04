@@ -27,11 +27,4 @@
         </table>
 
     </form>
-
-
-    <jsp:include page="/common/foot.jsp"/>
-
-    
-    
-    
 </html>

@@ -30,7 +30,7 @@ public class BookingManager {
     //Driver Assignment Error Codes
     public static final int ERR_DRIVER_NULL = -1,
             ERR_BOOKING_NULL = -2;
-    
+
     public int error;
 
     public Booking generateNewBooking(Customer customer,
@@ -79,7 +79,8 @@ public class BookingManager {
         //Distance KM
         double distance = calcDistance(sourceAddress, destinationAddress);
         //Charge
-        double charge = calcCharge(distance, jdbc);
+        double fairExcVAT = calcCharge(distance, jdbc);
+        double fairIncVAT = (fairExcVAT / 100) * 20 + fairExcVAT;
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
@@ -87,7 +88,7 @@ public class BookingManager {
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(customer, sourceAddress, destinationAddress,
-                nPassengers, distance, charge, new Timestamp(System.currentTimeMillis()),
+                nPassengers, distance, fairExcVAT, fairIncVAT, new Timestamp(System.currentTimeMillis()),
                 depTimestamp, bookingStatus);
     }
 
@@ -123,7 +124,8 @@ public class BookingManager {
         //Distance KM
         double distance = calcDistance(sourceAddress, destinationAddress);
         //Charge
-        double charge = calcCharge(distance, jdbc);
+        double fairExcVAT = calcCharge(distance, jdbc);
+        double fairIncVAT = (fairExcVAT / 100) * 20 + fairExcVAT;
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
@@ -131,7 +133,7 @@ public class BookingManager {
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(sourceAddress, destinationAddress,
-                nPassengers, distance, charge,
+                nPassengers, distance, fairExcVAT, fairIncVAT,
                 new Timestamp(System.currentTimeMillis()),
                 depTimestamp, bookingStatus);
     }
@@ -159,17 +161,15 @@ public class BookingManager {
             if (driverIdStr != null) {
                 driver = DriverManager.getDriver(
                         Long.parseLong(driverIdStr), jdbc);
-            }
-            else{
+            } else {
                 driver = null;
             }
-            
+
             arrivalStr = map.get("ARRIVALTIME");
             // Arrival time can be null, so handle this.
             if (arrivalStr != null) {
                 arrivalTime = Timestamp.valueOf(arrivalStr);
-            }
-            else{
+            } else {
                 arrivalTime = null;
             }
 
@@ -179,8 +179,10 @@ public class BookingManager {
                     map.get("SOURCEADDRESS"),
                     map.get("DESTINATIONADDRESS"),
                     Integer.parseInt(map.get("NUMOFPASSENGERS")),
-                    Double.parseDouble(map.get("DISTANCE")),
-                    Double.parseDouble(map.get("CHARGE")),
+                    //                    Double.parseDouble(map.get("DISTANCE")), 
+                    2,
+                    Double.parseDouble(map.get("FAREEXCVAT")),
+                    Double.parseDouble(map.get("FAREINCVAT")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
                     arrivalTime,
@@ -192,10 +194,9 @@ public class BookingManager {
 
     public static Booking[] getBookings(Jdbc jdbc, int bookingStatusId) {
         ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
-        Booking[] bookingsArr = new Booking[bookingsMaps.size()];
+        ArrayList<Booking> bookingsList = new ArrayList<>();
 
         //Map bookingsMaps to BookingsArr
-        int i = 0;
         Customer customer;
         String driverIdStr, arrivalStr;
         Driver driver = null;
@@ -204,7 +205,7 @@ public class BookingManager {
         for (HashMap<String, String> map : bookingsMaps) {
 
             bookingStatus = new GenericItem(
-                    Integer.parseInt(map.get("BOOKINGSTATUS")));
+                    Integer.parseInt(map.get("BOOKINGSTATUSID")));
 
             if (bookingStatus.getId() != bookingStatusId) {
                 continue;
@@ -218,24 +219,34 @@ public class BookingManager {
                 driver = DriverManager.getDriver(
                         Long.parseLong(driverIdStr), jdbc);
             }
-            
-            arrivalStr = map.get("ARRIVALTIME");
-            if (driverIdStr != null) {
-                arrivalTime = Timestamp.valueOf(arrivalStr);
+
+            if (bookingStatusId == 4) {
+                arrivalStr = map.get("ARRIVALTIME");
+                if (driverIdStr != null) {
+                    arrivalTime = Timestamp.valueOf(arrivalStr);
+                }
             }
 
-            bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),
+            bookingsList.add(new Booking(Long.parseLong(map.get("ID")),
                     customer,
                     driver,
                     map.get("SOURCEADDRESS"),
                     map.get("DESTINATIONADDRESS"),
                     Integer.parseInt(map.get("NUMOFPASSENGERS")),
-                    Double.parseDouble(map.get("DISTANCE")),
-                    Double.parseDouble(map.get("CHARGE")),
+                    //                   Double.parseDouble(map.get("DISTANCE")),
+                    2,
+                    Double.parseDouble(map.get("FAREEXCVAT")),
+                    Double.parseDouble(map.get("FAREINCVAT")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
                     arrivalTime,
-                    bookingStatus);
+                    bookingStatus));
+        }
+
+        Booking[] bookingsArr = new Booking[bookingsList.size()];
+
+        for (int i = 0; i < bookingsArr.length; i++) {
+            bookingsArr[i] = bookingsList.get(i);
         }
 
         return bookingsArr;
@@ -271,7 +282,8 @@ public class BookingManager {
                 bookingMap.get("DESTINATIONADDRESS"),
                 Integer.parseInt(bookingMap.get("NUMOFPASSENGERS")),
                 Double.parseDouble(bookingMap.get("DISTANCE")),
-                Double.parseDouble(bookingMap.get("CHARGE")),
+                Double.parseDouble(bookingMap.get("FAREEXCVAT")),
+                Double.parseDouble(bookingMap.get("FAREINCVAT")),
                 Timestamp.valueOf(bookingMap.get("TIMEBOOKED")),
                 Timestamp.valueOf(bookingMap.get("DEPARTURETIME")),
                 Timestamp.valueOf(bookingMap.get("ARRIVALTIME")),
@@ -305,17 +317,18 @@ public class BookingManager {
         return 6.43738;
     }
 
-    private static double calcCharge(double distance, Jdbc jdbc){
+    private static double calcCharge(double distance, Jdbc jdbc) {
         int shortDistance = AdminManager.getShortDistance(jdbc);
         double shortDistPrice = AdminManager.getShortDistPrice(jdbc);
-        
-        if(distance > shortDistance){
+
+        if (distance > shortDistance) {
             double pricePerKM = AdminManager.getPricePerKM(jdbc);
             return shortDistPrice + distance * pricePerKM;
-        }else{
+        } else {
             return shortDistPrice;
         }
     }
+
     public int getError() {
         return error;
     }
@@ -323,5 +336,5 @@ public class BookingManager {
     public void setError(int error) {
         this.error = error;
     }
-    
+
 }
