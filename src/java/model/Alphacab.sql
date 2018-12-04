@@ -159,6 +159,6 @@ CREATE TABLE Configurations (
 
 INSERT INTO Configurations (ConfigName, ConfigValue) VALUES
 ('VAT', '20'),
-('PricePerKM', '1'),
+('PricePerMile', '1'),
 ('ShortDistPrice', '2'),
 ('ShortDistance', '5');
