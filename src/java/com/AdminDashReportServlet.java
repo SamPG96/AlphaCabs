@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.CustomerManager;
+import model.Helper;
 import model.UserManager;
 import model.Jdbc;
 import model.ReportManager;
@@ -62,16 +63,8 @@ public class AdminDashReportServlet extends HttpServlet {
 
         Booking[] todaysBookings = reportManager.getTodaysBookings();
 
-        //Resolve double to display to 2 decimal places
-        double turnover = reportManager.getDailyTurnover();
-        String sTurnover = String.valueOf(turnover);
-        String[] strArr = sTurnover.split("\\.");
-        if(strArr[1].endsWith("0") || strArr[1].length() == 1){
-            sTurnover += "0";
-        }
         String dailyTurnover = "Daily Turnover: £"
-                + sTurnover;
-        
+                + Helper.doubleToCurrencyFormat(reportManager.getDailyTurnover());
         request.setAttribute("todaysTurnover", dailyTurnover);
 
         String numCustServed = "Number of Customers served today: "
