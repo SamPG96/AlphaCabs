@@ -15,6 +15,15 @@ and open the template in the editor.
     width: 100%;
     text-align: center;
 }
+
+.footer-classic a, .footer-classic a:focus, .footer-classic a:active {
+    color: #ffffff;
+}
+
+.context-dark, .bg-gray-dark, .bg-primary {
+    color: rgba(255, 255, 255, 0.8);
+}
+
 .navbar {     
     overflow: hidden;
     background-color: white;
