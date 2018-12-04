@@ -48,6 +48,10 @@
         <servlet-class>com.AdminDashBookingsServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>DriverDashServlet</servlet-name>
+        <servlet-class>com.DriverDashServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.LogoutServlet</servlet-class>
     </servlet>
@@ -90,6 +94,10 @@
     <servlet-mapping>
         <servlet-name>AdminDashBookingsServlet</servlet-name>
         <url-pattern>/AdminDashBookingsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DriverDashServlet</servlet-name>
+        <url-pattern>/DriverDashServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>

@@ -6,9 +6,11 @@
 package com;
 
 import com.AlphacabListener;
+import com.fasterxml.classmate.GenericType;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Jdbc;
 import model.UserManager;
+import model.tableclasses.GenericItem;
 import model.tableclasses.User;
 
 
@@ -69,11 +72,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        ArrayList<Integer> allowedUserTypes;
-        String nextPageAfterLogin;
+        ArrayList<GenericItem> allowedUserTypes;
+        String nextPageAfterSuccessfulLogin;
+        String nextPageAfterFailedLogin;
         long loggedInUserID;
-        String[] prevURLPath;
-        String prevServName;
         
         ServletContext sc = request.getServletContext();
         
@@ -86,30 +88,29 @@ public class LoginServlet extends HttpServlet {
         // Connect Jdbc to the DB
         Jdbc dbBean = new Jdbc();
         dbBean.connect((Connection)sc.getAttribute("connection"));
-
-        // Fetch the caller URL
-        prevURLPath =((String)request.getHeader("referer")).split("/");
-        prevServName = prevURLPath[prevURLPath.length - 1];  
         
-        // The page to go to after login and the types of users login will
-        // allow is dependant upon where login was called. Default operation is
-        // to return to 'index.jsp' and allow users of any type to login
-        allowedUserTypes = new ArrayList();
-        if (prevServName.equals("BookingFormServlet.do")){
+        // The pages to go to upon successful login or failed login and the
+        // types of user allowed to login is dependant upon where login was
+        // called. Default operation is to return to 'index.jsp' and allow
+        // users of any type to login
+        if (request.getParameter("reDirectOnSuccess").equals("BookingFormServlet.do")){
             // Login is being called by the booking process. Once complete
-            // the booking servlet should be returned to.
-            nextPageAfterLogin = "BookingFormServlet.do";
+            // the booking servlet should be returned to otherwise if login is
+            // unsuccessful then the booking identity JSP should be returned to
+            // (which includes the login.jsp file)
+            nextPageAfterSuccessfulLogin = "BookingFormServlet.do";
+            nextPageAfterFailedLogin = "bookingIdentity.jsp";
             // Only allow customers to sign in
-            allowedUserTypes.add(4);
+            allowedUserTypes = new ArrayList();
+            allowedUserTypes.add(UserManager.getUserTypeObj(4, dbBean));
             
         }
         else{
             // Default action
-            nextPageAfterLogin = "index.jsp";
+            nextPageAfterSuccessfulLogin = "index.jsp";
+            nextPageAfterFailedLogin = "login.jsp";
             // Allow all user types to login
-            allowedUserTypes.add(1);
-            allowedUserTypes.add(2);
-            allowedUserTypes.add(4);
+            allowedUserTypes = new ArrayList<>(Arrays.asList(UserManager.getAllUserTypes(dbBean)));
         }
         
         // Attempt to login the user, -1 is returned if the password or
@@ -127,20 +128,20 @@ public class LoginServlet extends HttpServlet {
             // Login failure!
             String message = "Incorrect username or password, try again";
             request.setAttribute("errMsg", message + "</br>");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher(nextPageAfterFailedLogin).forward(request, response);
 
-        } else {
-            // Login success!
-            User user = UserManager.getUser(loggedInUserID, dbBean);
-
-            HttpSession session = request.getSession();
-            session.setAttribute("userID", loggedInUserID);
-            session.setAttribute("dbbean", dbBean);
-            session.setAttribute("userType", user.getUserType());
-
-            request.getRequestDispatcher(nextPageAfterLogin).forward(
-                    request, response);
         }
+        
+        // Login success!
+        User user = UserManager.getUser(loggedInUserID, dbBean);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("userID", loggedInUserID);
+        session.setAttribute("dbbean", dbBean);
+        session.setAttribute("userType", user.getUserType());
+
+        request.getRequestDispatcher(nextPageAfterSuccessfulLogin).forward(
+                request, response);
     }
 
 

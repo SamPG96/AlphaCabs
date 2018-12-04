@@ -71,22 +71,15 @@ public class BookingFormServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String prevServPath;
         HttpSession session = request.getSession();
-
-        // Fetch the caller URL
-        String[] prevURLPath =((String)request.getHeader("referer")).split("/");
-        prevServPath = prevURLPath[prevURLPath.length - 1];
         
         // Fully process booking if the customer entity is known. Otherwise
         // only validate user entry and then move on to another page to identify
         // the customer. This servlet will be returned to once the customer has
-        // been identified. If prevServPath equals 'AlphaCabs' then this servlet
-        // has been called from the index.jsp. This mean no prior attempt has
-        // been made to identify the customer if they arent already signed in.
+        // been identified. The identity can be derived from a logged in customer
+        // or a cached customer ID.
         if (session.getAttribute("userID") != null ||
-                (prevServPath.equals("AlphaCabs") == false &&
-                 session.getAttribute("cachedCustomerID") != null)){
+                 session.getAttribute("cachedCustomerID") != null){
             processBookingWithIdentity(request, response, session);
         }
         else {
@@ -100,6 +93,7 @@ public class BookingFormServlet extends HttpServlet {
     private void processBookingWithIdentity(HttpServletRequest request,
             HttpServletResponse response, HttpSession session) throws ServletException, IOException{
             Booking booking;
+            long bookingId;
             BookingManager bookingMan;
             Customer customer;
             Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
@@ -136,7 +130,8 @@ public class BookingFormServlet extends HttpServlet {
                         request.getParameter("destination"),
                         request.getParameter("passengers"),
                         request.getParameter("date"),
-                        request.getParameter("time"));
+                        request.getParameter("time"),
+                        jdbc);
 
                 if (booking == null) {
                     request.setAttribute("errMsg",
@@ -156,7 +151,8 @@ public class BookingFormServlet extends HttpServlet {
             }
             
             // Add booking to database and issue invoive
-            jdbc.insert(booking);
+            bookingId = jdbc.insert(booking);
+            booking.setId(bookingId);
             request.setAttribute("booking", booking);
             request.getRequestDispatcher("invoice.jsp").forward(request, response);        
     }
@@ -181,7 +177,8 @@ public class BookingFormServlet extends HttpServlet {
                 request.getParameter("destination"),
                 request.getParameter("passengers"),
                 request.getParameter("date"),
-                request.getParameter("time"));            
+                request.getParameter("time"),
+                (Jdbc) session.getAttribute("dbbean"));
 
         // If errors exist with the booking entry, display them. Otherwise
         // move to a page that allows the customer to identiy them selves
