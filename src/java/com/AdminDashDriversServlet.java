@@ -128,10 +128,24 @@ public class AdminDashDriversServlet extends HttpServlet {
         Jdbc dbBean = new Jdbc();
         dbBean.connect((Connection) sc.getAttribute("connection"));
 
-        //-------------------------------ADD DRIVER----------------------------------
-        String x = request.getParameter("submit");
+        String x = request.getParameter("button_click");
+        //String x = request.getParameter("buttonA_click");
+        //String i;
 
-        if (x.equals("newdriver")) {
+        //----------------------------CHANGE DRIVER DETAILS-------------------------------
+        //if (null != request.getParameter("buttonA_click")) {
+        if (x.equals("changedetails") == true) {
+
+            DriverManager.updateDriver(
+                    Long.valueOf(request.getParameter("idnumber")),
+                    request.getParameter("forenameC"),
+                    request.getParameter("surnameC"),
+                    request.getParameter("registrationC"),
+                    dbBean);
+
+            //-------------------------------ADD DRIVER----------------------------------
+            //} else if (null != request.getParameter("buttonB_click")) {
+        } else if (x.equals("newdriver") == true) {
 
             newUserErrCode = UserManager.validateNewUserAttribs(
                     request.getParameter("forename"),
@@ -160,28 +174,19 @@ public class AdminDashDriversServlet extends HttpServlet {
 
             String userName = UserManager.getUsernameForDriver(driverId, dbBean);
 
-        } else if (x.equals("changedetails")) {
-            //--------------------------------------------------------------------------------------------------
-            //CHANGE DRIVER DETAILS
-            DriverManager.updateDriver(
-                    Long.valueOf(request.getParameter("idnumber")),
-                    request.getParameter("forenameC"),
-                    request.getParameter("surnameC"),
-                    request.getParameter("registrationC"),
-                    dbBean);
-
-            /*
-        } else if (x.equals("")) {
-            //--------------------------------------------------------------------------------------------------
-            //REMOVE DRIVER
+            //-----------------------------REMOVE DRIVER----------------------------
+        } else if (x.equals("removedriver")) {
             //Wait for method
             //DriverManager.removeDriver(request.setAttribute());
             //Driver selectedDriver = DriverManager.getDriver(driverId, dbBean);
             //softDelDriver = DriverManager.softRemoveDriver(driverId, dbBean);
-
-        }
-             */
+            //}
             //response.sendRedirect(returnPage);
+            
+            DriverManager.softRemoveDriver(
+                    Long.valueOf(request.getParameter("id")),
+                    dbBean);
+            
         }
     }
 

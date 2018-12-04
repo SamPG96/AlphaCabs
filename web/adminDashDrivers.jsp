@@ -37,32 +37,56 @@
             </table>
         </form>
 
+        <!--REMOVE DRIVER-->
+        <button onclick="document.getElementById('id03').style.display = 'block'">Remove Driver</button>
+
+        <div id="id03" class="modal">
+            <span onclick="document.getElementById('id03').style.display = 'none'" class="close" title="Close">Enter the Details of the Driver</span>
+
+            <form class="modal-content" method="POST" action="AdminDashDriversServlet.do">
+                <div class='container'>
+                    <hr>
+
+                    <label for='Id'><b>Driver ID</b></label>
+                    <input type='text' placeholder='Enter ID Only' name='id' required>
+
+                    <div class="clearfix">
+                        <button type="button" onclick="document.getElementById('id03').style.display = 'none'" class="cancel">Cancel</button>
+
+                        <button type="submit" class="removedriver" name="button_click" value="removedriver">Confirm Removal of Driver</button>
+
+                    </div>
+
+                </div>
+            </form>
+        </div>                
+
         <!--CHANGE DRIVER DETAILS FORM-->
         <button onclick="document.getElementById('id02').style.display = 'block'">Change Driver Details</button>
 
-        <div id="id02" class="model">
+        <div id="id02" class="modal">
             <span onclick="document.getElementById('id02').style.display = 'none'" class="close" title ="Close">Change Driver Details</span>
 
             <form class="modal-content" method="POST" action="AdminDashDriversServlet.do">
                 <div class="container">
                     <hr>
-                    
+
                     <label for='Id'><b>Id Number</b></label>
                     <input type='text' name='idnumber' required>
-                    
+
                     <label for='Forename'><b>Forename</b></label>
                     <input type='text' name='forenameC' required>
-                    
+
                     <label for='Surname'><b>Surname</b></label>
                     <input type='text' name='surnameC' required>
-                    
+
                     <label for='registration'><b>Registration</b></label>
                     <input type='text' name='registrationC' required>
-                    
+
                     <div class="clearfix">
                         <button type="button" onclick="document.getElementById('id02').style.display = 'none'" class="cancel">Cancel</button>
-                        
-                        <button type='submit' class='newdriver' name='changedetailsbutton' value='changedetails'>Confirm Change Details</button>
+
+                        <button type="submit" class="newdriver" name="button_click" value="changedetails">Confirm Change Details</button>
                     </div>
                 </div>
             </form>
@@ -96,7 +120,7 @@
                     <div class="clearfix">
                         <button type="button" onclick="document.getElementById('id01').style.display = 'none'" class="cancel">Cancel</button>
 
-                        <button type='submit' class='newdriver' name='newdriverbutton' value='newdriver'>Add Driver</button>
+                        <button type="submit" class="newdriver" name="button_click" value="newdriver">Add Driver</button>
 
                     </div>
 
@@ -110,8 +134,10 @@
 
         <script>
             // Get the models
+            //modal = name, set to be 'hidden'
             var modal = document.getElementById('id01');
-            var model = document.getElementById('id02');
+            var modal = document.getElementById('id02');
+            var modal = document.getElementById('id03');
             // When the user clicks anywhere outside of the model, close it
             /*
              window.onclick = function (event) {
@@ -123,8 +149,5 @@
              }
              */
         </script>
-
-        <jsp:include page="/common/foot.jsp"/>
-
     </body>
 </html>
