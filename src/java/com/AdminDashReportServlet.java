@@ -15,6 +15,8 @@ import javax.servlet.http.HttpSession;
 import model.CustomerManager;
 import model.UserManager;
 import model.Jdbc;
+import model.ReportManager;
+import model.tableclasses.Booking;
 import model.tableclasses.Customer;
 
 /**
@@ -22,6 +24,8 @@ import model.tableclasses.Customer;
  * @author jakec
  */
 public class AdminDashReportServlet extends HttpServlet {
+
+    public double todaysTurnover = 100.2;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,34 +54,43 @@ public class AdminDashReportServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        processRequest(request, response);
-
         HttpSession session = request.getSession(false);
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        
-        Customer[] customers = CustomerManager.getAllCustomers(jdbc);
 
-        String message = "<tr>\n"
-                + "                    <th>First name</th>\n"
-                + "                    <th>Last name</th>\n"
-                + "                    <th>Address</th>\n"
-                + "                </tr>";
+        ReportManager reportManager = new ReportManager(jdbc);
 
-        for (Customer customer : customers) {
+        Booking[] todaysBookings = reportManager.getTodaysBookings();
 
-            message += "<tr>";
-            message += "<td>" + customer.getFirstName() + "</td>";
-            message += "<td>" + customer.getLastName() + "</td>";
-            message += "<td>" + customer.getAddress() + "</td>";
-
-            message += "</tr>";
+        //Resolve double to display to 2 decimal places
+        double turnover = reportManager.getDailyTurnover();
+        String sTurnover = String.valueOf(turnover);
+        String[] strArr = sTurnover.split("\\.");
+        if(strArr[1].endsWith("0") || strArr[1].length() == 1){
+            sTurnover += "0";
         }
+        String dailyTurnover = "Daily Turnover: £"
+                + sTurnover;
+        
+        request.setAttribute("todaysTurnover", dailyTurnover);
 
-        request.setAttribute("customerTable", message);
+        String numCustServed = "Number of Customers served today: "
+                + reportManager.getnCustomersToday();
+        request.setAttribute("numCustServed", numCustServed);
 
-//
-//        request.setAttribute("bookingsTable", message + "</br>");
+//        String message = "<tr>\n"
+//                + "                    <th>First name</th>\n"
+//                + "                    <th>Last name</th>\n"
+//                + "                    <th>Address</th>\n"
+//                + "                </tr>";
+//        for (Customer customer : customers) {
+//            message += "<tr>";
+//            message += "<td>" + customer.getFirstName() + "</td>";
+//            message += "<td>" + customer.getLastName() + "</td>";
+//            message += "<td>" + customer.getAddress() + "</td>";
+//            message += "</tr>";
+//        }
+//        request.setAttribute("bookingsTable", message);
         //response.setIntHeader("Refresh", 0);
         request.getRequestDispatcher("index.jsp").forward(request, response);
 
@@ -94,8 +107,37 @@ public class AdminDashReportServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession(false);
 
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+
+        ReportManager reportManager = new ReportManager(jdbc);
+
+        Booking[] todaysBookings = reportManager.getTodaysBookings();
+
+        String dailyTurnover = "Daily Turnover: £"
+                + reportManager.getDailyTurnover();
+        request.setAttribute("todaysTurnover", dailyTurnover);
+
+        String numCustServed = "Number of Customers served today: "
+                + reportManager.getnCustomersToday();
+        request.setAttribute("numCustServed", numCustServed);
+
+//        String message = "<tr>\n"
+//                + "                    <th>First name</th>\n"
+//                + "                    <th>Last name</th>\n"
+//                + "                    <th>Address</th>\n"
+//                + "                </tr>";
+//        for (Customer customer : customers) {
+//            message += "<tr>";
+//            message += "<td>" + customer.getFirstName() + "</td>";
+//            message += "<td>" + customer.getLastName() + "</td>";
+//            message += "<td>" + customer.getAddress() + "</td>";
+//            message += "</tr>";
+//        }
+//        request.setAttribute("bookingsTable", message);
+        //response.setIntHeader("Refresh", 0);
+        request.getRequestDispatcher("adminDashReport.jsp").forward(request, response);
     }
 
     /**

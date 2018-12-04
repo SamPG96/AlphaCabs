@@ -37,8 +37,8 @@ public class ReportManager {
         
         boolean sameDay;
         for (Booking booking : allBookings) {
-            
-            bookingCal.setTime(booking.getArrivalTime());
+            Timestamp ts = booking.getDepartureTime();
+            bookingCal.setTime(ts);
             sameDay = today.get(Calendar.DAY_OF_YEAR) == bookingCal.get(Calendar.DAY_OF_YEAR)
                 && today.get(Calendar.YEAR) == bookingCal.get(Calendar.YEAR);
             if(sameDay){

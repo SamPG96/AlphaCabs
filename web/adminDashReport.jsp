@@ -14,26 +14,32 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-        <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <form method="GET" action="AdminDashReportServlet.do">
+            <div class="container">
+                <div class="mb-1">    
+                    <input type="submit" value="Generate Daily Report"/>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div name='todaysTurnover' class="row"
+                             <li>
+                                    ${todaysTurnover}
+                            </li>
+                        </div>
+                        <div name='numCustServed' class="row">
+                            <li>
+                                    ${numCustServed}
+                            </li>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
 
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    One of three columns
-                </div>
-                <div class="col-sm">
-                    One of three columns
-                </div>
-                <div class="col-sm">
-                    One of three columns
+                    </div>
                 </div>
             </div>
-        </div>
-
+        </form>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
