@@ -77,11 +77,10 @@
             if (window.location.href.indexOf("AdminDashCustomerServlet.do") > -1) {
                 openTab(event,'Customers');
             }else if (window.location.href.indexOf("AdminDashBookingsServlet.do") > -1) {
-            
                 openTab(event,'Bookings');
-            
+            }else if (window.location.href.indexOf("AdminDashUserServlet.do") > -1) {
+                openTab(event,'Users');
             }
-
         }
         window.onload = displayTables;
         </script>

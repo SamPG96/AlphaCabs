@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.CustomerManager;
+import model.UserManager;
 import model.Jdbc;
-import model.tableclasses.Customer;
+import model.tableclasses.User;
 
 /**
  *
@@ -63,6 +63,7 @@ public class AdminDashUserServlet extends HttpServlet {
                 + "                    <th>CustomerId</th>\n"
                 + "                    <th>DriverId</th>\n"
                 + "                    <th>UserStatus</th>\n"
+                + "                    <th>Approve</th>\n"
                 + "                </tr>";
         
         
@@ -71,11 +72,12 @@ public class AdminDashUserServlet extends HttpServlet {
             
             
             message +=  "<tr>";
-            message +="<td>" + user.getUserName() + "</td>";
+            message +="<td>" + user.getUsername() + "</td>";
             message +="<td>" + user.getUserType() + "</td>";
             message +="<td>" + user.getCustomerId() + "</td>";
             message +="<td>" + user.getDriverId() + "</td>";
             message +="<td>" + user.getUserStatus() + "</td>";
+            message +="<td input type='checkbox' value='approve'></td>";
           
             message += "</tr>";
         }
