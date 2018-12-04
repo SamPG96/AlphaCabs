@@ -83,6 +83,9 @@ public class AdminDashBookingsServlet extends HttpServlet {
                 + "                    <th>Source address</th>\n"
                 + "                    <th>Destination address</th>\n"
                 + "                    <th>Passengers</th>\n"
+                + "                    <th>Distance</th>\n"
+                + "                    <th>Price ex. VAT</th>\n"
+                + "                    <th>Price inc. VAT</th>\n"
                 + "                    <th>Date</th>\n"
                 + "                    <th>Depature time</th>\n"
                 + "                    <th>Arrival time</th>\n"
@@ -96,6 +99,9 @@ public class AdminDashBookingsServlet extends HttpServlet {
             message += "<td>" + booking.getSourceAddress() + "</td>";
             message += "<td>" + booking.getDestinationAddress() + "</td>";
             message += "<td>" + booking.getNumOfPassengers() + "</td>";
+            message += "<td>" + booking.getDistanceKM() + " KM</td>";
+            message += "<td>£ " + booking.getFareExcVAT() + "</td>";
+            message += "<td>£ " + booking.getFareIncVAT() + "</td>";
             message += "<td>" + booking.getTimeBooked() + "</td>";
             message += "<td>" + booking.getDepartureTime() + "</td>";
 
