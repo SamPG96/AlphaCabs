@@ -79,7 +79,8 @@ public class BookingManager {
         //Distance KM
         double distance = calcDistance(sourceAddress, destinationAddress);
         //Charge
-        double charge = calcCharge(distance, jdbc);
+        double fairExcVAT = calcCharge(distance, jdbc);
+        double fairIncVAT = (fairExcVAT / 100) * 20 + fairExcVAT;
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
@@ -87,7 +88,7 @@ public class BookingManager {
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(customer, sourceAddress, destinationAddress,
-                nPassengers, distance, charge, new Timestamp(System.currentTimeMillis()),
+                nPassengers, distance, fairExcVAT, fairIncVAT, new Timestamp(System.currentTimeMillis()),
                 depTimestamp, bookingStatus);
     }
 
@@ -123,7 +124,8 @@ public class BookingManager {
         //Distance KM
         double distance = calcDistance(sourceAddress, destinationAddress);
         //Charge
-        double charge = calcCharge(distance, jdbc);
+        double fairExcVAT = calcCharge(distance, jdbc);
+        double fairIncVAT = (fairExcVAT / 100) * 20 + fairExcVAT;
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
@@ -131,7 +133,7 @@ public class BookingManager {
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(sourceAddress, destinationAddress,
-                nPassengers, distance, charge,
+                nPassengers, distance, fairExcVAT, fairIncVAT,
                 new Timestamp(System.currentTimeMillis()),
                 depTimestamp, bookingStatus);
     }
@@ -179,7 +181,8 @@ public class BookingManager {
                     Integer.parseInt(map.get("NUMOFPASSENGERS")),
                     //                    Double.parseDouble(map.get("DISTANCE")), 
                     2,
-                    Double.parseDouble(map.get("CHARGE")),
+                    Double.parseDouble(map.get("FAREEXCVAT")),
+                    Double.parseDouble(map.get("FAREINCVAT")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
                     arrivalTime,
@@ -232,7 +235,8 @@ public class BookingManager {
                     Integer.parseInt(map.get("NUMOFPASSENGERS")),
                     //                   Double.parseDouble(map.get("DISTANCE")),
                     2,
-                    Double.parseDouble(map.get("CHARGE")),
+                    Double.parseDouble(map.get("FAREEXCVAT")),
+                    Double.parseDouble(map.get("FAREINCVAT")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
                     arrivalTime,
@@ -240,11 +244,11 @@ public class BookingManager {
         }
 
         Booking[] bookingsArr = new Booking[bookingsList.size()];
-        
-        for(int i = 0; i < bookingsArr.length; i++){
+
+        for (int i = 0; i < bookingsArr.length; i++) {
             bookingsArr[i] = bookingsList.get(i);
         }
-        
+
         return bookingsArr;
     }
 
@@ -278,7 +282,8 @@ public class BookingManager {
                 bookingMap.get("DESTINATIONADDRESS"),
                 Integer.parseInt(bookingMap.get("NUMOFPASSENGERS")),
                 Double.parseDouble(bookingMap.get("DISTANCE")),
-                Double.parseDouble(bookingMap.get("CHARGE")),
+                Double.parseDouble(bookingMap.get("FAREEXCVAT")),
+                Double.parseDouble(bookingMap.get("FAREINCVAT")),
                 Timestamp.valueOf(bookingMap.get("TIMEBOOKED")),
                 Timestamp.valueOf(bookingMap.get("DEPARTURETIME")),
                 Timestamp.valueOf(bookingMap.get("ARRIVALTIME")),
