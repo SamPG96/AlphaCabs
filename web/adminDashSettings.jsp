@@ -32,8 +32,8 @@
             Please Enter the new £ per Mile and press SUBMIT:
             <input type="text" name="newPrice"><br>
             <input type="submit" value="Submit">
-        </form>
-                
+        </form>         
+
     </body>
 
 </html>

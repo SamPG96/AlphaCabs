@@ -26,7 +26,4 @@
        <center><a href="guest.jsp" class="button">Book as guest</a>
        <a href="register.jsp" class="button">Book with a new AlphaCabs account</a></center>
         </div>
-    
-    <jsp:include page="/common/foot.jsp"/>
-    
 </html>
