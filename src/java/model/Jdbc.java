@@ -60,31 +60,30 @@ public class Jdbc {
     private void select(String tableName, String colName, String value,
             boolean usePar) {
         String query;
-        
-        if (usePar == true){
+
+        if (usePar == true) {
             // Parenthesis will surrond the value making it a string
             query = "SELECT * FROM " + tableName + " WHERE " + colName + " = \'" + value + "\'";
-        }
-        else{
+        } else {
             // Parenthesis will not surround the value
             query = "SELECT * FROM " + tableName + " WHERE " + colName + " = " + value;
         }
-        
+
         this.executeSelect(query);
     }
 
     /*
     * Executes the select query.
-    */
-    private void executeSelect(String query){
-         try {
+     */
+    private void executeSelect(String query) {
+        try {
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }       
+        }
     }
-    
+
     /*
     * Returns a list of hashmaps of rows from the DB that meet criteria 
     * specified in the params.
@@ -112,18 +111,18 @@ public class Jdbc {
     /*
     * Returns a list of hashmaps of rows from the DB that meet criteria 
     * specified in the params. The field value must be a long.
-    */
+     */
     public ArrayList<HashMap<String, String>> retrieve(String tableName, String colName, long value) {
         //GET Qualifiing Rows from DB
         select(tableName, colName, String.valueOf(value), false);
-        
+
         return this.processRetrieve();
     }
 
     /*
     * Returns a list of hashmaps of rows from the DB that meet criteria 
     * specified in the params. The field value must be a string.
-    */
+     */
     public ArrayList<HashMap<String, String>> retrieve(String tableName, String colName, String value) {
         //GET Qualifiing Rows from DB
         select(tableName, colName, value, true);
@@ -134,7 +133,7 @@ public class Jdbc {
     /*
     * Processes the response of a retrieve request. Results are returned as
     * a list of hashmaps.
-    */
+     */
     private ArrayList<HashMap<String, String>> processRetrieve() {
         //Transform and Return Rows to a List of HashMaps
         try {
@@ -182,14 +181,12 @@ public class Jdbc {
             }
             if (user.getCustomer() != null) {
                 ps.setLong(4, user.getCustomer().getId());
-            }
-            else{
+            } else {
                 ps.setNull(4, Types.LONGNVARCHAR);
             }
             if (user.getDriver() != null) {
                 ps.setLong(5, user.getDriver().getId());
-            }
-            else{
+            } else {
                 ps.setNull(5, Types.LONGVARCHAR);
             }
             if (user.getUserStatus() != null) {
@@ -197,7 +194,7 @@ public class Jdbc {
             } else {
                 throw new RuntimeException("UserStatus in User cannot be null");
             }
-            
+
             //Execute and check for change
             nAffectedRows = ps.executeUpdate();
             if (nAffectedRows == 0) {
@@ -210,7 +207,7 @@ public class Jdbc {
                 long id = rs.getLong(1);
                 ps.close();
                 return id;
-            }else{
+            } else {
                 throw new SQLException("Inserting user failed, no ID obtained");
             }
         } catch (SQLException ex) {
@@ -254,7 +251,7 @@ public class Jdbc {
                 long id = rs.getLong(1);
                 ps.close();
                 return id;
-            }else{
+            } else {
                 throw new SQLException("Inserting customer failed, no ID obtained");
             }
         } catch (SQLException ex) {
@@ -301,7 +298,7 @@ public class Jdbc {
                 long id = rs.getLong(1);
                 ps.close();
                 return id;
-            }else{
+            } else {
                 throw new SQLException("Inserting driver failed, no ID obtained");
             }
         } catch (SQLException ex) {
@@ -320,10 +317,10 @@ public class Jdbc {
         try {
             ps = connection.prepareStatement(
                     "INSERT INTO Bookings (CustomerId"
-                            + ", SourceAddress, DestinationAddress"
-                            + ", NumOfPassengers, Distance, FareExcVAT, FareIncVAT, TimeBooked"
-                            + ", DepartureTime,  BookingStatusId)"
-                            + " VALUES (?,?,?,?,?,?,?,?,?,?)",
+                    + ", SourceAddress, DestinationAddress"
+                    + ", NumOfPassengers, Distance, FareExcVAT, FareIncVAT, TimeBooked"
+                    + ", DepartureTime,  BookingStatusId)"
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write booking values to statement
@@ -361,21 +358,21 @@ public class Jdbc {
             //Distance
             if (booking.getDistance() != 0.0) {
                 ps.setDouble(5, booking.getDistance());
-            }else {
+            } else {
                 throw new RuntimeException("Distance in Booking"
                         + " cannot be 0.0");
             }
             //FareExcVAT
             if (booking.getFareExcVAT() != 0.0) {
                 ps.setDouble(6, booking.getFareExcVAT());
-            }else {
+            } else {
                 throw new RuntimeException("FareExcVAT in Booking"
                         + " cannot be 0.0");
             }
             //FareIncVAT
             if (booking.getFareIncVAT() != 0.0) {
                 ps.setDouble(7, booking.getFareIncVAT());
-            }else {
+            } else {
                 throw new RuntimeException("FareIncVAT in Booking"
                         + " cannot be 0.0");
             }
@@ -387,7 +384,7 @@ public class Jdbc {
                         + " cannot be null");
             }
             //DepartureTime
-            if (booking.getDepartureTime()!= null) {
+            if (booking.getDepartureTime() != null) {
                 ps.setTimestamp(9, booking.getDepartureTime());
             }
             //ArrivalTime
@@ -414,7 +411,7 @@ public class Jdbc {
                 long id = rs.getLong(1);
                 ps.close();
                 return id;
-            }else{
+            } else {
                 throw new SQLException("Inserting booking failed, no ID obtained");
             }
         } catch (SQLException ex) {
@@ -437,8 +434,6 @@ public class Jdbc {
                     + "username = ?,"
                     + "password = ?,"
                     + "usertypeid = ?,"
-                    + "customerid = ?,"
-                    + "driverid = ?,"
                     + "userstatusid = ? "
                     + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
 
@@ -458,19 +453,13 @@ public class Jdbc {
             } else {
                 throw new RuntimeException("UserType in User cannot be null");
             }
-            if (user.getCustomer() != null) {
-                ps.setLong(4, user.getCustomer().getId());
-            }
-            if (user.getDriver() != null) {
-                ps.setLong(5, user.getDriver().getId());
-            }
             if (user.getUserStatus() != null) {
-                ps.setLong(6, user.getUserStatus().getId());
+                ps.setLong(4, user.getUserStatus().getId());
             } else {
                 throw new RuntimeException("UserStatus in User cannot be null");
             }
             if (user.getId() != 0) {
-                ps.setLong(7, user.getId());
+                ps.setLong(5, user.getId());
             } else {
                 throw new RuntimeException("Id in User cannot be 0");
             }
@@ -481,15 +470,8 @@ public class Jdbc {
                 throw new SQLException("Updating user failed, no rows affected.");
             }
 
-            //GET the generated ID
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                long id = rs.getLong(1);
-                ps.close();
-                return id;
-            }else{
-                throw new SQLException("Updating user failed, no ID obtained");
-            }
+            ps.close();
+            return user.getId();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -533,15 +515,8 @@ public class Jdbc {
                 throw new SQLException("Updating customer failed, no rows affected.");
             }
 
-            //GET the generated ID
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                long id = rs.getLong(1);
-                ps.close();
-                return id;
-            }else{
-                throw new SQLException("Updating customer failed, no ID obtained");
-            }
+            ps.close();
+            return customer.getId();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -588,15 +563,8 @@ public class Jdbc {
                 throw new SQLException("Updating driver failed, no rows affected.");
             }
 
-            //GET the generated ID
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                long id = rs.getLong(1);
-                ps.close();
-                return id;
-            }else{
-                throw new SQLException("Updating driver failed, no ID obtained");
-            }
+            ps.close();
+            return driver.getId();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -647,19 +615,19 @@ public class Jdbc {
             }
             if (booking.getDistance() != 0.0) {
                 ps.setDouble(5, booking.getDistance());
-            }else {
+            } else {
                 throw new RuntimeException("Distance in Booking"
                         + " cannot be null");
             }
             if (booking.getFareExcVAT() != 0.0) {
                 ps.setDouble(6, booking.getFareExcVAT());
-            }else {
+            } else {
                 throw new RuntimeException("FareExcVAT in Booking"
                         + " cannot be null");
             }
             if (booking.getFareIncVAT() != 0.0) {
                 ps.setDouble(7, booking.getFareIncVAT());
-            }else {
+            } else {
                 throw new RuntimeException("FareIncVAT in Booking"
                         + " cannot be null");
             }
@@ -691,20 +659,13 @@ public class Jdbc {
                 throw new SQLException("Updating booking failed, no rows affected.");
             }
 
-            //GET the generated ID
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                long id = rs.getLong(1);
-                ps.close();
-                return id;
-            }else{
-                throw new SQLException("Updating booking failed, no ID obtained");
-            }
+            ps.close();
+            return booking.getId();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
-    
+
     /*
     * Updates given configuration on the database table customers
     * Return the generated ID of new row if successful else returns 0
@@ -745,15 +706,8 @@ public class Jdbc {
                 throw new SQLException("Updating Configuration failed, no rows affected.");
             }
 
-            //GET the generated ID
-            rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                long id = rs.getLong(1);
-                ps.close();
-                return id;
-            }else{
-                throw new SQLException("Updating Configuration failed, no ID obtained");
-            }
+            ps.close();
+            return configuration.getId();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
