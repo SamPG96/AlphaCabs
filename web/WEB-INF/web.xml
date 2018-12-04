@@ -15,6 +15,10 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+    <context-param>
+        <param-name>dburl</param-name>
+        <param-value>jdbc:derby://localhost:1527/</param-value>
+    </context-param>
     <servlet>
         <servlet-name>UserServLet</servlet-name>
         <servlet-class>com.redundant.UserServLet</servlet-class>
