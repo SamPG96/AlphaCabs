@@ -112,8 +112,8 @@ public class AdminDashDriversServlet extends HttpServlet {
         long userId;
         int newUserErrCode;
         String errMsgStr;
-        
-        String changeDriver;
+
+        long changeDriver;
         long softDelDriver;
 
         //-------------------------------ADD DRIVER----------------------------------
@@ -156,26 +156,22 @@ public class AdminDashDriversServlet extends HttpServlet {
 
         String userName = UserManager.getUsernameForDriver(driverId, dbBean);
 
-        response.sendRedirect(returnPage);
-
         //--------------------------------------------------------------------------------------------------
         //REMOVE DRIVER
         //Wait for method
         //DriverManager.removeDriver(request.setAttribute());
-        
         //Driver selectedDriver = DriverManager.getDriver(driverId, dbBean);
         //softDelDriver = DriverManager.softRemoveDriver(driverId, dbBean);
-        
-        
         //--------------------------------------------------------------------------------------------------
         //CHANGE DRIVER DETAILS
-        /*
-        changeDriver = DriverManager.updateDriver(driverId,
+        DriverManager.updateDriver(
+                Long.valueOf(request.getParameter("idnumber")),
                 request.getParameter("forenameC"),
                 request.getParameter("surnameC"),
                 request.getParameter("registrationC"),
                 dbBean);
-        */
+
+        response.sendRedirect(returnPage);
     }
 
     /*
