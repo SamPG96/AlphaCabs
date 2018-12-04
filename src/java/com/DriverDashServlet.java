@@ -151,7 +151,56 @@ public class DriverDashServlet extends HttpServlet {
     
     
     
-    
+    for (Booking booking : aBooking) {
+   
+        long i = booking.getId();
+        
+        String j = Long.toString(i);
+        String status = request.getParameter(j);
+        
+        
+        GenericItem bookingStatus = booking.getBookingStatus();
+        
+        
+        if (status != null) {
+        System.out.println("button not null");
+//                bookingStatus.setId(4);
+//              jdbc.update(booking); //4
+//              
+//              request.getRequestDispatcher("/login.jsp").forward(request, response);
+            if (status.equals("Complete")){
+                bookingStatus.setId(4);
+                booking.setBookingStatus(bookingStatus);
+                jdbc.update(booking); //4
+                
+                System.out.println("button complete");
+               //  jdbc.update(booking.getDepartureTime());
+                 
+                 request.getRequestDispatcher("/index.jsp").forward(request, response);
+                
+            }else if(status.equals("In Progress")){
+                
+                
+                bookingStatus.setId(2);
+                booking.setBookingStatus(bookingStatus);
+                long err = jdbc.update(booking);
+               // jdbc.update(bookingStatus.getId()); //2
+                
+                System.out.println("button in prog");
+                
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                
+            }
+            
+            
+            
+    } 
+        
+        
+        
+        
+        
+    }
     
     
     
