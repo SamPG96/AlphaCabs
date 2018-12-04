@@ -145,7 +145,7 @@ INSERT INTO Bookings (CustomerId, DriverId, SourceAddress, DestinationAddress, N
 (3, 4, '54 Teignmouth Rd, London, NW2', '120 Green Lanes, London, N13', 2, 7.0, 7.0, '2015-10-14 18:00:00', '2015-10-15 05:00:00', '2015-10-15 06:00:00', 4),
 (4, 4, '765 High Road, London, N12', '131 Stoke Newington High Road, London, N12', 3, 8.0, 8.0, '2015-10-15 09:00:00', '2015-10-15 11:30:00', '2015-10-15 12:00:00', 4),
 (5, 2, '75 Squires Lane, London, N3', 'Luton Airport, Luton', 4, 30.0, 30.0, '2015-10-21 14:30:00', '2015-10-22 09:00:00', '2015-10-22 10:00:00', 4),
-(6, 1, 'Finchley, London', 'King''s Cross, London', 1, 5.0, 5.0, '2015-11-02 09:22:18', '2015-11-05 09:00:00', NULL, 1);
+(6, NULL, 'Finchley, London', 'King''s Cross, London', 1, 5.0, 5.0, '2015-11-02 09:22:18', '2015-11-05 09:00:00', NULL, 1);
 
 -- --------------------------------------------------------
 CREATE TABLE Configurations (

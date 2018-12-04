@@ -22,24 +22,25 @@
 
         <form method="GET" action="AdminDashBookingsServlet.do">
 
-            <table class="tableLine">
-                <tr><button type="submit" class="allbookings">Display All Bookings</button></tr>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for='check'>Only outstanding bookings</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="checkbox" id="checkOutstanding" name="checkOutstanding">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <button type="submit" class="displayButton">Display Bookings</button>
+                    </div>
+                </div>
+            </div>
 
-                <c:out value="bookingsTable"/>
-                ${bookingsTable}
-
-            </table>
-        </form>
-
-        <form method="GET" action="AdminDashBookingsServlet.do">
-
-            <table class="tableLine">
-                <tr><button type="submit" class="outbookings">Display Outstanding Bookings</button></tr>
-
-                <c:out value="outstandingBookings"/>
-                ${outstandingBookings}
-
-            </table>
+                <table class="tableLine">
+                    ${bookingsTable}
+                </table>
         </form>
 
         <jsp:include page="/common/foot.jsp"/>
