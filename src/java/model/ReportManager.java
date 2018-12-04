@@ -57,7 +57,7 @@ public class ReportManager {
         double ret = 0;
         
         for(Booking booking : this.todaysBookings){
-            ret += booking.getCharge();
+            ret += booking.getFareExcVAT();
         }
         
         return ret;
