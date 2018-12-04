@@ -88,14 +88,14 @@ Alter table Users add foreign key (DriverId) references Drivers;
 Alter table Users add foreign key (UserStatusId) references UserStatus;
 
 INSERT INTO Users (Username, Password, UserTypeId, CustomerId, DriverId, UserStatusId) VALUES
-('meaydin', '201068', 2, NULL, 2, 1),
+('meaydin', '201068', 2, NULL, 2, 2),
 ('aydinme', '108752', 1, NULL, NULL, 2),
 ('csimons', '010563', 2, NULL, 4, 2),
 ('jsmith', '465844', 2, NULL, 1, 2),
 ('mjohnson', '548657', 2, NULL, 3, 2),
 ('esmith', '457845', 4, 1, NULL, 2),
 ('rmanton', '745486', 4, 2, NULL, 2),
-('bcurrie', '784596', 4, 3, NULL, 2),
+('bcurrie', '784596', 4, 3, NULL, 1),
 ('jhunter', '124956', 4, 4, NULL, 2),
 ('pjohnson', '258467', 4, 5, NULL, 2),
 ('ssoyler', '988654', 4, 6, NULL, 2),
