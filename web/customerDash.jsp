@@ -48,5 +48,4 @@ and open the template in the editor.
         </script>
 			
     </body>
-    <jsp:include page="/common/foot.jsp"/>
 </html>
