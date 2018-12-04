@@ -33,8 +33,7 @@
             <input type="text" name="newPrice"><br>
             <input type="submit" value="Submit">
         </form>
-
-        <jsp:include page="/common/foot.jsp"/>        
+                
     </body>
 
 </html>

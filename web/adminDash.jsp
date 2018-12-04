@@ -89,5 +89,4 @@
         </script>
 
     </body>
-    <jsp:include page="/common/foot.jsp"/>
 </html>
