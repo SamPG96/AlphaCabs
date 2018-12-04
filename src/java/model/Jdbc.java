@@ -458,7 +458,7 @@ public class Jdbc {
             if (user.getId() != 0) {
                 ps.setLong(7, user.getId());
             } else {
-                throw new RuntimeException("Id in User cannot be null");
+                throw new RuntimeException("Id in User cannot be 0");
             }
 
             //Execute and check for change
@@ -510,13 +510,13 @@ public class Jdbc {
                 ps.setLong(4, customer.getId());
             } else {
                 throw new RuntimeException("Id in Customer"
-                        + " cannot be null");
+                        + " cannot be 0");
             }
 
             //Execute and check for change
             nAffectedRows = ps.executeUpdate();
             if (nAffectedRows == 0) {
-                throw new SQLException("Customer user failed, no rows affected.");
+                throw new SQLException("Updating customer failed, no rows affected.");
             }
 
             //GET the generated ID
@@ -526,7 +526,7 @@ public class Jdbc {
                 ps.close();
                 return id;
             }else{
-                throw new SQLException("Customer user failed, no ID obtained");
+                throw new SQLException("Updating customer failed, no ID obtained");
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
@@ -565,7 +565,7 @@ public class Jdbc {
                 ps.setLong(4, driver.getId());
             } else {
                 throw new RuntimeException("Id in Driver"
-                        + " cannot be null");
+                        + " cannot be 0");
             }
 
             //Execute and check for change
@@ -651,7 +651,7 @@ public class Jdbc {
                 ps.setLong(9, booking.getId());
             } else {
                 throw new RuntimeException("Id in Booking"
-                        + " cannot be null");
+                        + " cannot be 0");
             }
 
             //Execute and check for change
@@ -668,6 +668,60 @@ public class Jdbc {
                 return id;
             }else{
                 throw new SQLException("Updating booking failed, no ID obtained");
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    /*
+    * Updates given configuration on the database table customers
+    * Return the generated ID of new row if successful else returns 0
+     */
+    public long update(Configuration configuration) {
+        PreparedStatement ps;
+        int nAffectedRows;
+
+        try {
+            ps = connection.prepareStatement("UPDATE Configurations SET "
+                    + "configname = ?,"
+                    + "configvalue = ?"
+                    + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
+
+            //Write configuration values to statement
+            if (configuration.getConfigName() != null) {
+                ps.setString(1, configuration.getConfigName().trim());
+            } else {
+                throw new RuntimeException("ConfigName in Configuration"
+                        + " cannot be null");
+            }
+            if (configuration.getConfigValue() != null) {
+                ps.setString(2, configuration.getConfigName().trim());
+            } else {
+                throw new RuntimeException("ConfigValue in Configuration"
+                        + " cannot be null");
+            }
+            if (configuration.getId() != 0) {
+                ps.setLong(3, configuration.getId());
+            } else {
+                throw new RuntimeException("Id in Configuration"
+                        + " cannot be 0");
+            }
+
+            //Execute and check for change
+            nAffectedRows = ps.executeUpdate();
+            if (nAffectedRows == 0) {
+                throw new SQLException("Updating Configuration failed, no rows affected.");
+            }
+
+            //GET the generated ID
+            rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                long id = rs.getLong(1);
+                ps.close();
+                return id;
+            }else{
+                throw new SQLException("Updating Configuration failed, no ID obtained");
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
