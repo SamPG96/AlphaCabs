@@ -47,7 +47,6 @@
         </div>
 
         <div id="Report" class="tabcontent">
-            <h3>View Daily Report</h3>
             <%@include file='adminDashReport.jsp' %>
         </div>
 
@@ -81,11 +80,12 @@
                     openTab(event, 'Users');
                 } else if (window.location.href.indexOf("AdminDashReportServlet.do") > -1) {
                     openTab(event, 'Report');
+                } else if (window.location.href.indexOf("AdminDashDriversServlet.do") > -1) {
+                    openTab(event, 'Drivers')
                 }
             }
             window.onload = displayTables;
         </script>
 
     </body>
-    <jsp:include page="/common/foot.jsp"/>
 </html>

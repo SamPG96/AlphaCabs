@@ -112,23 +112,9 @@ public class AdminDashDriversServlet extends HttpServlet {
         long userId;
         int newUserErrCode;
         String errMsgStr;
-        
-        String changeDriver;
+
+        long changeDriver;
         long softDelDriver;
-
-        //-------------------------------ADD DRIVER----------------------------------
-        newUserErrCode = UserManager.validateNewUserAttribs(
-                request.getParameter("forename"),
-                request.getParameter("surname"),
-                request.getParameter("password"),
-                request.getParameter("confirmation"));
-
-        if (newUserErrCode != 0) {
-            errMsgStr = convertNewUserErrCodeToMessageStr(newUserErrCode);
-
-            request.setAttribute("errMsg", errMsgStr + "</br>");
-            request.getRequestDispatcher("adminDashDrivers.jsp").forward(request, response);
-        }
 
         ServletContext sc = request.getServletContext();
 
@@ -142,40 +128,66 @@ public class AdminDashDriversServlet extends HttpServlet {
         Jdbc dbBean = new Jdbc();
         dbBean.connect((Connection) sc.getAttribute("connection"));
 
-        driverId = DriverManager.addNewDriver(request.getParameter("forename"),
-                request.getParameter("surname"),
-                request.getParameter("registration"),
-                dbBean);
+        String x = request.getParameter("button_click");
+        //String x = request.getParameter("buttonA_click");
+        //String i;
 
-        userId = UserManager.newDriverUser(
-                request.getParameter("password"),
-                request.getParameter("confirmation"),
-                driverId,
-                UserManager.getUserStatusObj(2, dbBean),
-                dbBean);
+        //----------------------------CHANGE DRIVER DETAILS-------------------------------
+        //if (null != request.getParameter("buttonA_click")) {
+        if (x.equals("changedetails") == true) {
 
-        String userName = UserManager.getUsernameForDriver(driverId, dbBean);
+            DriverManager.updateDriver(
+                    Long.valueOf(request.getParameter("idnumber")),
+                    request.getParameter("forenameC"),
+                    request.getParameter("surnameC"),
+                    request.getParameter("registrationC"),
+                    dbBean);
 
-        response.sendRedirect(returnPage);
+            //-------------------------------ADD DRIVER----------------------------------
+            //} else if (null != request.getParameter("buttonB_click")) {
+        } else if (x.equals("newdriver") == true) {
 
-        //--------------------------------------------------------------------------------------------------
-        //REMOVE DRIVER
-        //Wait for method
-        //DriverManager.removeDriver(request.setAttribute());
-        
-        //Driver selectedDriver = DriverManager.getDriver(driverId, dbBean);
-        //softDelDriver = DriverManager.softRemoveDriver(driverId, dbBean);
-        
-        
-        //--------------------------------------------------------------------------------------------------
-        //CHANGE DRIVER DETAILS
-        /*
-        changeDriver = DriverManager.updateDriver(driverId,
-                request.getParameter("forenameC"),
-                request.getParameter("surnameC"),
-                request.getParameter("registrationC"),
-                dbBean);
-        */
+            newUserErrCode = UserManager.validateNewUserAttribs(
+                    request.getParameter("forename"),
+                    request.getParameter("surname"),
+                    request.getParameter("password"),
+                    request.getParameter("confirmation"));
+
+            if (newUserErrCode != 0) {
+                errMsgStr = convertNewUserErrCodeToMessageStr(newUserErrCode);
+
+                request.setAttribute("errMsg", errMsgStr + "</br>");
+                request.getRequestDispatcher("adminDashDrivers.jsp").forward(request, response);
+            }
+
+            driverId = DriverManager.addNewDriver(request.getParameter("forename"),
+                    request.getParameter("surname"),
+                    request.getParameter("registration"),
+                    dbBean);
+
+            userId = UserManager.newDriverUser(
+                    request.getParameter("password"),
+                    request.getParameter("confirmation"),
+                    driverId,
+                    UserManager.getUserStatusObj(2, dbBean),
+                    dbBean);
+
+            String userName = UserManager.getUsernameForDriver(driverId, dbBean);
+
+            //-----------------------------REMOVE DRIVER----------------------------
+        } else if (x.equals("removedriver")) {
+            //Wait for method
+            //DriverManager.removeDriver(request.setAttribute());
+            //Driver selectedDriver = DriverManager.getDriver(driverId, dbBean);
+            //softDelDriver = DriverManager.softRemoveDriver(driverId, dbBean);
+            //}
+            //response.sendRedirect(returnPage);
+            
+            DriverManager.softRemoveDriver(
+                    Long.valueOf(request.getParameter("id")),
+                    dbBean);
+            
+        }
     }
 
     /*

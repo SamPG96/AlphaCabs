@@ -71,10 +71,10 @@ public class AdminDashCustomerServlet extends HttpServlet {
                 + "                    <th>First name</th>\n"
                 + "                    <th>Last name</th>\n"
                 + "                    <th>Address</th>\n"
-                + "                    <th>Served today</th>\n" 
                 + "                </tr></thead>";
         
         
+            message += "<tbody>";
         for (Customer customer:aCustomer) {
             
             
@@ -84,18 +84,13 @@ public class AdminDashCustomerServlet extends HttpServlet {
             message +="<td>" + customer.getLastName() + "</td>";
             message +="<td>" + customer.getAddress() + "</td>";
             //message +="<td>" + booking.g() + "</td>";
-            //message +="<td type="checkbox"></td>";
-              
-        }
-        
-        for (Booking booking:aBooking) {
-            
-            message +="<td>" + booking.getBookingStatus()+ "</td>";
-            
             
             message += "</tr>";
+            
+            //message += "</tr>"
+              
         }
-        
+            message += "</tbody>";
         
         
         request.setAttribute("customerTable", message);

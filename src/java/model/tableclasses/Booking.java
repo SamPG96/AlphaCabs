@@ -19,8 +19,9 @@ public class Booking {
     private String sourceAddress;
     private String destinationAddress;
     private int numOfPassengers;
-    private double distanceKM;
-    private double charge;
+    private double distance;
+    private double FareExcVAT;
+    private double FareIncVAT;
     private Timestamp timeBooked;
     private Timestamp departureTime;
     private Timestamp arrivalTime;
@@ -31,7 +32,7 @@ public class Booking {
 
     public Booking(long id, Customer customer, Driver driver, 
             String sourceAddress, String destinationAddress, 
-            int numOfPassengers, double distanceKM, double charge, Timestamp timeBooked, 
+            int numOfPassengers, double distanceKM, double fareExcVAT, double fareIncVAT, Timestamp timeBooked, 
             Timestamp departureTime, Timestamp arrivalTime, 
             GenericItem bookingStatus) {
         this.id = id;
@@ -40,8 +41,9 @@ public class Booking {
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.numOfPassengers = numOfPassengers;
-        this.distanceKM = distanceKM;
-        this.charge = charge;
+        this.distance = distanceKM;
+        this.FareExcVAT = fareExcVAT;
+        this.FareIncVAT = fareIncVAT;
         this.timeBooked = timeBooked;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
@@ -50,14 +52,15 @@ public class Booking {
     
     public Booking(Customer customer, String sourceAddress, 
             String destinationAddress, int numOfPassengers, 
-            double distanceKM, double charge, Timestamp timeBooked, 
+            double distanceKM, double fareExcVAT, double fareIncVAT, Timestamp timeBooked, 
             Timestamp departureTime, GenericItem bookingStatus) {
         this.customer = customer;
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.numOfPassengers = numOfPassengers;
-        this.distanceKM = distanceKM;
-        this.charge = charge;
+        this.distance = distanceKM;
+        this.FareExcVAT = fareExcVAT;
+        this.FareIncVAT = fareIncVAT;
         this.timeBooked = timeBooked;
         this.departureTime = departureTime;
         this.bookingStatus = bookingStatus;
@@ -65,13 +68,14 @@ public class Booking {
     
     public Booking(String sourceAddress, 
             String destinationAddress, int numOfPassengers, 
-            double distanceKM, double charge, Timestamp timeBooked, 
+            double distanceKM, double fareExcVAT, double fareIncVAT, Timestamp timeBooked, 
             Timestamp departureTime, GenericItem bookingStatus) {
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.numOfPassengers = numOfPassengers;
-        this.distanceKM = distanceKM;
-        this.charge = charge;
+        this.distance = distanceKM;
+        this.FareExcVAT = fareExcVAT;
+        this.FareIncVAT = fareIncVAT;
         this.timeBooked = timeBooked;
         this.departureTime = departureTime;
         this.bookingStatus = bookingStatus;
@@ -118,11 +122,11 @@ public class Booking {
     }
 
     public double getDistance() {
-        return distanceKM;
+        return distance;
     }
 
-    public void setDistanceKM(double distanceKM) {
-        this.distanceKM = distanceKM;
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     public Timestamp getTimeBooked() {
@@ -173,13 +177,22 @@ public class Booking {
         this.arrivalTime = arrivalTime;
     }
 
-    public double getCharge() {
-        return charge;
+    public double getFareExcVAT() {
+        return FareExcVAT;
     }
 
-    public void setCharge(double charge) {
-        this.charge = charge;
+    public void setFareExcVAT(double FareExcVAT) {
+        this.FareExcVAT = FareExcVAT;
     }
+
+    public double getFareIncVAT() {
+        return FareIncVAT;
+    }
+
+    public void setFareIncVAT(double FareIncVAT) {
+        this.FareIncVAT = FareIncVAT;
+    }
+
     
     
     

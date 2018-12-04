@@ -22,7 +22,7 @@
                 
                 <button type="submit" class="allconfigs">Display Current Configurations</button>
                 
-                <c:out value="configTable"/>
+                <!--<c:out value="configTable"/>-->
                 ${configTable}
 
             </table>
@@ -32,9 +32,8 @@
             Please Enter the new £ per Mile and press SUBMIT:
             <input type="text" name="newPrice"><br>
             <input type="submit" value="Submit">
-        </form>
+        </form>         
 
-        <jsp:include page="/common/foot.jsp"/>        
     </body>
 
 </html>

@@ -65,7 +65,7 @@ CREATE TABLE UserStatus (
 );
 
 INSERT INTO UserStatus (Id, Status) VALUES
-(1, 'Unappoved'),
+(1, 'Unapproved'),
 (2, 'Active'),
 (4, 'Inactive');
 
@@ -88,7 +88,7 @@ Alter table Users add foreign key (DriverId) references Drivers;
 Alter table Users add foreign key (UserStatusId) references UserStatus;
 
 INSERT INTO Users (Username, Password, UserTypeId, CustomerId, DriverId, UserStatusId) VALUES
-('meaydin', '201068', 2, NULL, 2, 2),
+('meaydin', '201068', 2, NULL, 2, 1),
 ('aydinme', '108752', 1, NULL, NULL, 2),
 ('csimons', '010563', 2, NULL, 4, 2),
 ('jsmith', '465844', 2, NULL, 1, 2),
@@ -127,7 +127,8 @@ CREATE TABLE Bookings (
   DestinationAddress varchar(60) NOT NULL,
   NumOfPassengers int NOT NULL,
   Distance decimal NOT NULL,
-  Charge decimal NOT NULL,
+  FareExcVAT decimal NOT NULL,
+  FareIncVAT decimal NOT NULL,
   TimeBooked timestamp NOT NULL,
   DepartureTime timestamp NOT NULL,
   ArrivalTime timestamp DEFAULT NULL,
@@ -139,13 +140,13 @@ Alter table Bookings add foreign key (CustomerId) references Customers;
 Alter table Bookings add foreign key (DriverId) references Drivers;
 Alter table Bookings add foreign key (BookingStatusId) references BookingStatus;
 
-INSERT INTO Bookings (CustomerId, DriverId, SourceAddress, DestinationAddress, NumOfPassengers, Distance, Charge, TimeBooked, DepartureTime, ArrivalTime, BookingStatusId) VALUES
-(1, 1, '129 Station Rd, London, N3 2AS', 'King''s Cross Station, London', 2, 5.0, 5.0, '2015-10-13 12:30:00', '2015-10-14 09:00:00', '2015-10-14 09:30:00', 4),
-(2, 1, '23 Bow Lane, London, N3', 'Heathrow Terminal 3, London', 1, 20.0, 20.0, '2015-10-14 09:30:00', '2015-10-14 10:00:00', '2015-10-14 12:00:00', 4),
-(3, 4, '54 Teignmouth Rd, London, NW2', '120 Green Lanes, London, N13', 2, 7.0, 7.0, '2015-10-14 18:00:00', '2015-10-15 05:00:00', '2015-10-15 06:00:00', 4),
-(4, 4, '765 High Road, London, N12', '131 Stoke Newington High Road, London, N12', 3, 8.0, 8.0, '2015-10-15 09:00:00', '2015-10-15 11:30:00', '2015-10-15 12:00:00', 4),
-(5, 2, '75 Squires Lane, London, N3', 'Luton Airport, Luton', 4, 30.0, 30.0, '2015-10-21 14:30:00', '2015-10-22 09:00:00', '2015-10-22 10:00:00', 4),
-(6, 1, 'Finchley, London', 'King''s Cross, London', 1, 5.0, 5.0, '2015-11-02 09:22:18', '2015-11-05 09:00:00', NULL, 1);
+INSERT INTO Bookings (CustomerId, DriverId, SourceAddress, DestinationAddress, NumOfPassengers, Distance, FareExcVAT, FareIncVAT, TimeBooked, DepartureTime, ArrivalTime, BookingStatusId) VALUES
+(1, 1, '129 Station Rd, London, N3 2AS', 'King''s Cross Station, London', 2, 5.0, 5.0, 6.0, '2015-10-13 12:30:00', '2015-10-14 09:00:00', '2015-10-14 09:30:00', 4),
+(2, 1, '23 Bow Lane, London, N3', 'Heathrow Terminal 3, London', 1, 20.0, 20.0, 24.0, '2015-10-14 09:30:00', '2015-10-14 10:00:00', '2015-10-14 12:00:00', 4),
+(3, 4, '54 Teignmouth Rd, London, NW2', '120 Green Lanes, London, N13', 2, 7.0, 7.0, 8.4, '2015-10-14 18:00:00', '2015-10-15 05:00:00', '2015-10-15 06:00:00', 4),
+(4, 4, '765 High Road, London, N12', '131 Stoke Newington High Road, London, N12', 3, 8.0, 8.0, 9.6, '2015-10-15 09:00:00', '2015-10-15 11:30:00', '2015-10-15 12:00:00', 4),
+(5, 2, '75 Squires Lane, London, N3', 'Luton Airport, Luton', 4, 30.0, 30.0, 36.0, '2015-10-21 14:30:00', '2015-10-22 09:00:00', '2015-10-22 10:00:00', 4),
+(6, NULL, 'Finchley, London', 'King''s Cross, London', 1, 5.0, 5.0, 6.0, '2015-11-02 09:22:18', '2015-11-05 09:00:00', NULL, 1);
 
 -- --------------------------------------------------------
 CREATE TABLE Configurations (
