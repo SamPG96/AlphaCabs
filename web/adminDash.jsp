@@ -80,6 +80,10 @@
             
                 openTab(event,'Bookings');
             
+            }else if (window.location.href.indexOf("AdminDashReportServlet.do") > -1) {
+            
+                openTab(event,'Report');
+            
             }
 
         }
