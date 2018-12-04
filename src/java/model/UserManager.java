@@ -21,9 +21,9 @@ import static model.tableclasses.User.TABLE_NAME_USERS;
  * @author Sam
  */
 public class UserManager {
-    public static final int NO_FIRST_NAME_ERR_CODE = -1;
-    public static final int NO_LAST_NAME_ERR_CODE = -2;
-    public static final int NO_PASSWORD_ERR_CODE = -3;
+    public static final int NO_USER_FIRST_NAME_ERR_CODE = -1;
+    public static final int NO_USER_LAST_NAME_ERR_CODE = -2;
+    public static final int NO_USER_PASSWORD_ERR_CODE = -3;
     public static final int PASSWORDS_DONT_MATCH_ERR_CODE = -4;
 
     /*
@@ -41,7 +41,7 @@ public class UserManager {
         
         // Retrieve existing info about the user and replace the status of the
         // user to active.
-        user.setUserStatus(new GenericItem(2));
+        user.setUserStatus(getUserStatusObj(2, jdbc));
         
         // Update the database
         jdbc.update(user);
@@ -60,7 +60,7 @@ public class UserManager {
         
         user = new User();
         user.setPassword(password);
-        user.setUserType(new GenericItem(4, "Customer"));
+        user.setUserType(getUserTypeObj(4, jdbc));
         
         customer = CustomerManager.getCustomer(customerID, jdbc);
         user.setCustomer(customer);
@@ -80,7 +80,7 @@ public class UserManager {
         
         user = new User();
         user.setPassword(password);
-        user.setUserType(new GenericItem(2, "Driver"));
+        user.setUserType(getUserTypeObj(2, jdbc));
         
         driver = DriverManager.getDriver(driverId, jdbc);
         user.setDriver(driver);
@@ -119,13 +119,13 @@ public class UserManager {
     public static int validateNewUserAttribs(String userFirstName,
             String userLastName, String password, String passwordConfirm){
         if (userFirstName == null || userFirstName.isEmpty()){
-            return NO_FIRST_NAME_ERR_CODE;
+            return NO_USER_FIRST_NAME_ERR_CODE;
         }
         if (userLastName == null || userLastName.isEmpty()){
-            return NO_LAST_NAME_ERR_CODE;
+            return NO_USER_LAST_NAME_ERR_CODE;
         }
         else if (password == null || password.isEmpty()){
-            return NO_PASSWORD_ERR_CODE;
+            return NO_USER_PASSWORD_ERR_CODE;
         }
         else if (passwordConfirm == null || password.equals(passwordConfirm) == false){
             return PASSWORDS_DONT_MATCH_ERR_CODE;
@@ -329,6 +329,20 @@ public class UserManager {
         return generateUserObj(userDBInfo, jdbc);
     }
     
+    /*
+    * Retrieve a user by a driver ID.
+    */
+    public static User getUserByDriverId(long driverId, Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        
+        results = jdbc.retrieve(TABLE_NAME_USERS, "DRIVERID", driverId);
+        
+        return getUser(Long.valueOf(results.get(0).get("ID")), jdbc);
+    }
+    
+    /*
+    * Generates a user object from the output of the DB
+    */
     private static User generateUserObj(HashMap<String, String> dbMap, Jdbc jdbc){
         User user;
         
@@ -371,10 +385,25 @@ public class UserManager {
         // username
         return results.get(0).get("USERNAME");
     }
+
     /*
-     * Queries the database to check the status of a user account 
-     */
-//    public static int getUserAccountStatus(User user, Jdbc jdbc){
-//        
-//    }
+    * Retrieves the username of a driver.
+    */
+    public static String getUsernameForDriver(long driverId, Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        results = jdbc.retrieve(
+                TABLE_NAME_USERS,
+                "DRIVERID",
+                driverId);
+        
+        if (results.isEmpty()){
+            // Cannot find a user with the given customerID
+            return null;
+        }
+        
+        // Fetch the first result (their should only be one) and return the
+        // username
+        return results.get(0).get("USERNAME");
+    }
+
 }
