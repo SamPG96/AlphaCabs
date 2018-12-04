@@ -137,8 +137,8 @@
 
                 <button type="submit" class="alldrivers">Display All Drivers</button>
 
-                <!--<c:out value="driversTable"/>-->
-                <!--${driversTable}-->
+                <!--< c:out value="driversTable"/>-->
+                ${driversTable}
 
                 <!--
                 <button onclick="document.getElementById('id02').style.display = 'block'">Change Driver Details</button>
