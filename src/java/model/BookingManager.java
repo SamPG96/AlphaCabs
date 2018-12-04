@@ -77,9 +77,9 @@ public class BookingManager {
         //Num of Passengers
         int nPassengers = Integer.parseInt(numOfPassengers);
         //Distance KM
-        double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
+        double distance = calcDistance(sourceAddress, destinationAddress);
         //Charge
-        double charge = calcCharge(distanceKM, jdbc);
+        double charge = calcCharge(distance, jdbc);
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
@@ -87,7 +87,7 @@ public class BookingManager {
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(customer, sourceAddress, destinationAddress,
-                nPassengers, distanceKM, charge, new Timestamp(System.currentTimeMillis()),
+                nPassengers, distance, charge, new Timestamp(System.currentTimeMillis()),
                 depTimestamp, bookingStatus);
     }
 
@@ -121,9 +121,9 @@ public class BookingManager {
         //Num of Passengers
         int nPassengers = Integer.parseInt(numOfPassengers);
         //Distance KM
-        double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
+        double distance = calcDistance(sourceAddress, destinationAddress);
         //Charge
-        double charge = calcCharge(distanceKM, jdbc);
+        double charge = calcCharge(distance, jdbc);
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
@@ -131,7 +131,7 @@ public class BookingManager {
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(sourceAddress, destinationAddress,
-                nPassengers, distanceKM, charge,
+                nPassengers, distance, charge,
                 new Timestamp(System.currentTimeMillis()),
                 depTimestamp, bookingStatus);
     }
@@ -179,7 +179,8 @@ public class BookingManager {
                     map.get("SOURCEADDRESS"),
                     map.get("DESTINATIONADDRESS"),
                     Integer.parseInt(map.get("NUMOFPASSENGERS")),
-                    Double.parseDouble(map.get("DISTANCEKM")),
+//                    Double.parseDouble(map.get("DISTANCE")), 
+                    2,
                     Double.parseDouble(map.get("CHARGE")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
@@ -230,7 +231,7 @@ public class BookingManager {
                     map.get("SOURCEADDRESS"),
                     map.get("DESTINATIONADDRESS"),
                     Integer.parseInt(map.get("NUMOFPASSENGERS")),
-                    Double.parseDouble(map.get("DISTANCEKM")),
+                    Double.parseDouble(map.get("DISTANCE")),
                     Double.parseDouble(map.get("CHARGE")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
@@ -270,7 +271,7 @@ public class BookingManager {
                 bookingMap.get("SOURCEADDRESS"),
                 bookingMap.get("DESTINATIONADDRESS"),
                 Integer.parseInt(bookingMap.get("NUMOFPASSENGERS")),
-                Double.parseDouble(bookingMap.get("DISTANCEKM")),
+                Double.parseDouble(bookingMap.get("DISTANCE")),
                 Double.parseDouble(bookingMap.get("CHARGE")),
                 Timestamp.valueOf(bookingMap.get("TIMEBOOKED")),
                 Timestamp.valueOf(bookingMap.get("DEPARTURETIME")),
@@ -300,27 +301,22 @@ public class BookingManager {
         return jdbc.update(booking);
     }
 
-    private static double calcDistanceKM(String source, String dest) {
+    private static double calcDistance(String source, String dest) {
         //TODO with Google Maps API
-        return 10.0;
+        return 6.43738;
     }
 
-    private static double calcCharge(double distanceKM, Jdbc jdbc){
+    private static double calcCharge(double distance, Jdbc jdbc){
         int shortDistance = AdminManager.getShortDistance(jdbc);
         double shortDistPrice = AdminManager.getShortDistPrice(jdbc);
         
-        if(calcKMToMiles(distanceKM) > shortDistance){
+        if(distance > shortDistance){
             double pricePerKM = AdminManager.getPricePerKM(jdbc);
-            return shortDistPrice + distanceKM * pricePerKM;
+            return shortDistPrice + distance * pricePerKM;
         }else{
             return shortDistPrice;
         }
     }
-    
-    private static double calcKMToMiles(double km){
-        return km * 0.621371;
-    }
-
     public int getError() {
         return error;
     }

@@ -12,13 +12,26 @@
         <title>Driver Dashboard</title>
 
     </head>
-    <body>
-        <h1>DRIVER Dashboard</h1>
-        
-        Here lies the information to your salvation...
-        
-        <br>ACTIVE JOBS
 
-    </body>
+
+
+    <form method="GET" action="DriverDashServlet.do">
+
+        <table class="tableLine">
+            <tr><input type="submit" value="Display Bookings"/></tr>                
+
+            <c:out value="bookingsTable"/>
+            ${bookingsTable}
+
+
+        </table>
+
+    </form>
+
+
     <jsp:include page="/common/foot.jsp"/>
+
+    
+    
+    
 </html>

@@ -126,7 +126,7 @@ CREATE TABLE Bookings (
   SourceAddress varchar(60) NOT NULL,
   DestinationAddress varchar(60) NOT NULL,
   NumOfPassengers int NOT NULL,
-  DistanceKM decimal NOT NULL,
+  Distance decimal NOT NULL,
   Charge decimal NOT NULL,
   TimeBooked timestamp NOT NULL,
   DepartureTime timestamp NOT NULL,
@@ -139,7 +139,7 @@ Alter table Bookings add foreign key (CustomerId) references Customers;
 Alter table Bookings add foreign key (DriverId) references Drivers;
 Alter table Bookings add foreign key (BookingStatusId) references BookingStatus;
 
-INSERT INTO Bookings (CustomerId, DriverId, SourceAddress, DestinationAddress, NumOfPassengers, DistanceKM, Charge, TimeBooked, DepartureTime, ArrivalTime, BookingStatusId) VALUES
+INSERT INTO Bookings (CustomerId, DriverId, SourceAddress, DestinationAddress, NumOfPassengers, Distance, Charge, TimeBooked, DepartureTime, ArrivalTime, BookingStatusId) VALUES
 (1, 1, '129 Station Rd, London, N3 2AS', 'King''s Cross Station, London', 2, 5.0, 5.0, '2015-10-13 12:30:00', '2015-10-14 09:00:00', '2015-10-14 09:30:00', 4),
 (2, 1, '23 Bow Lane, London, N3', 'Heathrow Terminal 3, London', 1, 20.0, 20.0, '2015-10-14 09:30:00', '2015-10-14 10:00:00', '2015-10-14 12:00:00', 4),
 (3, 4, '54 Teignmouth Rd, London, NW2', '120 Green Lanes, London, N13', 2, 7.0, 7.0, '2015-10-14 18:00:00', '2015-10-15 05:00:00', '2015-10-15 06:00:00', 4),
@@ -159,6 +159,6 @@ CREATE TABLE Configurations (
 
 INSERT INTO Configurations (ConfigName, ConfigValue) VALUES
 ('VAT', '20'),
-('PricePerKM', '1'),
+('PricePerMile', '1'),
 ('ShortDistPrice', '2'),
 ('ShortDistance', '5');

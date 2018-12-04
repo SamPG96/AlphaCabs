@@ -13,10 +13,10 @@
 <html>
     
     <body>
+        
+        <img class="banner" src="imgs/AlphaCabs.png">
+        
         <div class="navbar">
-        <img class="img-fluid" src="imgs/Alpha.png" align="left">
-        
-        
        <%
         try {
             if(session != null && session.getAttribute("userID") != null)  {
@@ -47,9 +47,6 @@
         <%--
         <a href="login.jsp"> Login </a>
         --%>
-        <br>
-        <br>
-        <h1>Alpha Cabs</h1>
                <!--<div class="line"></div>-->
         </div>
     </body>

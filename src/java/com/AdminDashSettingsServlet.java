@@ -7,20 +7,23 @@ package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.UserManager;
+import model.AdminManager;
 import model.Jdbc;
+import model.tableclasses.Configuration;
 import model.tableclasses.User;
 
 /**
  *
- * @author jakec
+ * @author Tom
  */
-public class AdminDashUserServlet extends HttpServlet {
+public class AdminDashSettingsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,6 +36,7 @@ public class AdminDashUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -47,50 +51,47 @@ public class AdminDashUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                processRequest(request, response);
+        processRequest(request, response);
 
         HttpSession session = request.getSession(false);
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
 
-        User[] aUser = UserManager.getAllUsers(jdbc);
-        
-            
-        String message = "<tr>\n"
-                + "                    <th>Username</th>\n"
-                + "                    <th>UserType</th>\n"
-                + "                    <th>CustomerId</th>\n"
-                + "                    <th>DriverId</th>\n"
-                + "                    <th>UserStatus</th>\n"
-                + "                    <th>Approve</th>\n"
-                + "                </tr>";
-        
-        
-        for (User user:aUser) {
-            
-            
-            
-            message +=  "<tr>";
-            message +="<td>" + user.getUsername() + "</td>";
-            message +="<td>" + user.getUserType() + "</td>";
-            message +="<td>" + user.getCustomerId() + "</td>";
-            message +="<td>" + user.getDriverId() + "</td>";
-            message +="<td>" + user.getUserStatus() + "</td>";
-            message +="<td input type='checkbox' value='approve'></td>";
-          
-            message += "</tr>";
+        //Configuration allConfigs;
+        ServletContext sc = request.getServletContext();
+
+        // Go straight to an error page if their where problems connecting to
+        // the DB.
+        if (sc.getAttribute("dBConnectionError") != null) {
+            request.getRequestDispatcher("conErr.jsp").forward(request, response);
         }
 
-        request.setAttribute("userTable", message);
+        // Connect Jdbc to the DB
+        //Jdbc dbBean = new Jdbc();
+        //dbBean.connect((Connection) sc.getAttribute("connection"));
 
-     
-//
-//        request.setAttribute("bookingsTable", message + "</br>");
-        //response.setIntHeader("Refresh", 0);
+        Configuration[] allConfigs = AdminManager.getConfigurations(jdbc);
+
+        String table = "<tr>\n"
+                + "                    <th>Config ID</th>\n"
+                + "                    <th>Config Name</th>\n"
+                + "                    <th>Config Value</th>\n"
+                + "                </tr>";
+
+        for (Configuration config : allConfigs) {
+
+            table += "<tr>";
+            table += "<td>" + config.getId() + "</td>";
+            table += "<td>" + config.getConfigName() + "</td>";
+            table += "<td>" + config.getConfigValue() + "</td>";
+            table += "</tr>";
+        }
+
+        request.setAttribute("configTable", table);
+
         request.getRequestDispatcher("index.jsp").forward(request, response);
-    
-    
+
+        //allConfigs = AdminManager.getConfigurations(dbBean);
     }
 
     /**
@@ -105,6 +106,7 @@ public class AdminDashUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
     }
 
     /**
