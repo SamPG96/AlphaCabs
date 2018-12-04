@@ -81,6 +81,8 @@
                     openTab(event, 'Users');
                 } else if (window.location.href.indexOf("AdminDashReportServlet.do") > -1) {
                     openTab(event, 'Report');
+                } else if (window.location.href.indexOf("AdminDashDriversServlet.do") > -1) {
+                    openTab(event, 'Drivers')
                 }
             }
             window.onload = displayTables;
