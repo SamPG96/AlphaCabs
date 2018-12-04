@@ -30,7 +30,7 @@ public class AlphacabListener implements ServletContextListener {
 
         // Establish a connection to the database and store it
         String db = sc.getInitParameter("dbname");
-        String dbpath = "jdbc:derby://localhost:1527/" + db.trim();
+        String dbpath = sc.getInitParameter("dburl") + db.trim();
         String dbuser = sc.getInitParameter("dbuser");
         String dbpass = sc.getInitParameter("dbpass");
 

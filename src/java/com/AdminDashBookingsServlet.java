@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import model.Jdbc;
 import model.tableclasses.Booking;
 import model.BookingManager;
+import model.Helper;
 //import model.UserManagement;
 import model.tableclasses.User;
 
@@ -83,9 +84,9 @@ public class AdminDashBookingsServlet extends HttpServlet {
                 + "                    <th>Source address</th>\n"
                 + "                    <th>Destination address</th>\n"
                 + "                    <th>Passengers</th>\n"
-                + "                    <th>Distance (MILES)</th>\n"
-                + "                    <th>Price ex. VAT</th>\n"
-                + "                    <th>Price inc. VAT</th>\n"
+                + "                    <th>Distance (Miles)</th>\n"
+                + "                    <th>Price ex. VAT (£)</th>\n"
+                + "                    <th>Price inc. VAT (£)</th>\n"
                 + "                    <th>Date</th>\n"
                 + "                    <th>Depature time</th>\n"
                 + "                    <th>Arrival time</th>\n"
@@ -99,9 +100,9 @@ public class AdminDashBookingsServlet extends HttpServlet {
             message += "<td>" + booking.getSourceAddress() + "</td>";
             message += "<td>" + booking.getDestinationAddress() + "</td>";
             message += "<td>" + booking.getNumOfPassengers() + "</td>";
-            message += "<td>" + booking.getDistance() + "</td>";
-            message += "<td>£ " + booking.getFareExcVAT() + "</td>";
-            message += "<td>£ " + booking.getFareIncVAT() + "</td>";
+            message += "<td>" + booking.getDistance() + " </td>";
+            message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareExcVAT()) + "</td>";
+            message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareIncVAT()) + "</td>";
             message += "<td>" + booking.getTimeBooked() + "</td>";
             message += "<td>" + booking.getDepartureTime() + "</td>";
 
