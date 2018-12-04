@@ -65,7 +65,7 @@ CREATE TABLE UserStatus (
 );
 
 INSERT INTO UserStatus (Id, Status) VALUES
-(1, 'Unappoved'),
+(1, 'Unapproved'),
 (2, 'Active'),
 (4, 'Inactive');
 
@@ -88,7 +88,7 @@ Alter table Users add foreign key (DriverId) references Drivers;
 Alter table Users add foreign key (UserStatusId) references UserStatus;
 
 INSERT INTO Users (Username, Password, UserTypeId, CustomerId, DriverId, UserStatusId) VALUES
-('meaydin', '201068', 2, NULL, 2, 2),
+('meaydin', '201068', 2, NULL, 2, 1),
 ('aydinme', '108752', 1, NULL, NULL, 2),
 ('csimons', '010563', 2, NULL, 4, 2),
 ('jsmith', '465844', 2, NULL, 1, 2),
