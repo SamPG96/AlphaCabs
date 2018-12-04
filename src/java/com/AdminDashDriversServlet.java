@@ -181,13 +181,13 @@ public class AdminDashDriversServlet extends HttpServlet {
             //Driver selectedDriver = DriverManager.getDriver(driverId, dbBean);
             //softDelDriver = DriverManager.softRemoveDriver(driverId, dbBean);
             //}
-            //response.sendRedirect(returnPage);
-            
+
             DriverManager.softRemoveDriver(
                     Long.valueOf(request.getParameter("id")),
                     dbBean);
-            
+
         }
+        response.sendRedirect(returnPage);
     }
 
     /*
