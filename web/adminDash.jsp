@@ -48,8 +48,7 @@
         
         <div id="Report" class="tabcontent">
             <h3>View Daily Report</h3>
-            <!--<p>< %@include file='.jsp' %></p>-->
-            <p>INPUT JSP FILE HERE - For viewing daily report</p>
+            <%@include file='adminDashReport.jsp' %>
         </div>
         
         <div id="Settings" class="tabcontent">
