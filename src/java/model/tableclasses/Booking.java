@@ -117,7 +117,7 @@ public class Booking {
         this.destinationAddress = destinationAddress;
     }
 
-    public double getDistanceKM() {
+    public double getDistance() {
         return distanceKM;
     }
 

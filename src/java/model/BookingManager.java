@@ -5,6 +5,7 @@
  */
 package model;
 
+import ServiceClients.AlphaCabsServicesClient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,9 @@ public class BookingManager {
             ERR_DEST_ADDR_NULL = -4,
             ERR_N_PAS_NULL = -5,
             ERR_DEP_DATE_NULL = -6,
-            ERR_DEP_TIME_NULL = -7;
+            ERR_DEP_TIME_NULL = -7,
+            ERR_ADDR_NOT_FOUND = -8,
+            ERR_WITH_WEB_SERVICE = -9;
     //Driver Assignment Error Codes
     public static final int ERR_DRIVER_NULL = -1,
             ERR_BOOKING_NULL = -2;
@@ -37,7 +40,8 @@ public class BookingManager {
             String isSourceSameAsHome, String sourceAddress,
             String destinationAddress, String numOfPassengers,
             String departureDate, String departureTime, Jdbc jdbc) {
-
+        HashMap<String, String> fareResponse;
+        
         //SET appropriate error value and return null if a param is null or empty
         if (customer == null) {
             this.error = ERR_CUST_NULL;
@@ -68,6 +72,17 @@ public class BookingManager {
             return null;
         }
 
+        fareResponse = AlphaCabsServicesClient.calculateFare(sourceAddress, destinationAddress);
+        
+        if ("-1".equals(fareResponse.get("status"))){
+            this.error = ERR_ADDR_NOT_FOUND;
+            return null;
+        }
+        else if ("-2".equals(fareResponse.get("status"))){
+            this.error = ERR_WITH_WEB_SERVICE;
+            return null;
+        }        
+        
         //Resolve if source destination is the customers home address
         boolean isSSAH = Boolean.parseBoolean(isSourceSameAsHome);
         if (isSSAH) {
@@ -76,13 +91,17 @@ public class BookingManager {
         //Resolve data types from string params
         //Num of Passengers
         int nPassengers = Integer.parseInt(numOfPassengers);
-        //Distance KM
-        double distance = calcDistance(sourceAddress, destinationAddress);
+        
+        //Distance
+        double distance = Double.valueOf(fareResponse.get("distance"));
+        
         //Charge
-        double charge = calcCharge(distance, jdbc);
+        double charge = Double.valueOf(fareResponse.get("fareWithVAT"));
+        
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
+        
         //Booking Status
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
@@ -94,7 +113,8 @@ public class BookingManager {
     public Booking generateNewBooking(String sourceAddress,
             String destinationAddress, String numOfPassengers,
             String departureDate, String departureTime, Jdbc jdbc) {
-
+        HashMap<String, String> fareResponse;
+        
         //SET appropriate error value and return null if a param is null or empty
         if (sourceAddress == null || sourceAddress.isEmpty()) {
             this.error = ERR_SRC_ADDR_NULL;
@@ -117,16 +137,31 @@ public class BookingManager {
             return null;
         }
 
+        fareResponse = AlphaCabsServicesClient.calculateFare(sourceAddress, destinationAddress);
+        
+        if ("-1".equals(fareResponse.get("status"))){
+            this.error = ERR_ADDR_NOT_FOUND;
+            return null;
+        }
+        else if ("-2".equals(fareResponse.get("status"))){
+            this.error = ERR_WITH_WEB_SERVICE;
+            return null;
+        }          
+        
         //Resolve data types from string params
         //Num of Passengers
         int nPassengers = Integer.parseInt(numOfPassengers);
-        //Distance KM
-        double distance = calcDistance(sourceAddress, destinationAddress);
+       
+        //Distance
+        double distance = Double.valueOf(fareResponse.get("distance"));
+        
         //Charge
-        double charge = calcCharge(distance, jdbc);
+        double charge = Double.valueOf(fareResponse.get("fareWithVAT"));
+    
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
+    
         //Booking Status
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
@@ -301,22 +336,6 @@ public class BookingManager {
         return jdbc.update(booking);
     }
 
-    private static double calcDistance(String source, String dest) {
-        //TODO with Google Maps API
-        return 6.43738;
-    }
-
-    private static double calcCharge(double distance, Jdbc jdbc){
-        int shortDistance = AdminManager.getShortDistance(jdbc);
-        double shortDistPrice = AdminManager.getShortDistPrice(jdbc);
-        
-        if(distance > shortDistance){
-            double pricePerKM = AdminManager.getPricePerKM(jdbc);
-            return shortDistPrice + distance * pricePerKM;
-        }else{
-            return shortDistPrice;
-        }
-    }
     public int getError() {
         return error;
     }

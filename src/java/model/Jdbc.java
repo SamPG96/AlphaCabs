@@ -321,9 +321,9 @@ public class Jdbc {
             ps = connection.prepareStatement(
                     "INSERT INTO Bookings (CustomerId"
                             + ", SourceAddress, DestinationAddress"
-                            + ", NumOfPassengers, DistanceKM, TimeBooked"
+                            + ", NumOfPassengers, Distance, Charge, TimeBooked"
                             + ", DepartureTime,  BookingStatusId)"
-                            + " VALUES (?,?,?,?,?,?,?,?)",
+                            + " VALUES (?,?,?,?,?,?,?,?, ?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write booking values to statement
@@ -358,23 +358,30 @@ public class Jdbc {
                 throw new RuntimeException("NumOfPassengers in Booking"
                         + " cannot be 0");
             }
-            //DistanceKM
-            if (booking.getDistanceKM() != 0.0) {
-                ps.setDouble(5, booking.getDistanceKM());
+            //Distance
+            if (booking.getDistance() != 0.0) {
+                ps.setDouble(5, booking.getDistance());
             }else {
-                throw new RuntimeException("DistanceKM in Booking"
+                throw new RuntimeException("Distance in Booking"
+                        + " cannot be 0.0");
+            }
+            //Charge
+            if (booking.getCharge() != 0.0) {
+                ps.setDouble(6, booking.getCharge());
+            }else {
+                throw new RuntimeException("Charge in Booking"
                         + " cannot be 0.0");
             }
             //TimeBooked
             if (booking.getTimeBooked() != null) {
-                ps.setTimestamp(6, booking.getTimeBooked());
+                ps.setTimestamp(7, booking.getTimeBooked());
             } else {
                 throw new RuntimeException("TimeBooked in Booking"
                         + " cannot be null");
             }
             //DepartureTime
             if (booking.getDepartureTime()!= null) {
-                ps.setTimestamp(7, booking.getDepartureTime());
+                ps.setTimestamp(8, booking.getDepartureTime());
             }
             //ArrivalTime
 //            if (booking.getTimeArrived() != null) {
@@ -382,7 +389,7 @@ public class Jdbc {
 //            }
             //BookingStatus
             if (booking.getBookingStatus() != null) {
-                ps.setLong(8, booking.getBookingStatus().getId());
+                ps.setLong(9, booking.getBookingStatus().getId());
             } else {
                 throw new RuntimeException("Booking Status in Booking"
                         + " cannot be null");
@@ -629,8 +636,8 @@ public class Jdbc {
                 throw new RuntimeException("DestinationAddress in Booking"
                         + " cannot be null");
             }
-            if (booking.getDistanceKM() != 0.0) {
-                ps.setDouble(5, booking.getDistanceKM());
+            if (booking.getDistance() != 0.0) {
+                ps.setDouble(5, booking.getDistance());
             }
             if (booking.getTimeBooked() != null) {
                 ps.setTimestamp(6, booking.getTimeBooked());
