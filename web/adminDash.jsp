@@ -47,7 +47,6 @@
         </div>
 
         <div id="Report" class="tabcontent">
-            <h3>View Daily Report</h3>
             <%@include file='adminDashReport.jsp' %>
         </div>
 
