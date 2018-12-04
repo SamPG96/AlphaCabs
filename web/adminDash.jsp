@@ -53,8 +53,7 @@
         
         <div id="Settings" class="tabcontent">
             <h3>Manage Settings</h3>
-            <!--<p>< %@include file='.jsp' %></p>-->
-            <p>INPUT JSP FILE HERE - For changing the Price per Mile</p>
+            <p><%@include file='adminDashSettings.jsp' %></p>
         </div>
         
         <script>
