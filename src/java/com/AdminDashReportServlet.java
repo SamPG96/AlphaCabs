@@ -78,20 +78,21 @@ public class AdminDashReportServlet extends HttpServlet {
                 + reportManager.getnCustomersToday();
         request.setAttribute("numCustServed", numCustServed);
 
-//        String message = "<tr>\n"
-//                + "                    <th>First name</th>\n"
-//                + "                    <th>Last name</th>\n"
-//                + "                    <th>Address</th>\n"
-//                + "                </tr>";
-//        for (Customer customer : customers) {
-//            message += "<tr>";
-//            message += "<td>" + customer.getFirstName() + "</td>";
-//            message += "<td>" + customer.getLastName() + "</td>";
-//            message += "<td>" + customer.getAddress() + "</td>";
-//            message += "</tr>";
-//        }
-//        request.setAttribute("bookingsTable", message);
-        //response.setIntHeader("Refresh", 0);
+        String message = "";
+        String custName;
+        for (Booking booking : todaysBookings) {
+            message += "<tr>";
+            custName = booking.getCustomer().getFirstName() 
+                    + booking.getCustomer().getLastName();
+            message += "<td>" + custName + "</td>";
+            message += "<td>" + booking.getSourceAddress() + "</td>";
+            message += "<td>" + booking.getDestinationAddress() + "</td>";
+            message += "<td>" + booking.getDepartureTime() + "</td>";
+            message += "<td>" + booking.getFareExcVAT() + "</td>";
+            message += "</tr>";
+        }
+        request.setAttribute("todaysBookingsTable", message);
+
         request.getRequestDispatcher("index.jsp").forward(request, response);
 
     }
