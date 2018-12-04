@@ -22,7 +22,7 @@
                 
                 <button type="submit" class="allconfigs">Display Current Configurations</button>
                 
-                <c:out value="configTable"/>
+                <!--<c:out value="configTable"/>-->
                 ${configTable}
 
             </table>
