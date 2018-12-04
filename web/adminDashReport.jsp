@@ -23,15 +23,11 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
-                        <div name='todaysTurnover' class="row"
-                             <li>
+                        <div name='todaysTurnover' class="row">
                                     ${todaysTurnover}
-                            </li>
                         </div>
                         <div name='numCustServed' class="row">
-                            <li>
                                     ${numCustServed}
-                            </li>
                         </div>
                     </div>
                     <div class="col-sm-8">
