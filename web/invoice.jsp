@@ -4,6 +4,7 @@
     Author     : yuugy
 --%>
 
+<%@page import="model.tableclasses.Booking"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,53 +14,33 @@
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
     
-    
+    <%Booking booking = (Booking)request.getAttribute("booking");%>
      
         <div class="main">
             <center><h1>Alphacab: Invoice</h1></center>
             
-           <%--
-<%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%>
-           --%>
+         
+           
+<div style="float:left;"> <%=booking.getTimeBooked()%></div> <div style="float:right;">Order Reference: <%=booking.getId()%>       </div><br>
             
-            
-            <div class="line"></div>
+            <div class="line"></div><br>
               
-            <h2>Thank you for using Alphacabs</h2>
+            <h2>Thank you for using Alphacabs</h2> <br><br>
+                
+              <b>Details of the trip</b> <br><br>
+           
+           <b>Name:</b> <%=booking.getCustomer().getFirstName() %> <%=booking.getCustomer().getLastName() %> <br><br>
+           <b>Source:</b> <%=booking.getSourceAddress() %><br><br>
+           <b>Destination:</b> <%=booking.getDestinationAddress()%><br><br>
+           <b>Passengers:</b> <%=booking.getNumOfPassengers()%><br><br>
+           
+                     <div class="line"></div><br>
+            <b>Miles:</b> <br><br>
+            <b>Price per mile:</b> <br><br>
+            <b>VAT:</b> <br><br>
+            <b>Total including </b> <br><br>
+             <b>  VAT:</b> <br><br>
             
-            <%-- DATE  ORDER ID--%>  
-            <table>
-                        
-            <tr>
-                <td>Details of the trip:</td><td></td>
-            </tr>
-            <tr>
-                <td>Name:</td><td></td>
-            </tr>
-            <tr>
-                <td>Source:</td><td></td>
-            </tr>
-            <tr>
-                <td>Destination:</td><td></td>
-            </tr>
-            <tr>
-                <td>Passengers:</td><td></td>
-            </tr>
-                     <div class="line"></div>
-            <tr>
-                <td>Miles:</td><td></td>
-            </tr>
-            <tr>
-                <td>Price per mile:</td><td></td>
-            </tr>
-            <tr>
-                <td>VAT:</td><td></td>
-            </tr>
-            <tr>
-                <td>Total including VAT:</td><td></td>
-            </tr>
-                      
-            </table> 
               
              
         </div>
