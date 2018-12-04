@@ -321,9 +321,9 @@ public class Jdbc {
             ps = connection.prepareStatement(
                     "INSERT INTO Bookings (CustomerId"
                             + ", SourceAddress, DestinationAddress"
-                            + ", NumOfPassengers, DistanceKM, TimeBooked"
+                            + ", NumOfPassengers, Distance, FareExcVAT, FareIncVAT, TimeBooked"
                             + ", DepartureTime,  BookingStatusId)"
-                            + " VALUES (?,?,?,?,?,?,?,?)",
+                            + " VALUES (?,?,?,?,?,?,?,?,?,?)",
                     PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write booking values to statement
@@ -358,23 +358,37 @@ public class Jdbc {
                 throw new RuntimeException("NumOfPassengers in Booking"
                         + " cannot be 0");
             }
-            //DistanceKM
-            if (booking.getDistanceKM() != 0.0) {
-                ps.setDouble(5, booking.getDistanceKM());
+            //Distance
+            if (booking.getDistance() != 0.0) {
+                ps.setDouble(5, booking.getDistance());
             }else {
-                throw new RuntimeException("DistanceKM in Booking"
+                throw new RuntimeException("Distance in Booking"
+                        + " cannot be 0.0");
+            }
+            //FareExcVAT
+            if (booking.getFareExcVAT() != 0.0) {
+                ps.setDouble(6, booking.getFareExcVAT());
+            }else {
+                throw new RuntimeException("FareExcVAT in Booking"
+                        + " cannot be 0.0");
+            }
+            //FareIncVAT
+            if (booking.getFareIncVAT() != 0.0) {
+                ps.setDouble(7, booking.getFareIncVAT());
+            }else {
+                throw new RuntimeException("FareIncVAT in Booking"
                         + " cannot be 0.0");
             }
             //TimeBooked
             if (booking.getTimeBooked() != null) {
-                ps.setTimestamp(6, booking.getTimeBooked());
+                ps.setTimestamp(8, booking.getTimeBooked());
             } else {
                 throw new RuntimeException("TimeBooked in Booking"
                         + " cannot be null");
             }
             //DepartureTime
             if (booking.getDepartureTime()!= null) {
-                ps.setTimestamp(7, booking.getDepartureTime());
+                ps.setTimestamp(9, booking.getDepartureTime());
             }
             //ArrivalTime
 //            if (booking.getTimeArrived() != null) {
@@ -382,7 +396,7 @@ public class Jdbc {
 //            }
             //BookingStatus
             if (booking.getBookingStatus() != null) {
-                ps.setLong(8, booking.getBookingStatus().getId());
+                ps.setLong(10, booking.getBookingStatus().getId());
             } else {
                 throw new RuntimeException("Booking Status in Booking"
                         + " cannot be null");
@@ -602,7 +616,9 @@ public class Jdbc {
                     + "driverid = ?,"
                     + "sourceaddress = ?,"
                     + "destinationaddress = ?,"
-                    + "distancekm = ?,"
+                    + "distance = ?,"
+                    + "fareexcvat = ?,"
+                    + "fareincvat = ?,"
                     + "timebooked = ?,"
                     + "timearrived = ?,"
                     + "bookingstatus = ?,"
@@ -629,26 +645,41 @@ public class Jdbc {
                 throw new RuntimeException("DestinationAddress in Booking"
                         + " cannot be null");
             }
-            if (booking.getDistanceKM() != 0.0) {
-                ps.setDouble(5, booking.getDistanceKM());
+            if (booking.getDistance() != 0.0) {
+                ps.setDouble(5, booking.getDistance());
+            }else {
+                throw new RuntimeException("Distance in Booking"
+                        + " cannot be null");
+            }
+            if (booking.getFareExcVAT() != 0.0) {
+                ps.setDouble(6, booking.getFareExcVAT());
+            }else {
+                throw new RuntimeException("FareExcVAT in Booking"
+                        + " cannot be null");
+            }
+            if (booking.getFareIncVAT() != 0.0) {
+                ps.setDouble(7, booking.getFareIncVAT());
+            }else {
+                throw new RuntimeException("FareIncVAT in Booking"
+                        + " cannot be null");
             }
             if (booking.getTimeBooked() != null) {
-                ps.setTimestamp(6, booking.getTimeBooked());
+                ps.setTimestamp(8, booking.getTimeBooked());
             } else {
                 throw new RuntimeException("TimeBooked in Booking"
                         + " cannot be null");
             }
             if (booking.getTimeArrived() != null) {
-                ps.setTimestamp(7, booking.getTimeArrived());
+                ps.setTimestamp(9, booking.getTimeArrived());
             }
             if (booking.getBookingStatus() != null) {
-                ps.setLong(8, booking.getBookingStatus().getId());
+                ps.setLong(10, booking.getBookingStatus().getId());
             } else {
                 throw new RuntimeException("BookingStatus in Booking"
                         + " cannot be null");
             }
             if (booking.getId() != 0) {
-                ps.setLong(9, booking.getId());
+                ps.setLong(11, booking.getId());
             } else {
                 throw new RuntimeException("Id in Booking"
                         + " cannot be 0");
