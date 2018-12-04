@@ -12,7 +12,7 @@
 </head>
 
 
-<footer class="section footer-classic context-dark bg-image footer" style="background: #db464b;">
+<footer class="footer" style="background: #db464b;">
     <div class="container">
         <div class="row row-30">
             <!-- Rights-->

@@ -38,6 +38,6 @@
         <div class="errMessage"><%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%></div>
     </div>
     
-    
+    <jsp:include page="/common/foot.jsp"/>
 </html>
 

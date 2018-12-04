@@ -24,7 +24,4 @@
             <input type="submit" value="Confirm booking" />
         </form>
     </div>
-
-    <jsp:include page="/common/foot.jsp"/>
-
 </html>
