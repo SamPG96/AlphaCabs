@@ -12,7 +12,7 @@ and open the template in the editor.
         <link rel="stylesheet" type="text/css" href="dashboards.css">
     </head>
     <body>
-        <h1>CUSTOMER Dashboard</h1>
+        <h1>Customer Dashboard</h1>
         
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'Booking')" id="bookingTab">Booking</button>
