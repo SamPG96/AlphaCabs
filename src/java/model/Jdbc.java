@@ -688,7 +688,7 @@ public class Jdbc {
                         + " cannot be null");
             }
             if (configuration.getConfigValue() != null) {
-                ps.setString(2, configuration.getConfigName().trim());
+                ps.setString(2, configuration.getConfigValue().trim());
             } else {
                 throw new RuntimeException("ConfigValue in Configuration"
                         + " cannot be null");
