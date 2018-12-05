@@ -27,7 +27,9 @@
             <form method="GET" action="AdminDashReportServlet.do">
                 <button type="submit" class="tablinks" onclick="openTab(event, 'Report')">Daily Report</button>
             </form>
-            <button class="tablinks" onclick="openTab(event, 'Settings')">Settings</button>        
+            <form method="GET" action="AdminDashSettingsServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'Settings')">Settings</button>
+            </form>
         </div>
 
         <div id="Drivers" class="tabcontent">
@@ -54,7 +56,6 @@
         </div>
 
         <div id="Settings" class="tabcontent">
-            <h3>Manage Settings</h3>
             <p><%@include file='adminDashSettings.jsp' %></p>
         </div>
 
