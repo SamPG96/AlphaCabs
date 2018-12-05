@@ -4,6 +4,7 @@
     Author     : Tom
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -41,10 +42,24 @@
                 </div>
             </div>
 
-            <table class="tableLine">
+            <table id="bookingsTable" class="display" style="width:100%">
                 ${bookingsTable}
             </table>
         </form>
+            
+            <form method="GET" action="AdminDashBookingsServlet.do">
+                <select name="Driver">
+                    <c:forEach items="${avaliableDrivers}" var="driver">
+                    <option>${availableDrivers}"</option>
+                    </c:forEach>
+                </select>
+                <br/><br/>
+                <input type="submit" value="Assign Driver"/>
+            </form>
+                
+                <form method="POST" action="AdminDashBookingsServlet.do">
+                    
+                </form>
     </body>
 
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -55,11 +70,11 @@
         function getid(elem) {
             var id = $(elem).attr('name');
 
-            $.post("http://localhost:8080/AlphaCabs/AdminDashUserServlet.do", {"id": id});
+            $.post("http://localhost:8080/AlphaCabs/AdminDashBookingsServlet.do", {"id": id});
         }
         ;
         $(document).ready(function () {
-            $('#usersTable').DataTable({
+            $('#bookingsTable').DataTable({
                 select: {
                     style: 'single'
                 }

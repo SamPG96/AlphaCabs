@@ -8,7 +8,7 @@ package com;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
+//import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,7 +23,9 @@ import javax.servlet.http.HttpSession;
 import model.Jdbc;
 import model.tableclasses.Booking;
 import model.BookingManager;
+import model.DriverManager;
 import model.Helper;
+import model.tableclasses.Driver;
 //import model.UserManagement;
 import model.tableclasses.User;
 
@@ -73,9 +75,25 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
         //DISPLAY All Bookings
         Booking[] bookings;
+        Driver[] drivers;
+
+        String displayDrivers = null;
 
         if (x.equals("on")) {
             bookings = BookingManager.getBookings(jdbc, 1);
+            //----------------------------------------------------
+            /*
+            drivers = DriverManager.getAllDrivers(jdbc);
+
+            for (Driver driver : drivers) {
+                displayDrivers += "<td>" + driver.getFirstName() + "</td>";
+                displayDrivers += "<td>" + driver.getLastName() + "</td>";
+                displayDrivers += "<td>" + driver.getRegistration() + "</td>";
+            }
+            */
+            
+            
+
         } else {
             bookings = BookingManager.getBookings(jdbc);
         }
@@ -117,7 +135,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
             // Driver ID can be null if no driver assigned, so handle this.
             if (booking.getDriver() == null) {
-                message += "<td>Not assigned</td>";
+                message += "<td><button onclick=\"getid(this)\" name=" + booking.getId() + ">Assign Driver</button></td>";
             } else {
                 message += "<td>" + booking.getDriver().getLastName() + "</td>";
             }
@@ -126,7 +144,9 @@ public class AdminDashBookingsServlet extends HttpServlet {
         }
 
         request.setAttribute("bookingsTable", message);
+        request.setAttribute("availableDrivers",displayDrivers);
 
+        //--------------------------------------------------------------------
         request.getRequestDispatcher("index.jsp").forward(request, response);
 
     }
@@ -142,7 +162,28 @@ public class AdminDashBookingsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
 
+        HttpSession session = request.getSession(false);
+
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+
+        Long id = Long.parseLong(request.getParameter("id"));
+        //Booking[] bookings;
+
+        //BookingManager.assignDriver(, id, jdbc);
+        //if () {
+        //    BookingManager.assignDriver(
+        //            id,
+        //            ,
+        //            jdbc);
+        //}
+    }
+
+    
+    //-----------------------------------------------------------------
+    public void listDrivers(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
     }
 
     /**
@@ -154,9 +195,4 @@ public class AdminDashBookingsServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private String BookingsTable() {
-        return "Some output";
-    }
-
 }
