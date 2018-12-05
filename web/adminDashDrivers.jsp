@@ -25,21 +25,34 @@
     </head>
     <body>
 
-        <!--DISPLAY ALL DRIVERS-->
-        <form method="GET" action="AdminDashDriversServlet.do">
-            <table class="tableLine">
+        <div class="container">
 
-                <button type="submit" class="alldrivers" value="displayAll">Display All Drivers</button>
-
-                <!--< c:out value="driversTable"/>-->
-                ${driversTable}
-
+            <div class="row">   
+                <h3>Manage Drivers</h3>
+            </div>
+            <div class="col-xs-12" style="height:20px;"></div>
+            <button class="btn" onclick="document.getElementById('id01').style.display = 'block'">Add New Driver</button>
+            <div class="col-xs-12" style="height:20px;"></div>
+            
+            <table id="driversTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Registration</th>
+                        <th>Status</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${driversTable}
+                </tbody>
             </table>
-        </form>
 
+        </div>
+                
         <!--REMOVE DRIVER-->
-        <button onclick="document.getElementById('id03').style.display = 'block'">Remove Driver</button>
-
         <div id="id03" class="modal">
             <span onclick="document.getElementById('id03').style.display = 'none'" class="close" title="Close">Enter the Details of the Driver</span>
 
@@ -59,11 +72,9 @@
 
                 </div>
             </form>
-        </div>                
+        </div> 
 
         <!--CHANGE DRIVER DETAILS FORM-->
-        <button onclick="document.getElementById('id02').style.display = 'block'">Change Driver Details</button>
-
         <div id="id02" class="modal">
             <span onclick="document.getElementById('id02').style.display = 'none'" class="close" title ="Close">Change Driver Details</span>
 
@@ -93,8 +104,6 @@
         </div>
 
         <!--ADD NEW DRIVER-->
-        <button onclick="document.getElementById('id01').style.display = 'block'">Add Driver</button>
-
         <div id="id01" class="modal">
             <span onclick="document.getElementById('id01').style.display = 'none'" class="close" title="Close">Enter Driver Details</span>
 
@@ -148,6 +157,17 @@
              }
              }
              */
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $('#driversTable').DataTable();
+            });
+
         </script>
     </body>
 </html>
