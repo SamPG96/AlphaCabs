@@ -137,7 +137,7 @@ public class AdminDashDriversServlet extends HttpServlet {
 
         //----------------------------CHANGE DRIVER DETAILS-------------------------------
         //if (null != request.getParameter("buttonA_click")) {
-        if (x.equals("changedetails") == true) {
+        if (x.equals("changedetails")) {
 
             DriverManager.updateDriver(
                     Long.valueOf(request.getParameter("idnumber")),
@@ -148,7 +148,7 @@ public class AdminDashDriversServlet extends HttpServlet {
 
             //-------------------------------ADD DRIVER----------------------------------
             //} else if (null != request.getParameter("buttonB_click")) {
-        } else if (x.equals("newdriver") == true) {
+        } else if (x.equals("newdriver")) {
 
             newUserErrCode = UserManager.validateNewUserAttribs(
                     request.getParameter("forename"),
