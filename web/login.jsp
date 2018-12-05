@@ -35,7 +35,7 @@
                     <input type='hidden' name='reDirectOnSuccess' value=${param.reDirectOnSuccess} />
                     <div class="form-row">
                         <div class="col-md-6 offset-md-3">
-                            <input class="btn my-1 " style="width:100%" type="submit" value="Login"/>
+                            <input class="btn my-1" style="width:100%" type="submit" value="Login"/>
                             <div class="errMessage"><%=((String) (request.getAttribute("errMsg")) != null) ? (String) (request.getAttribute("errMsg")) : ""%></div>
                         </div>
                     </div>

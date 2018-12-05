@@ -26,6 +26,7 @@ import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
 //import static model.UserManager.NO_PASSWORD_ERR_CODE;
 //import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
 import model.tableclasses.Driver;
+import model.tableclasses.User;
 
 /**
  *
@@ -68,27 +69,29 @@ public class AdminDashDriversServlet extends HttpServlet {
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
         //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");  
 
-        //GET All Drivers
-        Driver[] aDriver = DriverManager.getAllDrivers(jdbc);
-
-        String table = "<tr>\n"
-                + "<th>Driver ID</th>\n"
-                + "<th>Forename</th>\n"
-                + "<th>Surname</th>\n"
-                + "<th>Registration</th>\n"
-                //+ "<th></th>"
-                + "</tr>";
-
-        for (Driver driver : aDriver) {
+        //GET All Driver users
+        User[] users = UserManager.getAllUsers(jdbc);
+        
+        String table = "";
+        Driver driver;
+        String driverName;
+        for (User user : users) {
+            driver = user.getDriver();
+            if(driver == null){
+                continue;
+            }
+            
             table += "<tr>";
             table += "<td>" + driver.getId() + "</td>";
-            table += "<td>" + driver.getFirstName() + "</td>";
-            table += "<td>" + driver.getLastName() + "</td>";
+            driverName = driver.getFirstName()
+                    + driver.getLastName();
+            table += "<td>" + driverName + "</td>";
             table += "<td>" + driver.getRegistration() + "</td>";
-            //table += "<td>" + "<input type='button' id='btnUpdate' value='Update'/>" + "</td>";
-            //table += "<td>" + "Delete" + "</td>";
+            table += "<td>" + user.getUserStatus().getName() + "</td>";
+            table += "<td>" + "<button class=\"btn\" onclick=\"document.getElementById('id02').style.display = 'block'\">Update</button>" + "</td>";
+            table += "<td>" + "<button class=\"btn\" onclick=\"document.getElementById('id03').style.display = 'block'\">Remove</button>" + "</td>";
+            table += "</tr>";
         }
-
         request.setAttribute("driversTable", table);
 
         request.getRequestDispatcher("index.jsp").forward(request, response);
