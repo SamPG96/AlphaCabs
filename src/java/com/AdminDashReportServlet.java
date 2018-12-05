@@ -65,7 +65,7 @@ public class AdminDashReportServlet extends HttpServlet {
         ReportManager reportManager = new ReportManager(jdbc);
 
         Booking[] todaysBookings = reportManager.getTodaysBookings();
-
+        
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDateTime now = LocalDateTime.now();
         String todaysDate = "Date Today: "

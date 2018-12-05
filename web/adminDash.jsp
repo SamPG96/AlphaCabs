@@ -9,20 +9,22 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Admin Dashboard</title>
+        <title>Administrative Dashboard</title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
         <link rel="stylesheet" type="text/css" href="dashboards.css">
 
     </head>
     <body>
-        <h1>ADMIN Dashboard</h1>
+        <h1>Administrative Dashboard</h1>
 
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'Drivers')">Drivers</button>
             <button class="tablinks" onclick="openTab(event, 'Bookings')">Bookings</button>
             <button class="tablinks" onclick="openTab(event, 'Customers')">Customers</button>
             <button class="tablinks" onclick="openTab(event, 'Users')">Users</button>
-            <button class="tablinks" onclick="openTab(event, 'Report')">Daily Report</button>
+            <form method="GET" action="AdminDashReportServlet.do">
+                <button type="submit" class="tablinks" onclick="openTab(event, 'Report')">Daily Report</button>
+            </form>
             <button class="tablinks" onclick="openTab(event, 'Settings')">Settings</button>        
         </div>
 
@@ -81,7 +83,7 @@
                 } else if (window.location.href.indexOf("AdminDashReportServlet.do") > -1) {
                     openTab(event, 'Report');
                 } else if (window.location.href.indexOf("AdminDashDriversServlet.do") > -1) {
-                    openTab(event, 'Drivers')
+                    openTab(event, 'Drivers');
                 }
             }
             window.onload = displayTables;
