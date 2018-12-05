@@ -98,16 +98,20 @@ public class AdminDashSettingsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-
+        
         HttpSession session = request.getSession(false);
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
 
-        String x = request.getParameter("price_change");
+        //String x = request.getParameter("price_change");
 
-        AdminManager.updatePricePerMile(
-                Double.valueOf(request.getParameter("newValue")),
-                jdbc);
+        Double x = Double.valueOf(request.getParameter("newValue"));
+        
+        AdminManager.updatePricePerMile(x, jdbc);
+        
+        //AdminManager.updatePricePerMile(
+        //        Double.valueOf(request.getParameter("newValue")),
+        //        jdbc);
 
         response.sendRedirect(returnPage);
     }
