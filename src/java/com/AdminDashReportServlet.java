@@ -6,6 +6,9 @@
 package com;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -62,6 +65,12 @@ public class AdminDashReportServlet extends HttpServlet {
         ReportManager reportManager = new ReportManager(jdbc);
 
         Booking[] todaysBookings = reportManager.getTodaysBookings();
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDateTime now = LocalDateTime.now();
+        String todaysDate = "Date Today: "
+                + dtf.format(now);
+        request.setAttribute("todaysDate", todaysDate);
 
         String dailyTurnover = "Daily Turnover: £"
                 + Helper.doubleToCurrencyFormat(reportManager.getDailyTurnover());
@@ -75,7 +84,7 @@ public class AdminDashReportServlet extends HttpServlet {
         String custName;
         for (Booking booking : todaysBookings) {
             message += "<tr>";
-            custName = booking.getCustomer().getFirstName() 
+            custName = booking.getCustomer().getFirstName()
                     + booking.getCustomer().getLastName();
             message += "<td>" + custName + "</td>";
             message += "<td>" + booking.getSourceAddress() + "</td>";
