@@ -35,11 +35,10 @@
            <b>Passengers:</b> <%=booking.getNumOfPassengers()%><br><br>
            
                      <div class="line"></div><br>
-            <b>Miles:</b> <br><br>
-            <b>Price per mile:</b> <br><br>
-            <b>VAT:</b> <br><br>
-            <b>Total including </b> <br><br>
-             <b>  VAT:</b> <br><br>
+            <b>Miles:</b><%=booking.getDistance()%> <br><br>
+            <b>Price before VAT:</b><%=booking.getFareExcVAT()%> <br><br>
+            <b>Total including VAT:</b><%=booking.getFareIncVAT()%> <br><br>
+          
             
               
              
