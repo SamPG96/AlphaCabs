@@ -22,6 +22,9 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
+                        <div name='todaysDate' class="row">
+                            ${todaysDate}
+                        </div>
                         <div name='todaysTurnover' class="row">
                             ${todaysTurnover}
                         </div>
@@ -31,7 +34,6 @@
                     </div>
                 </div>
                 <div class="col-xs-12" style="height:20px;"></div>
-                <div class="row">
                     <table id="todaysBookings" class="display" style="width:100%">
                         <thead>
                             <tr>
@@ -46,7 +48,6 @@
                              ${todaysBookingsTable}
                         </tbody>
                     </table>
-                </div>
             </div>
         </div>
     </form>
