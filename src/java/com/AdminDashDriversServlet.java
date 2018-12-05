@@ -83,7 +83,7 @@ public class AdminDashDriversServlet extends HttpServlet {
             
             table += "<tr>";
             table += "<td>" + driver.getId() + "</td>";
-            driverName = driver.getFirstName()
+            driverName = driver.getFirstName() + " "
                     + driver.getLastName();
             table += "<td>" + driverName + "</td>";
             table += "<td>" + driver.getRegistration() + "</td>";
