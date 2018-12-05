@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <table class="tableLine">
+            <table id="bookingsTable" class="display" style="width:100%">   
                 ${bookingsTable}
             </table>
         </form>
@@ -59,10 +59,7 @@
         }
         ;
         $(document).ready(function () {
-            $('#usersTable').DataTable({
-                select: {
-                    style: 'single'
-                }
+            $('#bookingsTable').DataTable({
             });
         });
 
