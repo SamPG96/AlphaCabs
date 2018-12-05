@@ -31,7 +31,7 @@
         <form method="POST" action="AdminDashSettingsServlet.do">
             Please Enter the new Price per Mile and press SUBMIT:
             <input type="text" name="newValue"><br>
-            <input type="submit" value="changeprice" name="price_change">
+            <input type="submit" value="Confirm Price Change" name="price_change">
         </form>
 
     </body>

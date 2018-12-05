@@ -25,6 +25,8 @@ import model.tableclasses.User;
  */
 public class AdminDashSettingsServlet extends HttpServlet {
 
+    private String returnPage = "index.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -96,21 +98,18 @@ public class AdminDashSettingsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
+
         HttpSession session = request.getSession(false);
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        
-        String x = request.getParameter("price_change");
-        
-        if (x.equals("changeprice") == true) {
-            
-            //Waiting for Method in AdminManager
-            AdminManager.setNewPricePerMile(
-                request.getParameter("newValue"));
-            
-        }
 
+        String x = request.getParameter("price_change");
+
+        AdminManager.updatePricePerMile(
+                Double.valueOf(request.getParameter("newValue")),
+                jdbc);
+
+        response.sendRedirect(returnPage);
     }
 
     /**
