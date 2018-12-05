@@ -10,14 +10,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Invoice</title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
+    <jsp:include page="/common/head.jsp"/>
     
     <%Booking booking = (Booking)request.getAttribute("booking");%>
      
         <div class="main">
-            <center><h1>Alphacab: Invoice</h1></center>
+            <center><h1>Invoice</h1></center>
             
          
            
@@ -25,9 +25,9 @@
             
             <div class="line"></div><br>
               
-            <h2>Thank you for using Alphacabs</h2> <br><br>
+            <h2>Thank you for choosing AlphaCabs</h2> <br><br>
                 
-              <b>Details of the trip</b> <br><br>
+              <b>Your Journey Details</b> <br><br>
            
            <b>Name:</b> <%=booking.getCustomer().getFirstName() %> <%=booking.getCustomer().getLastName() %> <br><br>
            <b>Source:</b> <%=booking.getSourceAddress() %><br><br>
@@ -44,4 +44,5 @@
               
              
         </div>
+           <jsp:include page="/common/foot.jsp"/>
 </html>
