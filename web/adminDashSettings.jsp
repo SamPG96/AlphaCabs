@@ -17,10 +17,10 @@
 
     <body>
 
-        <form method="GET" action="AdminDashSettingsServlet.java">
+        <form method="GET" action="AdminDashSettingsServlet.do">
             <table class="tableLine">
                 
-                <button type="submit" class="allconfigs">Display Current Configurations</button>
+                <button type="submit" class="allconfigs" value="displayConfigs">Display Current Configurations</button>
                 
                 <!--<c:out value="configTable"/>-->
                 ${configTable}
@@ -32,7 +32,7 @@
             Please Enter the new £ per Mile and press SUBMIT:
             <input type="text" name="newPrice"><br>
             <input type="submit" value="Submit">
-        </form>         
+        </form>
 
     </body>
 

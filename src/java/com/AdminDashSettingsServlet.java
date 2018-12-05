@@ -57,15 +57,6 @@ public class AdminDashSettingsServlet extends HttpServlet {
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
 
-        //Configuration allConfigs;
-        ServletContext sc = request.getServletContext();
-
-        // Go straight to an error page if their where problems connecting to
-        // the DB.
-        if (sc.getAttribute("dBConnectionError") != null) {
-            request.getRequestDispatcher("conErr.jsp").forward(request, response);
-        }
-
         // Connect Jdbc to the DB
         //Jdbc dbBean = new Jdbc();
         //dbBean.connect((Connection) sc.getAttribute("connection"));
