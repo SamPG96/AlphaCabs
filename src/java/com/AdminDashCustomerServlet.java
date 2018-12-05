@@ -15,10 +15,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.BookingManager;
 import model.CustomerManager;
 import model.UserManager;
 import model.Jdbc;
 import model.tableclasses.Customer;
+import model.tableclasses.Booking;
 
 /**
  *
@@ -62,15 +64,17 @@ public class AdminDashCustomerServlet extends HttpServlet {
         //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
 
         Customer[] aCustomer = CustomerManager.getAllCustomers(jdbc);
+        Booking[] aBooking = BookingManager.getBookings(jdbc);
         
             
-        String message = "<tr>\n"
+        String message = "<thead><tr>\n"
                 + "                    <th>First name</th>\n"
                 + "                    <th>Last name</th>\n"
-                + "                    <th>Address</th>\n"                   
-                + "                </tr>";
+                + "                    <th>Address</th>\n"
+                + "                </tr></thead>";
         
         
+            message += "<tbody>";
         for (Customer customer:aCustomer) {
             
             
@@ -79,10 +83,16 @@ public class AdminDashCustomerServlet extends HttpServlet {
             message +="<td>" + customer.getFirstName() + "</td>";
             message +="<td>" + customer.getLastName() + "</td>";
             message +="<td>" + customer.getAddress() + "</td>";
-          
+            //message +="<td>" + booking.g() + "</td>";
+            
             message += "</tr>";
+            
+            //message += "</tr>"
+              
         }
-
+            message += "</tbody>";
+        
+        
         request.setAttribute("customerTable", message);
 
      

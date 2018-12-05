@@ -28,7 +28,4 @@
             <button type="button">Edit</button>
             
         </div>
-    
-    <jsp:include page="/common/foot.jsp"/>
-    
 </html>

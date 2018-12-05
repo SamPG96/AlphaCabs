@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.BookingManager;
+import static model.BookingManager.ERR_ADDR_NOT_FOUND;
 import static model.BookingManager.ERR_CUST_NULL;
 import static model.BookingManager.ERR_DEP_DATE_NULL;
 import static model.BookingManager.ERR_SRC_HOME_NULL;
@@ -19,6 +20,7 @@ import static model.BookingManager.ERR_SRC_ADDR_NULL;
 import static model.BookingManager.ERR_DEST_ADDR_NULL;
 import static model.BookingManager.ERR_N_PAS_NULL;
 import static model.BookingManager.ERR_DEP_TIME_NULL;
+import static model.BookingManager.ERR_WITH_WEB_SERVICE;
 import model.CustomerManager;
 
 import model.Jdbc;
@@ -71,22 +73,15 @@ public class BookingFormServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String prevServPath;
         HttpSession session = request.getSession();
-
-        // Fetch the caller URL
-        String[] prevURLPath =((String)request.getHeader("referer")).split("/");
-        prevServPath = prevURLPath[prevURLPath.length - 1];
         
         // Fully process booking if the customer entity is known. Otherwise
         // only validate user entry and then move on to another page to identify
         // the customer. This servlet will be returned to once the customer has
-        // been identified. If prevServPath equals 'AlphaCabs' then this servlet
-        // has been called from the index.jsp. This mean no prior attempt has
-        // been made to identify the customer if they arent already signed in.
+        // been identified. The identity can be derived from a logged in customer
+        // or a cached customer ID.
         if (session.getAttribute("userID") != null ||
-                (prevServPath.equals("AlphaCabs") == false &&
-                 session.getAttribute("cachedCustomerID") != null)){
+                 session.getAttribute("cachedCustomerID") != null){
             processBookingWithIdentity(request, response, session);
         }
         else {
@@ -137,7 +132,8 @@ public class BookingFormServlet extends HttpServlet {
                         request.getParameter("destination"),
                         request.getParameter("passengers"),
                         request.getParameter("date"),
-                        request.getParameter("time"));
+                        request.getParameter("time"),
+                        jdbc);
 
                 if (booking == null) {
                     request.setAttribute("errMsg",
@@ -183,7 +179,8 @@ public class BookingFormServlet extends HttpServlet {
                 request.getParameter("destination"),
                 request.getParameter("passengers"),
                 request.getParameter("date"),
-                request.getParameter("time"));            
+                request.getParameter("time"),
+                (Jdbc) session.getAttribute("dbbean"));
 
         // If errors exist with the booking entry, display them. Otherwise
         // move to a page that allows the customer to identiy them selves
@@ -230,6 +227,12 @@ public class BookingFormServlet extends HttpServlet {
                 break;
             case ERR_DEP_DATE_NULL:
                 message += "Departure date not given";
+                break;
+            case ERR_ADDR_NOT_FOUND:
+                message += "Address not recognised";
+                break;
+            case ERR_WITH_WEB_SERVICE:
+                message += "Unable to calculate distance";
                 break;
             default:
                 message += "booking form error";

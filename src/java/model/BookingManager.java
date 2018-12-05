@@ -5,6 +5,7 @@
  */
 package model;
 
+import ServiceClients.AlphaCabsServicesClient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,18 +27,21 @@ public class BookingManager {
             ERR_DEST_ADDR_NULL = -4,
             ERR_N_PAS_NULL = -5,
             ERR_DEP_DATE_NULL = -6,
-            ERR_DEP_TIME_NULL = -7;
+            ERR_DEP_TIME_NULL = -7,
+            ERR_ADDR_NOT_FOUND = -8,
+            ERR_WITH_WEB_SERVICE = -9;
     //Driver Assignment Error Codes
     public static final int ERR_DRIVER_NULL = -1,
             ERR_BOOKING_NULL = -2;
-    
+
     public int error;
 
     public Booking generateNewBooking(Customer customer,
             String isSourceSameAsHome, String sourceAddress,
             String destinationAddress, String numOfPassengers,
             String departureDate, String departureTime, Jdbc jdbc) {
-
+        HashMap<String, String> fareResponse;
+        
         //SET appropriate error value and return null if a param is null or empty
         if (customer == null) {
             this.error = ERR_CUST_NULL;
@@ -68,6 +72,17 @@ public class BookingManager {
             return null;
         }
 
+        fareResponse = AlphaCabsServicesClient.calculateFare(sourceAddress, destinationAddress);
+        
+        if ("-1".equals(fareResponse.get("status"))){
+            this.error = ERR_ADDR_NOT_FOUND;
+            return null;
+        }
+        else if ("-2".equals(fareResponse.get("status"))){
+            this.error = ERR_WITH_WEB_SERVICE;
+            return null;
+        }        
+        
         //Resolve if source destination is the customers home address
         boolean isSSAH = Boolean.parseBoolean(isSourceSameAsHome);
         if (isSSAH) {
@@ -76,25 +91,31 @@ public class BookingManager {
         //Resolve data types from string params
         //Num of Passengers
         int nPassengers = Integer.parseInt(numOfPassengers);
-        //Distance KM
-        double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
+        
+        //Distance
+        double distance = Double.valueOf(fareResponse.get("distance"));
+        
         //Charge
-        double charge = calcCharge(distanceKM, jdbc);
+        double fairExcVAT = Double.valueOf(fareResponse.get("fareNoVAT"));
+        double fairIncVAT = Double.valueOf(fareResponse.get("fareWithVAT"));
+
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
+        
         //Booking Status
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(customer, sourceAddress, destinationAddress,
-                nPassengers, distanceKM, charge, new Timestamp(System.currentTimeMillis()),
+                nPassengers, distance, fairExcVAT, fairIncVAT, new Timestamp(System.currentTimeMillis()),
                 depTimestamp, bookingStatus);
     }
 
     public Booking generateNewBooking(String sourceAddress,
             String destinationAddress, String numOfPassengers,
             String departureDate, String departureTime, Jdbc jdbc) {
-
+        HashMap<String, String> fareResponse;
+        
         //SET appropriate error value and return null if a param is null or empty
         if (sourceAddress == null || sourceAddress.isEmpty()) {
             this.error = ERR_SRC_ADDR_NULL;
@@ -117,21 +138,36 @@ public class BookingManager {
             return null;
         }
 
+        fareResponse = AlphaCabsServicesClient.calculateFare(sourceAddress, destinationAddress);
+        
+        if ("-1".equals(fareResponse.get("status"))){
+            this.error = ERR_ADDR_NOT_FOUND;
+            return null;
+        }
+        else if ("-2".equals(fareResponse.get("status"))){
+            this.error = ERR_WITH_WEB_SERVICE;
+            return null;
+        }          
+        
         //Resolve data types from string params
         //Num of Passengers
         int nPassengers = Integer.parseInt(numOfPassengers);
-        //Distance KM
-        double distanceKM = calcDistanceKM(sourceAddress, destinationAddress);
+       
+        //Distance
+        double distance = Double.valueOf(fareResponse.get("distance"));
+        
         //Charge
-        double charge = calcCharge(distanceKM, jdbc);
+        double fairExcVAT = Double.valueOf(fareResponse.get("fareNoVAT"));
+        double fairIncVAT = Double.valueOf(fareResponse.get("fareWithVAT"));
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
+    
         //Booking Status
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
         return new Booking(sourceAddress, destinationAddress,
-                nPassengers, distanceKM, charge,
+                nPassengers, distance, fairExcVAT, fairIncVAT,
                 new Timestamp(System.currentTimeMillis()),
                 depTimestamp, bookingStatus);
     }
@@ -159,17 +195,15 @@ public class BookingManager {
             if (driverIdStr != null) {
                 driver = DriverManager.getDriver(
                         Long.parseLong(driverIdStr), jdbc);
-            }
-            else{
+            } else {
                 driver = null;
             }
-            
+
             arrivalStr = map.get("ARRIVALTIME");
             // Arrival time can be null, so handle this.
             if (arrivalStr != null) {
                 arrivalTime = Timestamp.valueOf(arrivalStr);
-            }
-            else{
+            } else {
                 arrivalTime = null;
             }
 
@@ -179,8 +213,9 @@ public class BookingManager {
                     map.get("SOURCEADDRESS"),
                     map.get("DESTINATIONADDRESS"),
                     Integer.parseInt(map.get("NUMOFPASSENGERS")),
-                    Double.parseDouble(map.get("DISTANCEKM")),
-                    Double.parseDouble(map.get("CHARGE")),
+                    Double.parseDouble(map.get("DISTANCE")), 
+                    Double.parseDouble(map.get("FAREEXCVAT")),
+                    Double.parseDouble(map.get("FAREINCVAT")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
                     arrivalTime,
@@ -192,10 +227,9 @@ public class BookingManager {
 
     public static Booking[] getBookings(Jdbc jdbc, int bookingStatusId) {
         ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
-        Booking[] bookingsArr = new Booking[bookingsMaps.size()];
+        ArrayList<Booking> bookingsList = new ArrayList<>();
 
         //Map bookingsMaps to BookingsArr
-        int i = 0;
         Customer customer;
         String driverIdStr, arrivalStr;
         Driver driver = null;
@@ -204,7 +238,7 @@ public class BookingManager {
         for (HashMap<String, String> map : bookingsMaps) {
 
             bookingStatus = new GenericItem(
-                    Integer.parseInt(map.get("BOOKINGSTATUS")));
+                    Integer.parseInt(map.get("BOOKINGSTATUSID")));
 
             if (bookingStatus.getId() != bookingStatusId) {
                 continue;
@@ -218,24 +252,33 @@ public class BookingManager {
                 driver = DriverManager.getDriver(
                         Long.parseLong(driverIdStr), jdbc);
             }
-            
-            arrivalStr = map.get("ARRIVALTIME");
-            if (driverIdStr != null) {
-                arrivalTime = Timestamp.valueOf(arrivalStr);
+
+            if (bookingStatusId == 4) {
+                arrivalStr = map.get("ARRIVALTIME");
+                if (driverIdStr != null) {
+                    arrivalTime = Timestamp.valueOf(arrivalStr);
+                }
             }
 
-            bookingsArr[i++] = new Booking(Long.parseLong(map.get("ID")),
+            bookingsList.add(new Booking(Long.parseLong(map.get("ID")),
                     customer,
                     driver,
                     map.get("SOURCEADDRESS"),
                     map.get("DESTINATIONADDRESS"),
                     Integer.parseInt(map.get("NUMOFPASSENGERS")),
-                    Double.parseDouble(map.get("DISTANCEKM")),
-                    Double.parseDouble(map.get("CHARGE")),
+                    Double.parseDouble(map.get("DISTANCE")),
+                    Double.parseDouble(map.get("FAREEXCVAT")),
+                    Double.parseDouble(map.get("FAREINCVAT")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
                     Timestamp.valueOf(map.get("DEPARTURETIME")),
                     arrivalTime,
-                    bookingStatus);
+                    bookingStatus));
+        }
+
+        Booking[] bookingsArr = new Booking[bookingsList.size()];
+
+        for (int i = 0; i < bookingsArr.length; i++) {
+            bookingsArr[i] = bookingsList.get(i);
         }
 
         return bookingsArr;
@@ -270,8 +313,9 @@ public class BookingManager {
                 bookingMap.get("SOURCEADDRESS"),
                 bookingMap.get("DESTINATIONADDRESS"),
                 Integer.parseInt(bookingMap.get("NUMOFPASSENGERS")),
-                Double.parseDouble(bookingMap.get("DISTANCEKM")),
-                Double.parseDouble(bookingMap.get("CHARGE")),
+                Double.parseDouble(bookingMap.get("DISTANCE")),
+                Double.parseDouble(bookingMap.get("FAREEXCVAT")),
+                Double.parseDouble(bookingMap.get("FAREINCVAT")),
                 Timestamp.valueOf(bookingMap.get("TIMEBOOKED")),
                 Timestamp.valueOf(bookingMap.get("DEPARTURETIME")),
                 Timestamp.valueOf(bookingMap.get("ARRIVALTIME")),
@@ -300,27 +344,6 @@ public class BookingManager {
         return jdbc.update(booking);
     }
 
-    private static double calcDistanceKM(String source, String dest) {
-        //TODO with Google Maps API
-        return 10.0;
-    }
-
-    private static double calcCharge(double distanceKM, Jdbc jdbc){
-        int shortDistance = AdminManager.getShortDistance(jdbc);
-        double shortDistPrice = AdminManager.getShortDistPrice(jdbc);
-        
-        if(calcKMToMiles(distanceKM) > shortDistance){
-            double pricePerKM = AdminManager.getPricePerKM(jdbc);
-            return shortDistPrice + distanceKM * pricePerKM;
-        }else{
-            return shortDistPrice;
-        }
-    }
-    
-    private static double calcKMToMiles(double km){
-        return km * 0.621371;
-    }
-
     public int getError() {
         return error;
     }
@@ -328,5 +351,5 @@ public class BookingManager {
     public void setError(int error) {
         this.error = error;
     }
-    
+
 }

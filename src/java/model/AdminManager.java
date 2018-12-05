@@ -32,16 +32,52 @@ public class AdminManager {
         return configsArr;
     }
     
-    public static double getPricePerKM(Jdbc jdbc) {
+    public static double getVAT(Jdbc jdbc) {
         Configuration[] configs = getConfigurations(jdbc);
         
         for(Configuration config : configs){
-            if(config.getConfigName().equals("PricePerKM")){
+            if(config.getConfigName().equals("VAT")){
                 return Double.parseDouble(config.getConfigValue());
             }
         }
         
         return -1;
+    }
+    
+    public static Configuration getVATConfig(Jdbc jdbc) {
+        Configuration[] configs = getConfigurations(jdbc);
+        
+        for(Configuration config : configs){
+            if(config.getConfigName().equals("VAT")){
+                return config;
+            }
+        }
+        
+        return null;
+    }
+    
+    public static double getPricePerMile(Jdbc jdbc) {
+        Configuration[] configs = getConfigurations(jdbc);
+        
+        for(Configuration config : configs){
+            if(config.getConfigName().equals("PricePerMile")){
+                return Double.parseDouble(config.getConfigValue());
+            }
+        }
+        
+        return -1;
+    }
+    
+    public static Configuration getPricePerMileConfig(Jdbc jdbc) {
+        Configuration[] configs = getConfigurations(jdbc);
+        
+        for(Configuration config : configs){
+            if(config.getConfigName().equals("PricePerMile")){
+                return config;
+            }
+        }
+        
+        return null;
     }
     
     public static double getShortDistPrice(Jdbc jdbc) {
@@ -56,6 +92,18 @@ public class AdminManager {
         return -1;
     }
     
+    public static Configuration getShortDistPriceConfig(Jdbc jdbc) {
+        Configuration[] configs = getConfigurations(jdbc);
+        
+        for(Configuration config : configs){
+            if(config.getConfigName().equals("ShortDistPrice")){
+                return config;
+            }
+        }
+        
+        return null;
+    }
+    
     public static int getShortDistance(Jdbc jdbc) {
         Configuration[] configs = getConfigurations(jdbc);
         
@@ -68,4 +116,47 @@ public class AdminManager {
         return -1;
     }
     
+    public static Configuration getShortDistanceConfig(Jdbc jdbc) {
+        Configuration[] configs = getConfigurations(jdbc);
+        
+        for(Configuration config : configs){
+            if(config.getConfigName().equals("ShortDistance")){
+                return config;
+            }
+        }
+        
+        return null;
+    }
+    
+    public static long updateVAT(double newVal, Jdbc jdbc){
+        Configuration config = getVATConfig(jdbc);
+        
+        config.setConfigValue(String.valueOf(newVal));
+        
+        return jdbc.update(config);
+    }
+    
+    public static long updatePricePerMile(double newVal, Jdbc jdbc){
+        Configuration config = getPricePerMileConfig(jdbc);
+        
+        config.setConfigValue(String.valueOf(newVal));
+        
+        return jdbc.update(config);
+    }
+    
+    public static long updateShortDistPrice(double newVal, Jdbc jdbc){
+        Configuration config = getShortDistPriceConfig(jdbc);
+        
+        config.setConfigValue(String.valueOf(newVal));
+        
+        return jdbc.update(config);
+    }
+    
+    public static long updateShortDistance(double newVal, Jdbc jdbc){
+        Configuration config = getShortDistanceConfig(jdbc);
+        
+        config.setConfigValue(String.valueOf(newVal));
+        
+        return jdbc.update(config);
+    }
 }

@@ -1,8 +1,9 @@
-<%-- 
+<%--
     Document   : index
     Created on : 09-Nov-2018, 13:05:42
     Author     : Alex, Sam
 --%>
+
 <%@page import="model.tableclasses.GenericItem"%>
 <%@page import="model.tableclasses.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -27,26 +28,30 @@
                 if (userType.getId() == 1) {
 
         %>
-        <%@include file="adminDash.jsp"%>
-        <%                }
-            if (userType.getId() == 2) {
+                    <%@include file="adminDash.jsp"%>
+        <%      }
+                else if (userType.getId() == 2) {
         %>
-        <%@include file="driverDash.jsp"%>
+                    <%@include file="driverDash.jsp"%>
+        <%
+                }
+                else if (userType.getId() == 4) {
+        %>
+                    <%@include file="customerDash.jsp"%>
+        <%
+                }
+            } else {
+                // Reset cached objects
+                session.removeAttribute("cachedCustomerID");
+                session.removeAttribute("cachedBooking");
+        %>
+                <jsp:include page="booking.jsp"/>
         <%
             }
-            if(userType.getId() == 4){ 
-        %>
-        <%@include file="customerDash.jsp"%>
-        <%
-            }
-        } else {
-        %>
-        <jsp:include page="booking.jsp"/>
-        <%
-        }
         %>
 
     </div>
+        
     <jsp:include page="/common/foot.jsp"/>
 
 </html>

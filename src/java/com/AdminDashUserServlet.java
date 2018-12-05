@@ -7,14 +7,16 @@ package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.CustomerManager;
+import model.UserManager;
 import model.Jdbc;
-import model.tableclasses.Customer;
+import model.tableclasses.User;
+import model.UserManager;
 
 /**
  *
@@ -57,26 +59,29 @@ public class AdminDashUserServlet extends HttpServlet {
         User[] aUser = UserManager.getAllUsers(jdbc);
         
             
-        String message = "<tr>\n"
-                + "                    <th>Username</th>\n"
+        String message = "<thead><tr>\n"
+                + "                    <th class=\"p\">Username</th>\n"
                 + "                    <th>UserType</th>\n"
                 + "                    <th>CustomerId</th>\n"
                 + "                    <th>DriverId</th>\n"
                 + "                    <th>UserStatus</th>\n"
-                + "                </tr>";
+                + "                    <th>Approve</th>\n"
+                + "                </tr></thead>";
         
         
         for (User user:aUser) {
             
             
             
-            message +=  "<tr>";
-            message +="<td>" + user.getUserName() + "</td>";
-            message +="<td>" + user.getUserType() + "</td>";
+            message +="<tr>";
+            
+            message +="<td class=\"username\">" + user.getUsername() + "</td>";
+            message +="<td>" + user.getUserType().getName() + "</td>";
             message +="<td>" + user.getCustomerId() + "</td>";
             message +="<td>" + user.getDriverId() + "</td>";
-            message +="<td>" + user.getUserStatus() + "</td>";
-          
+            message +="<td>" + user.getUserStatus().getName() + "</td>";
+            message +="<td><button onclick=\"getid(this)\" name=" + user.getId() +">Approve</button></td>";
+            
             message += "</tr>";
         }
 
@@ -103,7 +108,20 @@ public class AdminDashUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-    }
+        
+        HttpSession session = request.getSession(false);
+        
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+        
+        long id = Long.parseLong(request.getParameter("id"));
+        
+        UserManager.approveUser(id, jdbc);
+        
+        request.getRequestDispatcher("guest.jsp").forward(request, response);
+            
+        
+        }
+
 
     /**
      * Returns a short description of the servlet.

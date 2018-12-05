@@ -15,18 +15,10 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-    <servlet>
-        <servlet-name>UserServLet</servlet-name>
-        <servlet-class>com.redundant.UserServLet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>NewUser</servlet-name>
-        <servlet-class>com.redundant.NewUserServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Update</servlet-name>
-        <servlet-class>com.redundant.UpdateServlet</servlet-class>
-    </servlet>
+    <context-param>
+        <param-name>dburl</param-name>
+        <param-value>jdbc:derby://localhost:1527/</param-value>
+    </context-param>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.LoginServlet</servlet-class>
@@ -60,6 +52,10 @@
         <servlet-class>com.AdminDashCustomerServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AdminDashReportServlet</servlet-name>
+        <servlet-class>com.AdminDashReportServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GuestServlet</servlet-name>
         <servlet-class>com.GuestServlet</servlet-class>
     </servlet>
@@ -67,18 +63,14 @@
         <servlet-name>AdminDashUserServlet</servlet-name>
         <servlet-class>com.AdminDashUserServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>UserServLet</servlet-name>
-        <url-pattern>/UserService.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>NewUser</servlet-name>
-        <url-pattern>/NewUser.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Update</servlet-name>
-        <url-pattern>/Update.do</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>AdminDashSettingsServlet</servlet-name>
+        <servlet-class>com.AdminDashSettingsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminDashDriversServlet</servlet-name>
+        <servlet-class>com.AdminDashDriversServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet.do</url-pattern>
@@ -108,12 +100,24 @@
         <url-pattern>/AdminDashCustomerServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>AdminDashReportServlet</servlet-name>
+        <url-pattern>/AdminDashReportServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>GuestServlet</servlet-name>
         <url-pattern>/GuestServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminDashUserServlet</servlet-name>
         <url-pattern>/AdminDashUserServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashSettingsServlet</servlet-name>
+        <url-pattern>/AdminDashSettingsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashDriversServlet</servlet-name>
+        <url-pattern>/AdminDashDriversServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
