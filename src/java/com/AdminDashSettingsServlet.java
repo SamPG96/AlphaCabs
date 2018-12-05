@@ -60,7 +60,6 @@ public class AdminDashSettingsServlet extends HttpServlet {
         // Connect Jdbc to the DB
         //Jdbc dbBean = new Jdbc();
         //dbBean.connect((Connection) sc.getAttribute("connection"));
-
         Configuration[] allConfigs = AdminManager.getConfigurations(jdbc);
 
         String table = "<tr>\n"
@@ -97,6 +96,20 @@ public class AdminDashSettingsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        HttpSession session = request.getSession(false);
+
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+        
+        String x = request.getParameter("price_change");
+        
+        if (x.equals("changeprice") == true) {
+            
+            //Waiting for Method in AdminManager
+            AdminManager.setNewPricePerMile(
+                request.getParameter("newValue"));
+            
+        }
 
     }
 

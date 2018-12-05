@@ -28,10 +28,10 @@
             </table>
         </form>
 
-        <form method="POST" action="AdminDashSettingsServlet.java">
-            Please Enter the new £ per Mile and press SUBMIT:
-            <input type="text" name="newPrice"><br>
-            <input type="submit" value="Submit">
+        <form method="POST" action="AdminDashSettingsServlet.do">
+            Please Enter the new Price per Mile and press SUBMIT:
+            <input type="text" name="newValue"><br>
+            <input type="submit" value="changeprice" name="price_change">
         </form>
 
     </body>
