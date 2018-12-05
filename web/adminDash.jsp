@@ -18,7 +18,9 @@
         <h1>Administrative Dashboard</h1>
 
         <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'Drivers')">Drivers</button>
+            <form method="GET" action="AdminDashDriversServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'Drivers')">Drivers</button>
+            </form>
             <button class="tablinks" onclick="openTab(event, 'Bookings')">Bookings</button>
             <button class="tablinks" onclick="openTab(event, 'Customers')">Customers</button>
             <button class="tablinks" onclick="openTab(event, 'Users')">Users</button>
@@ -29,7 +31,6 @@
         </div>
 
         <div id="Drivers" class="tabcontent">
-            <h3>Manage Drivers</h3>
             <jsp:include page="adminDashDrivers.jsp"/>
         </div>
 
