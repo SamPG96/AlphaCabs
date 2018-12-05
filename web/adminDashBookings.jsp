@@ -24,6 +24,12 @@
     </head>
     <body>
 
+        <%
+            //int displayMode = Integer.valueOf(request.getParameter("currentMode"));
+            int displayMode = 1;
+            if (displayMode == 1) {
+        %>
+
         <form method="GET" action="AdminDashBookingsServlet.do">
 
             <div class="container">
@@ -46,20 +52,24 @@
                 ${bookingsTable}
             </table>
         </form>
-            
-            <form method="GET" action="AdminDashBookingsServlet.do">
-                <select name="Driver">
-                    <c:forEach items="${avaliableDrivers}" var="driver">
+
+        <form method="GET" action="AdminDashBookingsServlet.do">
+            <select name="Driver">
+                <c:forEach items="${avaliableDrivers}" var="driver">
                     <option>${availableDrivers}"</option>
-                    </c:forEach>
-                </select>
-                <br/><br/>
-                <input type="submit" value="Assign Driver" name="assigndriver" class="driverassignment"/>
-            </form>
-                
-                <form method="POST" action="AdminDashBookingsServlet.do">
-                    
-                </form>
+                </c:forEach>
+            </select>
+            <br/><br/>
+            <input type="submit" value="Assign Driver" name="assigndriver" class="driverassignment"/>
+        </form>
+
+        <%
+            }
+        %>
+
+        <form method="POST" action="AdminDashBookingsServlet.do">
+
+        </form>
     </body>
 
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
