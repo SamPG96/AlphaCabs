@@ -18,8 +18,6 @@
     <div class="main">
         <div class="container">
             <form method="POST" action="BookingFormServlet.do">
-               
-
                 <form>
                      <center><h1>Booking Form</h1></center>
                      <div style="height:20px;"></div>
@@ -55,8 +53,6 @@
                 </form>
             </form>
         </div>
-
-
     </div>
 
 
