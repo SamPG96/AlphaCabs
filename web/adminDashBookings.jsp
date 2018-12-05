@@ -54,7 +54,7 @@
                     </c:forEach>
                 </select>
                 <br/><br/>
-                <input type="submit" value="Assign Driver"/>
+                <input type="submit" value="Assign Driver" name="assigndriver" class="driverassignment"/>
             </form>
                 
                 <form method="POST" action="AdminDashBookingsServlet.do">
