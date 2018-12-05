@@ -104,12 +104,12 @@ public class AdminManager {
         return null;
     }
     
-    public static int getShortDistance(Jdbc jdbc) {
+    public static double getShortDistance(Jdbc jdbc) {
         Configuration[] configs = getConfigurations(jdbc);
         
         for(Configuration config : configs){
             if(config.getConfigName().equals("ShortDistance")){
-                return Integer.parseInt(config.getConfigValue());
+                return Double.parseDouble(config.getConfigValue());
             }
         }
         
