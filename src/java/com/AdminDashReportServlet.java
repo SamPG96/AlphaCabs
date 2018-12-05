@@ -84,7 +84,7 @@ public class AdminDashReportServlet extends HttpServlet {
         String custName;
         for (Booking booking : todaysBookings) {
             message += "<tr>";
-            custName = booking.getCustomer().getFirstName()
+            custName = booking.getCustomer().getFirstName() + " "
                     + booking.getCustomer().getLastName();
             message += "<td>" + custName + "</td>";
             message += "<td>" + booking.getSourceAddress() + "</td>";
