@@ -57,17 +57,53 @@ public class AdminDashCustomerServlet extends HttpServlet {
             throws ServletException, IOException {
           
            processRequest(request, response);
+           
+        String checkBooking = request.getParameter("checkBooking");
+        if (checkBooking == null) {
+            checkBooking = "off";
+        }
 
         HttpSession session = request.getSession(false);
 
-        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
-
-        Customer[] aCustomer = CustomerManager.getAllCustomers(jdbc);
-        Booking[] aBooking = BookingManager.getBookings(jdbc);
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");       
         
+        
+        if (checkBooking.equals("on")) {
+           Booking[] aBooking = BookingManager.getBookings(jdbc, 4);
+           
+                              String message = "<thead><tr>\n"
+                + "                    <th>First name</th>\n"
+                + "                    <th>Last name</th>\n"
+                + "                    <th>Booking Status</th>\n"
+                + "                    <th>Destination</th>\n"
+                + "                    <th>Charge Incurred</th>\n"
+                + "                </tr></thead>";
+        
+        
+            message += "<tbody>";
+        for (Booking booking:aBooking) {
+            //if()
             
-        String message = "<thead><tr>\n"
+            message +=  "<tr>";
+            message +="<td>" + booking.getCustomer().getFirstName() + "</td>";
+            message +="<td>" + booking.getCustomer().getLastName() + "</td>";
+            message +="<td>" + booking.getBookingStatus().getName() + "</td>";
+            message +="<td>" + booking.getDestinationAddress() + "</td>";
+            message +="<td>" + booking.getFareIncVAT() + "</td>";
+            
+            message += "</tr>";
+            
+              
+        }
+            message += "</tbody>";
+        
+        
+        request.setAttribute("customerTable", message);
+        
+        }else{        
+           Customer[] aCustomer = CustomerManager.getAllCustomers(jdbc);
+           
+                   String message = "<thead><tr>\n"
                 + "                    <th>First name</th>\n"
                 + "                    <th>Last name</th>\n"
                 + "                    <th>Address</th>\n"
@@ -83,17 +119,22 @@ public class AdminDashCustomerServlet extends HttpServlet {
             message +="<td>" + customer.getFirstName() + "</td>";
             message +="<td>" + customer.getLastName() + "</td>";
             message +="<td>" + customer.getAddress() + "</td>";
-            //message +="<td>" + booking.g() + "</td>";
             
             message += "</tr>";
             
-            //message += "</tr>"
               
         }
             message += "</tbody>";
         
         
         request.setAttribute("customerTable", message);
+        
+        }
+        
+        
+        
+            
+
 
      
 //

@@ -17,6 +17,7 @@ import model.UserManager;
 import model.Jdbc;
 import model.tableclasses.User;
 import model.UserManager;
+import model.tableclasses.GenericItem;
 
 /**
  *
@@ -56,9 +57,8 @@ public class AdminDashUserServlet extends HttpServlet {
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
         //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
 
-        User[] aUser = UserManager.getAllUsers(jdbc);
-        
-            
+        User[] aUser = UserManager.getAllUsers(jdbc);   
+           
         String message = "<thead><tr>\n"
                 + "                    <th class=\"p\">Username</th>\n"
                 + "                    <th>UserType</th>\n"
@@ -68,9 +68,16 @@ public class AdminDashUserServlet extends HttpServlet {
                 + "                    <th>Approve</th>\n"
                 + "                </tr></thead>";
         
+        //if () {
+            
+        //}
         
         for (User user:aUser) {
+            //GenericItem userTypea = user.getUserType();
             
+            //if (userTypea == 2) {
+                
+            //}
             
             
             message +="<tr>";
@@ -118,7 +125,8 @@ public class AdminDashUserServlet extends HttpServlet {
         UserManager.approveUser(id, jdbc);
         
         request.getRequestDispatcher("guest.jsp").forward(request, response);
-            
+        
+          
         
         }
 
