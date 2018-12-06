@@ -10,21 +10,59 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Driver Dashboard</title>
-
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
+        <link rel="stylesheet" type="text/css" href="dashboards.css">
     </head>
 
+    <h1>Driver Dashboard</h1>
 
+    <body>
 
-    <form method="GET" action="DriverDashServlet.do">
+        <form method="GET" action="DriverDashServlet.do">
 
-        <table class="tableLine">
-            <tr><input type="submit" value="Display Bookings"/></tr>                
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for='check'>Only todays bookings</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="checkbox" id="checkToday" name="checkToday">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="submit" value="Display Bookings"/>
+                    </div>
+                </div>            
+                <table id="driverBookings" class="display" style="width:100%">
+                    <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>Source Address</th>
+                                <th>Destination Address</th>
+                                <th>No. of Passengers</th>
+                                <th>Departure Time</th>
+                                <th>Arrival Time</th>
+                                <th>Fair Inc. VAT (£)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             ${bookingsTable}
+                        </tbody>
+                </table>
+            </div>
+        </form>
+    </body>
 
-            <c:out value="bookingsTable"/>
-            ${bookingsTable}
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
 
+        $(document).ready(function () {
+            $('#driverBookings').DataTable();
+        });
 
-        </table>
-
-    </form>
+    </script>
 </html>
