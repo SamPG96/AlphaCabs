@@ -7,6 +7,7 @@ package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -123,6 +124,7 @@ public class AdminDashUserServlet extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         
+        // Connect Jdbc to the DB
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
         
         long id = Long.parseLong(request.getParameter("id"));
@@ -130,8 +132,6 @@ public class AdminDashUserServlet extends HttpServlet {
         UserManager.approveUser(id, jdbc);
         
         request.getRequestDispatcher("index.jsp").forward(request, response);
-        
-          
         
         }
 
