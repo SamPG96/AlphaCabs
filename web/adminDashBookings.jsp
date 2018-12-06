@@ -26,8 +26,14 @@
 
         <%
             //int displayMode = Integer.valueOf(request.getParameter("currentMode"));
-            int displayMode = 1;
-            if (displayMode == 1) {
+            //String displayMode = request.getParameter("displayMode");
+
+            //if (request.getParameter("displayMode") != null) {
+            //    displayMode = request.getParameter("displayMode");
+            //}
+            //session.setAttribute("displayMode", 1);
+            //Displaying bookings stage
+            //if (displayMode.equals("1") == true) {
         %>
 
         <form method="GET" action="AdminDashBookingsServlet.do">
@@ -51,25 +57,24 @@
             <table id="bookingsTable" class="display" style="width:100%">
                 ${bookingsTable}
             </table>
-        </form>
 
-        <form method="GET" action="AdminDashBookingsServlet.do">
-            <select name="Driver">
-                <c:forEach items="${avaliableDrivers}" var="driver">
-                    <option>${availableDrivers}"</option>
-                </c:forEach>
-            </select>
-            <br/><br/>
             <input type="submit" value="Assign Driver" name="assigndriver" class="driverassignment"/>
         </form>
 
-        <%
-            }
+        <%                
+            //Displaying availiable drivers stage
+            //} else if (displayMode.equals("2") == true) {
+        %>
+            
+        <%                
+            //Assigning Driver Stage
+            //} else if (displayMode.equals("3") == true) {
         %>
 
-        <form method="POST" action="AdminDashBookingsServlet.do">
+        <%
+                //}
+        %>
 
-        </form>
     </body>
 
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>

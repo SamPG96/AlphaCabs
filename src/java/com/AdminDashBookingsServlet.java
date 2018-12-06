@@ -12,6 +12,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -79,8 +82,12 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
         String displayDrivers = null;
 
+        //request.getSession().setAttribute("displayMode", 1);
+        //String displayMode = request.getSession().getAttribute("displayMode").toString();
+        //-----------------------------------------------------------------------------------------
         if (x.equals("on") == true) {
             bookings = BookingManager.getBookings(jdbc, 1);
+            drivers = DriverManager.getAllDrivers(jdbc);
             //----------------------------------------------------
             /*
             drivers = DriverManager.getAllDrivers(jdbc);
@@ -91,6 +98,12 @@ public class AdminDashBookingsServlet extends HttpServlet {
                 displayDrivers += "<td>" + driver.getRegistration() + "</td>";
             }
              */
+            String d_Display = "<tr>\n"
+                    + "\n"
+                    + "\n"
+                    + "\n"
+                    + "</tr>";
+
             String message = "<tr>\n"
                     + "                    <th>Source address</th>\n"
                     + "                    <th>Destination address</th>\n"
@@ -104,6 +117,15 @@ public class AdminDashBookingsServlet extends HttpServlet {
                     + "                    <th>Customer lastname</th>\n"
                     + "                    <th>Driver</th>\n"
                     + "                </tr>";
+
+            for (Driver driver : drivers) {
+                d_Display += "<tr>";
+                d_Display += "<td>" + driver.getFirstName() + "</td>";
+                d_Display += "<td>" + driver.getLastName() + "</td>";
+                d_Display += "<td>" + driver.getRegistration() + "</td>";
+            }
+
+            request.setAttribute("availabledrivers", d_Display);
 
             for (Booking booking : bookings) {
 
@@ -128,7 +150,17 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
                 // Driver ID can be null if no driver assigned, so handle this.
                 if (booking.getDriver() == null) {
-                    message += "<td><button onclick=\"getid(this)\" name=" + booking.getId() + ">Assign Driver</button></td>";
+                    message += "<td><select name='drivers'>";
+                    for (Driver driver : drivers) {
+                        d_Display = "";
+                        d_Display += driver.getFirstName() + " ";
+                        d_Display += driver.getLastName() + " ";
+                        d_Display += driver.getRegistration();
+
+                        message += "<option value = 'availabledrivers'>" + d_Display + "</option>";
+
+                    }
+                    message += "</select></td>";
                 } else {
                     message += "<td>" + booking.getDriver().getLastName() + "</td>";
                 }
@@ -137,10 +169,30 @@ public class AdminDashBookingsServlet extends HttpServlet {
             }
 
             request.setAttribute("bookingsTable", message);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            //request.getRequestDispatcher("index.jsp").forward(request, response);
+
+            //---------------------------------------------------------------------------------
         } else if (x.equals("off") == true) {
 
             bookings = BookingManager.getBookings(jdbc);
+            drivers = DriverManager.getAllDrivers(jdbc);
+
+            //ArrayList<String> d_Display = new ArrayList<String>();
+            //Map<Integer, String> d_Display = new HashMap<Integer, String>();
+            //for (Driver driver : drivers) {
+            //   put(1, driver.getFirstName() driver.getLastName())
+            //}
+            //for (Driver driver : drivers) {
+            //    d_Display.add(driver.getFirstName());
+            //    d_Display.add(driver.getLastName());
+            //    d_Display.add(driver.getRegistration());
+            //}
+            String d_Display = "";
+//            String d_Display = "<tr>\n"
+//                    + "\n"
+//                    + "\n"
+//                    + "\n"
+//                    + "</tr>";
 
             String message = "<tr>\n"
                     + "                    <th>Source address</th>\n"
@@ -155,6 +207,13 @@ public class AdminDashBookingsServlet extends HttpServlet {
                     + "                    <th>Customer lastname</th>\n"
                     + "                    <th>Driver</th>\n"
                     + "                </tr>";
+
+//            for (Driver driver : drivers) {
+//                d_Display += driver.getFirstName();
+//                d_Display += driver.getLastName();
+//                d_Display += driver.getRegistration();
+//            }
+            request.setAttribute("availabledrivers", d_Display);
 
             for (Booking booking : bookings) {
 
@@ -179,7 +238,22 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
                 // Driver ID can be null if no driver assigned, so handle this.
                 if (booking.getDriver() == null) {
-                    message += "<td><button onclick=\"getid(this)\" name=" + booking.getId() + ">Assign Driver</button></td>";
+
+                    message += "<td><select name='drivers'><option value=\"\"></option>";
+                    for (Driver driver : drivers) {
+                        d_Display = "";
+                        d_Display += driver.getRegistration()+ " ";
+                        d_Display += driver.getFirstName()+ " ";
+                        d_Display += driver.getLastName();
+
+                        message += "<option value = " + d_Display + ">" + d_Display + "</option>";
+
+                    }
+                    message += "</select></td>";
+
+                    //message += "<td><button onclick=\"getid(this)\" name=" + booking.getId() + ">Assign Driver</button></td>";
+                    // message += "<td><select name='drivers'><option value = 'availabledrivers'>" + d_Display + "</option></select></td>";
+                    //message += "<td>"
                 } else {
                     message += "<td>" + booking.getDriver().getLastName() + "</td>";
                 }
@@ -188,18 +262,41 @@ public class AdminDashBookingsServlet extends HttpServlet {
             }
 
             request.setAttribute("bookingsTable", message);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            //request.getRequestDispatcher("index.jsp").forward(request, response);
+
         }
 
-        String i = request.getParameter("assigndriver");
-
+        //String i = request.getParameter("assigndriver");
         //if (i.equals("driverassignment") == true) {
         //    request.setAttribute("availableDrivers", displayDrivers);
         //} else {
         //}
-
         //request.setAttribute("bookingsTable", message);
         //--------------------------------------------------------------------
+        //request.getRequestDispatcher("index.jsp").forward(request, response);
+        if (request.getParameter("assigndriver") != null) {
+            bookings = BookingManager.getBookings(jdbc);
+            drivers = DriverManager.getAllDrivers(jdbc);
+            for (Booking booking : bookings) {
+                if (booking.getDriver() == null) {
+
+                    String selectedDriver = (String) request.getParameter("drivers");
+
+                    //String[] splitStr = selectedDriver.split("\\s+");
+
+                    //String registration = splitStr[2];
+
+                    for (Driver driver : drivers) {
+                        if (selectedDriver.equals(driver.getRegistration())) {
+                            BookingManager.assignDriver(driver.getId(), booking.getId(), jdbc);
+                        }
+                    }
+
+                }
+            }
+
+        }
+
         request.getRequestDispatcher("index.jsp").forward(request, response);
 
     }
