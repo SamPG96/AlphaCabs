@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Map;
+import jdk.internal.org.objectweb.asm.Type;
 import model.tableclasses.*;
 
 /**
@@ -600,8 +601,9 @@ public class Jdbc {
                     + "fareexcvat = ?,"
                     + "fareincvat = ?,"
                     + "timebooked = ?,"
-                    + "timearrived = ?,"
-                    + "bookingstatus = ?,"
+                    + "departuretime = ?,"
+                    + "arrivaltime = ?,"
+                    + "bookingstatusid = ? "
                     + "WHERE id=?", PreparedStatement.RETURN_GENERATED_KEYS);
 
             //Write booking values to statement
@@ -649,17 +651,25 @@ public class Jdbc {
                 throw new RuntimeException("TimeBooked in Booking"
                         + " cannot be null");
             }
+            if (booking.getDepartureTime() != null) {
+                ps.setTimestamp(9, booking.getDepartureTime());
+            } else {
+                throw new RuntimeException("DepartureTime in Booking"
+                        + " cannot be null");
+            }
             if (booking.getTimeArrived() != null) {
-                ps.setTimestamp(9, booking.getTimeArrived());
+                ps.setTimestamp(10, booking.getTimeArrived());
+            }else{
+                ps.setNull(10, java.sql.Types.TIMESTAMP);
             }
             if (booking.getBookingStatus() != null) {
-                ps.setLong(10, booking.getBookingStatus().getId());
+                ps.setLong(11, booking.getBookingStatus().getId());
             } else {
                 throw new RuntimeException("BookingStatus in Booking"
                         + " cannot be null");
             }
             if (booking.getId() != 0) {
-                ps.setLong(11, booking.getId());
+                ps.setLong(12, booking.getId());
             } else {
                 throw new RuntimeException("Id in Booking"
                         + " cannot be 0");
