@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Map;
-import jdk.internal.org.objectweb.asm.Type;
 import model.tableclasses.*;
 
 /**
@@ -27,8 +26,8 @@ import model.tableclasses.*;
 public class Jdbc {
 
     Connection connection = null;
-    Statement statement = null;
-    ResultSet rs = null;
+//    Statement statement = null;
+//    ResultSet rs = null;
 
     //String query = null;
     public Jdbc(String query) {
@@ -48,17 +47,17 @@ public class Jdbc {
     * Sets the ReturnSet to the rows in the DB that meet criteria
     * specified in the param.
      */
-    private void select(String tableName) {
+    private ResultSet select(String tableName) {
         String query = "SELECT * FROM " + tableName;
 
-        this.executeSelect(query);
+        return this.executeSelect(query);
     }
 
     /*
     * Sets the ReturnSet to the rows in the DB that meet criteria
     * specified in the param.
      */
-    private void select(String tableName, String colName, String value,
+    private ResultSet select(String tableName, String colName, String value,
             boolean usePar) {
         String query;
 
@@ -70,19 +69,24 @@ public class Jdbc {
             query = "SELECT * FROM " + tableName + " WHERE " + colName + " = " + value;
         }
 
-        this.executeSelect(query);
+        return this.executeSelect(query);
     }
 
     /*
     * Executes the select query.
      */
-    private void executeSelect(String query) {
+    private ResultSet executeSelect(String query) {
+        Statement statement;
+        ResultSet rs;
+        
         try {
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        
+        return rs;
     }
 
     /*
@@ -90,11 +94,12 @@ public class Jdbc {
     * specified in the params.
      */
     public ArrayList<HashMap<String, String>> retrieve(String tableName) {
-
+        ResultSet rs;
+        
         //GET Qualifiing Rows from DB
-        select(tableName);
+        rs = select(tableName);
 
-        return this.processRetrieve();
+        return this.processRetrieve(rs);
     }
 
     /*
@@ -102,11 +107,12 @@ public class Jdbc {
     * specified in the params.
      */
     public ArrayList<HashMap<String, String>> retrieve(String tableName, long id) {
-
+        ResultSet rs;
+        
         //GET Qualifiing Rows from DB
-        select(tableName, "Id", String.valueOf(id), false);
+        rs = select(tableName, "Id", String.valueOf(id), false);
 
-        return this.processRetrieve();
+        return this.processRetrieve(rs);
     }
 
     /*
@@ -114,10 +120,12 @@ public class Jdbc {
     * specified in the params. The field value must be a long.
      */
     public ArrayList<HashMap<String, String>> retrieve(String tableName, String colName, long value) {
-        //GET Qualifiing Rows from DB
-        select(tableName, colName, String.valueOf(value), false);
+        ResultSet rs;
 
-        return this.processRetrieve();
+        //GET Qualifiing Rows from DB
+        rs = select(tableName, colName, String.valueOf(value), false);
+
+        return this.processRetrieve(rs);
     }
 
     /*
@@ -125,23 +133,25 @@ public class Jdbc {
     * specified in the params. The field value must be a string.
      */
     public ArrayList<HashMap<String, String>> retrieve(String tableName, String colName, String value) {
+        ResultSet rs;
+        
         //GET Qualifiing Rows from DB
-        select(tableName, colName, value, true);
+        rs = select(tableName, colName, value, true);
 
-        return this.processRetrieve();
+        return this.processRetrieve(rs);
     }
 
     /*
     * Processes the response of a retrieve request. Results are returned as
     * a list of hashmaps.
      */
-    private ArrayList<HashMap<String, String>> processRetrieve() {
+    private ArrayList<HashMap<String, String>> processRetrieve(ResultSet rs) {
         //Transform and Return Rows to a List of HashMaps
         try {
             if (rs == null) {
                 System.out.println("rs is null");
             } else {
-                return rsToMaps();
+                return rsToMaps(rs);
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
@@ -158,6 +168,7 @@ public class Jdbc {
     public long insert(User user) {
         PreparedStatement ps;
         int nAffectedRows;
+        ResultSet rs;
 
         try {
             ps = connection.prepareStatement(
@@ -223,6 +234,7 @@ public class Jdbc {
     public long insert(Customer customer) {
         PreparedStatement ps;
         int nAffectedRows;
+        ResultSet rs;
 
         try {
             ps = connection.prepareStatement(
@@ -267,6 +279,7 @@ public class Jdbc {
     public long insert(Driver driver) {
         PreparedStatement ps;
         int nAffectedRows;
+        ResultSet rs;
 
         try {
             ps = connection.prepareStatement(
@@ -314,6 +327,7 @@ public class Jdbc {
     public long insert(Booking booking) {
         PreparedStatement ps;
         int nAffectedRows;
+        ResultSet rs;
 
         try {
             ps = connection.prepareStatement(
@@ -741,13 +755,14 @@ public class Jdbc {
     * Deletes the record found at the given tablename and id
      */
     public void delete(String tablename, int id) {
-
+        Statement statement;
         String query = "DELETE FROM " + tablename
                 + " WHERE id = " + String.valueOf(id);
 
         try {
             statement = connection.createStatement();
             statement.executeUpdate(query);
+            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -756,16 +771,16 @@ public class Jdbc {
 
     public void closeAll() {
         try {
-            rs.close();
-            statement.close();
-            //connection.close();                                         
+           // rs.close();
+           // statement.close();
+            connection.close();                                         
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     //START_MAPPING
-    private ArrayList rsToList() throws SQLException {
+    private ArrayList rsToList(ResultSet rs) throws SQLException {
         ArrayList aList = new ArrayList();
 
         int cols = rs.getMetaData().getColumnCount();
@@ -779,7 +794,7 @@ public class Jdbc {
         return aList;
     }
 
-    private ArrayList<HashMap<String, String>> rsToMaps() throws SQLException {
+    private ArrayList<HashMap<String, String>> rsToMaps(ResultSet rs) throws SQLException {
         ArrayList<HashMap<String, String>> ret = new ArrayList<>();
         HashMap<String, String> rowMap;
 

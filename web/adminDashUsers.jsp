@@ -36,7 +36,7 @@
         function getid(elem) {
             var id = $(elem).attr('name');
 
-            $.post("http://localhost:8080/AlphaCabs/AdminDashUserServlet.do", {"id": id});
+            $.post("AdminDashUserServlet.do", {"id": id});
         }
         ;
         $(document).ready(function () {
