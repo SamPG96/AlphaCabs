@@ -447,8 +447,14 @@ public class Jdbc {
             if (user.getCustomer() != null) {
                 ps.setLong(4, user.getCustomer().getId());
             }
+            else{
+                ps.setNull(4, Types.INTEGER);
+            }
             if (user.getDriver() != null) {
                 ps.setLong(5, user.getDriver().getId());
+            }
+            else{
+                ps.setNull(5, Types.INTEGER);
             }
             if (user.getUserStatus() != null) {
                 ps.setLong(6, user.getUserStatus().getId());
