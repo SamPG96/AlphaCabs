@@ -87,7 +87,12 @@ public class AdminDashUserServlet extends HttpServlet {
             message +="<td>" + user.getCustomerId() + "</td>";
             message +="<td>" + user.getDriverId() + "</td>";
             message +="<td>" + user.getUserStatus().getName() + "</td>";
-            message +="<td><button onclick=\"getid(this)\" name=" + user.getId() +">Approve</button></td>";
+            if (user.getUserStatus().getName().equals("Unapproved")) {
+                message +="<td><button onclick=\"getid(this)\" name=" + user.getId() +">Approve</button></td>";
+            }else {
+                message +="<td> </td>";
+            }
+                
             
             message += "</tr>";
         }
