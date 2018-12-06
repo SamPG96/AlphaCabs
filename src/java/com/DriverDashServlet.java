@@ -5,6 +5,7 @@
  */
 package com;
 
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -87,7 +88,9 @@ public class DriverDashServlet extends HttpServlet {
         loggedInDriver = user.getDriverId();
 
         for (Booking booking : aBooking) {
-
+if (booking.getDriver() == null ){
+    continue;
+}
             if (loggedInDriver == booking.getDriver().getId()) {
                 message += "<tr>";
                 message += "<td>" + booking.getSourceAddress() + "</td>";
@@ -183,9 +186,13 @@ public class DriverDashServlet extends HttpServlet {
                 
                 bookingStatus.setId(2);
                 booking.setBookingStatus(bookingStatus);
-                long err = jdbc.update(booking);
-               // jdbc.update(bookingStatus.getId()); //2
                 
+             //  booking.setTimeArrived(Timestamp(date.getTime()));
+                
+                long err = jdbc.update(booking);
+                
+               
+               
                 System.out.println("button in prog");
                 
                 request.getRequestDispatcher("/index.jsp").forward(request, response);
