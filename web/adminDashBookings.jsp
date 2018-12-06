@@ -43,7 +43,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
-                        <button type="submit" class="displayButton">Display Bookings</button>
+                        <button type="submit" class="btn mb-1">Display Bookings</button>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                 </c:forEach>
             </select>
             <br/><br/>
-            <input type="submit" value="Assign Driver" name="assigndriver" class="driverassignment"/>
+            <input type="submit" value="Assign Driver" name="assigndriver" class="btn"/>
         </form>
 
         <%

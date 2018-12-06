@@ -128,7 +128,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
                 // Driver ID can be null if no driver assigned, so handle this.
                 if (booking.getDriver() == null) {
-                    message += "<td><button onclick=\"getid(this)\" name=" + booking.getId() + ">Assign Driver</button></td>";
+                    message += "<td><button class=\"btn\" onclick=\"getid(this)\" name=" + booking.getId() + ">Assign Driver</button></td>";
                 } else {
                     message += "<td>" + booking.getDriver().getLastName() + "</td>";
                 }
@@ -179,7 +179,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
                 // Driver ID can be null if no driver assigned, so handle this.
                 if (booking.getDriver() == null) {
-                    message += "<td><button onclick=\"getid(this)\" name=" + booking.getId() + ">Assign Driver</button></td>";
+                    message += "<td><button \"btn\" onclick=\"getid(this)\" name=" + booking.getId() + ">Assign Driver</button></td>";
                 } else {
                     message += "<td>" + booking.getDriver().getLastName() + "</td>";
                 }

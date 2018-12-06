@@ -22,7 +22,7 @@
         <div class="container">
                 <div class="row">
                     <div class="col-sm-4">
-                        <button type="submit" class="displayButton">Display Customers</button>
+                        <button type="submit" class="btn mb-1">Display Customers</button>
                     </div>
                 </div>
             </div>

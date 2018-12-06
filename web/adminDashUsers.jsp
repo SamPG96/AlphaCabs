@@ -19,7 +19,7 @@
         <form method="GET" action="AdminDashUserServlet.do">
 
             <div class="mb-1">    
-                <input type="submit" value="Display all users"/>
+                <input class="btn" type="submit" value="Display all users"/>
             </div>
             <table id="usersTable" class="display" style="width:100%">               
 
