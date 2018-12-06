@@ -10,29 +10,56 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-        <title>Settings Page</title>
-
     </head>
 
     <body>
 
-        <form method="GET" action="AdminDashSettingsServlet.java">
-            <table class="tableLine">
-                
-                <button type="submit" class="allconfigs">Display Current Configurations</button>
-                
-                <!--<c:out value="configTable"/>-->
-                ${configTable}
+        <div class="container">
+            <div class="row">   
+                <h3>Settings</h3>
+            </div>
+            <div class="col-xs-12" style="height:20px;"></div>
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label>Price per mile (£):</label>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <input class="form-control" type="text" name="pricePerMile" value=${pricePerMile} />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label>Short Distance Price (£):</label>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <input class="form-control" type="text" name="shortDistPrice" value=${shortDistPrice}  />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label>Short Distance Definition (Miles):</label>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <input class="form-control" type="text" name="shortDist" value=${shortDist}  />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm-6">
+                        <label>VAT (%):</label>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <input class="form-control" type="text" name="vat" value=${vat}  />
+                    </div>
+                </div>
+                <div class="errMessage"><%=((String) (request.getAttribute("errMsg")) != null) ? (String) (request.getAttribute("errMsg")) : ""%></div>
+                <form method="POST" action="AdminDashSettingsServlet.do">
+                    <input class="btn my-1 " style="width:100%" type="submit" value="Submit"/>
+                </form>
+            </form>
 
-            </table>
-        </form>
+        </div>
 
-        <form method="POST" action="AdminDashSettingsServlet.java">
-            Please Enter the new £ per Mile and press SUBMIT:
-            <input type="text" name="newPrice"><br>
-            <input type="submit" value="Submit">
-        </form>   
     </body>
 
 </html>

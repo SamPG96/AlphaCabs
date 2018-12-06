@@ -26,6 +26,7 @@ import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
 //import static model.UserManager.NO_PASSWORD_ERR_CODE;
 //import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
 import model.tableclasses.Driver;
+import model.tableclasses.User;
 
 /**
  *
@@ -68,27 +69,29 @@ public class AdminDashDriversServlet extends HttpServlet {
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
         //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");  
 
-        //GET All Drivers
-        Driver[] aDriver = DriverManager.getAllDrivers(jdbc);
-
-        String table = "<tr>\n"
-                + "<th>Driver ID</th>\n"
-                + "<th>Forename</th>\n"
-                + "<th>Surname</th>\n"
-                + "<th>Registration</th>\n"
-                //+ "<th></th>"
-                + "</tr>";
-
-        for (Driver driver : aDriver) {
+        //GET All Driver users
+        User[] users = UserManager.getAllUsers(jdbc);
+        
+        String table = "";
+        Driver driver;
+        String driverName;
+        for (User user : users) {
+            driver = user.getDriver();
+            if(driver == null){
+                continue;
+            }
+            
             table += "<tr>";
             table += "<td>" + driver.getId() + "</td>";
-            table += "<td>" + driver.getFirstName() + "</td>";
-            table += "<td>" + driver.getLastName() + "</td>";
+            driverName = driver.getFirstName() + " "
+                    + driver.getLastName();
+            table += "<td>" + driverName + "</td>";
             table += "<td>" + driver.getRegistration() + "</td>";
-            //table += "<td>" + "<input type='button' id='btnUpdate' value='Update'/>" + "</td>";
-            //table += "<td>" + "Delete" + "</td>";
+            table += "<td>" + user.getUserStatus().getName() + "</td>";
+            table += "<td>" + "<button class=\"btn\" onclick=\"document.getElementById('id02').style.display = 'block'\">Update</button>" + "</td>";
+            table += "<td>" + "<button class=\"btn\" onclick=\"document.getElementById('id03').style.display = 'block'\">Remove</button>" + "</td>";
+            table += "</tr>";
         }
-
         request.setAttribute("driversTable", table);
 
         request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -116,20 +119,6 @@ public class AdminDashDriversServlet extends HttpServlet {
         long changeDriver;
         long softDelDriver;
 
-        //-------------------------------ADD DRIVER----------------------------------
-        newUserErrCode = UserManager.validateNewUserAttribs(
-                request.getParameter("forename"),
-                request.getParameter("surname"),
-                request.getParameter("password"),
-                request.getParameter("confirmation"));
-
-        if (newUserErrCode != 0) {
-            errMsgStr = convertNewUserErrCodeToMessageStr(newUserErrCode);
-
-            request.setAttribute("errMsg", errMsgStr + "</br>");
-            request.getRequestDispatcher("adminDashDrivers.jsp").forward(request, response);
-        }
-
         ServletContext sc = request.getServletContext();
 
         // Go straight to an error page if their where problems connecting to
@@ -142,35 +131,65 @@ public class AdminDashDriversServlet extends HttpServlet {
         Jdbc dbBean = new Jdbc();
         dbBean.connect((Connection) sc.getAttribute("connection"));
 
-        driverId = DriverManager.addNewDriver(request.getParameter("forename"),
-                request.getParameter("surname"),
-                request.getParameter("registration"),
-                dbBean);
+        String x = request.getParameter("button_click");
+        //String x = request.getParameter("buttonA_click");
+        //String i;
 
-        userId = UserManager.newDriverUser(
-                request.getParameter("password"),
-                request.getParameter("confirmation"),
-                driverId,
-                UserManager.getUserStatusObj(2, dbBean),
-                dbBean);
+        //----------------------------CHANGE DRIVER DETAILS-------------------------------
+        //if (null != request.getParameter("buttonA_click")) {
+        if (x.equals("changedetails")) {
 
-        String userName = UserManager.getUsernameForDriver(driverId, dbBean);
+            DriverManager.updateDriver(
+                    Long.valueOf(request.getParameter("idnumber")),
+                    request.getParameter("forenameC"),
+                    request.getParameter("surnameC"),
+                    request.getParameter("registrationC"),
+                    dbBean);
 
-        //--------------------------------------------------------------------------------------------------
-        //REMOVE DRIVER
-        //Wait for method
-        //DriverManager.removeDriver(request.setAttribute());
-        //Driver selectedDriver = DriverManager.getDriver(driverId, dbBean);
-        //softDelDriver = DriverManager.softRemoveDriver(driverId, dbBean);
-        //--------------------------------------------------------------------------------------------------
-        //CHANGE DRIVER DETAILS
-        DriverManager.updateDriver(
-                Long.valueOf(request.getParameter("idnumber")),
-                request.getParameter("forenameC"),
-                request.getParameter("surnameC"),
-                request.getParameter("registrationC"),
-                dbBean);
+            //-------------------------------ADD DRIVER----------------------------------
+            //} else if (null != request.getParameter("buttonB_click")) {
+        } else if (x.equals("newdriver")) {
 
+            newUserErrCode = UserManager.validateNewUserAttribs(
+                    request.getParameter("forename"),
+                    request.getParameter("surname"),
+                    request.getParameter("password"),
+                    request.getParameter("confirmation"));
+
+            if (newUserErrCode != 0) {
+                errMsgStr = convertNewUserErrCodeToMessageStr(newUserErrCode);
+
+                request.setAttribute("errMsg", errMsgStr + "</br>");
+                request.getRequestDispatcher("adminDashDrivers.jsp").forward(request, response);
+            }
+
+            driverId = DriverManager.addNewDriver(request.getParameter("forename"),
+                    request.getParameter("surname"),
+                    request.getParameter("registration"),
+                    dbBean);
+
+            userId = UserManager.newDriverUser(
+                    request.getParameter("password"),
+                    request.getParameter("confirmation"),
+                    driverId,
+                    UserManager.getUserStatusObj(2, dbBean),
+                    dbBean);
+
+            String userName = UserManager.getUsernameForDriver(driverId, dbBean);
+
+            //-----------------------------REMOVE DRIVER----------------------------
+        } else if (x.equals("removedriver")) {
+            //Wait for method
+            //DriverManager.removeDriver(request.setAttribute());
+            //Driver selectedDriver = DriverManager.getDriver(driverId, dbBean);
+            //softDelDriver = DriverManager.softRemoveDriver(driverId, dbBean);
+            //}
+
+            DriverManager.softRemoveDriver(
+                    Long.valueOf(request.getParameter("id")),
+                    dbBean);
+
+        }
         response.sendRedirect(returnPage);
     }
 

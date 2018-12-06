@@ -25,6 +25,8 @@ import model.tableclasses.User;
  */
 public class AdminDashSettingsServlet extends HttpServlet {
 
+    private String returnPage = "index.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -57,41 +59,36 @@ public class AdminDashSettingsServlet extends HttpServlet {
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
 
-        //Configuration allConfigs;
-        ServletContext sc = request.getServletContext();
+        double pricePerMile, shortDistPrice, shortDist, vat;
 
-        // Go straight to an error page if their where problems connecting to
-        // the DB.
-        if (sc.getAttribute("dBConnectionError") != null) {
-            request.getRequestDispatcher("conErr.jsp").forward(request, response);
+        String ppm = (String) request.getParameter("pricePerMile");
+        String sdp = (String) request.getParameter("shortDistPrice");
+        String sd = (String) request.getParameter("shortDist");
+        String sVat = (String) request.getParameter("vat");
+
+        if (ppm == null) {
+            pricePerMile = AdminManager.getPricePerMile(jdbc);
+            shortDistPrice = AdminManager.getShortDistPrice(jdbc);
+            shortDist = AdminManager.getShortDistance(jdbc);
+            vat = AdminManager.getVAT(jdbc);
+        } else {
+            pricePerMile = (double) Double.valueOf(ppm);
+            shortDistPrice = (double) Double.valueOf(sdp);
+            shortDist = (double) Double.valueOf(sd);
+            vat = (double) Double.valueOf(sVat);
+
+            AdminManager.updatePricePerMile(pricePerMile, jdbc);
+            AdminManager.updateShortDistPrice(shortDistPrice, jdbc);
+            AdminManager.updateShortDistance(shortDist, jdbc);
+            AdminManager.updateVAT(vat, jdbc);
         }
 
-        // Connect Jdbc to the DB
-        //Jdbc dbBean = new Jdbc();
-        //dbBean.connect((Connection) sc.getAttribute("connection"));
-
-        Configuration[] allConfigs = AdminManager.getConfigurations(jdbc);
-
-        String table = "<tr>\n"
-                + "                    <th>Config ID</th>\n"
-                + "                    <th>Config Name</th>\n"
-                + "                    <th>Config Value</th>\n"
-                + "                </tr>";
-
-        for (Configuration config : allConfigs) {
-
-            table += "<tr>";
-            table += "<td>" + config.getId() + "</td>";
-            table += "<td>" + config.getConfigName() + "</td>";
-            table += "<td>" + config.getConfigValue() + "</td>";
-            table += "</tr>";
-        }
-
-        request.setAttribute("configTable", table);
+        request.setAttribute("pricePerMile", String.valueOf(pricePerMile));
+        request.setAttribute("shortDistPrice", String.valueOf(shortDistPrice));
+        request.setAttribute("shortDist", String.valueOf(shortDist));
+        request.setAttribute("vat", String.valueOf(vat));
 
         request.getRequestDispatcher("index.jsp").forward(request, response);
-
-        //allConfigs = AdminManager.getConfigurations(dbBean);
     }
 
     /**
@@ -107,6 +104,19 @@ public class AdminDashSettingsServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
+        HttpSession session = request.getSession(false);
+
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+
+        String ppm = (String) request.getParameter("pricePerMile");
+        double pricePerMile = Double.valueOf(ppm);
+
+        AdminManager.updatePricePerMile(pricePerMile, jdbc);
+
+        //AdminManager.updatePricePerMile(
+        //        Double.valueOf(request.getParameter("newValue")),
+        //        jdbc);
+        response.sendRedirect(returnPage);
     }
 
     /**

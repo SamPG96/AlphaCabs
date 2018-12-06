@@ -4,6 +4,7 @@
     Author     : Tom
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -11,7 +12,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <link rel="stylesheet" type="text/css" href="tables.css">
-
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
         <title>Manage Bookings</title>
 
         <!--<style>
@@ -19,6 +23,12 @@
 
     </head>
     <body>
+
+        <%
+            //int displayMode = Integer.valueOf(request.getParameter("currentMode"));
+            int displayMode = 1;
+            if (displayMode == 1) {
+        %>
 
         <form method="GET" action="AdminDashBookingsServlet.do">
 
@@ -38,9 +48,48 @@
                 </div>
             </div>
 
-                <table class="tableLine">
-                    ${bookingsTable}
-                </table>
+            <table id="bookingsTable" class="display" style="width:100%">
+                ${bookingsTable}
+            </table>
+        </form>
+
+        <form method="GET" action="AdminDashBookingsServlet.do">
+            <select name="Driver">
+                <c:forEach items="${avaliableDrivers}" var="driver">
+                    <option>${availableDrivers}"</option>
+                </c:forEach>
+            </select>
+            <br/><br/>
+            <input type="submit" value="Assign Driver" name="assigndriver" class="driverassignment"/>
+        </form>
+
+        <%
+            }
+        %>
+
+        <form method="POST" action="AdminDashBookingsServlet.do">
+
         </form>
     </body>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript">
+        function getid(elem) {
+            var id = $(elem).attr('name');
+
+            $.post("http://localhost:8080/AlphaCabs/AdminDashBookingsServlet.do", {"id": id});
+        }
+        ;
+        $(document).ready(function () {
+            $('#bookingsTable').DataTable({
+                select: {
+                    style: 'single'
+                }
+            });
+        });
+
+    </script>
 </html>

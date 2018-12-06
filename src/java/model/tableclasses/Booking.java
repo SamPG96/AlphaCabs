@@ -19,7 +19,7 @@ public class Booking {
     private String sourceAddress;
     private String destinationAddress;
     private int numOfPassengers;
-    private double distanceKM;
+    private double distance;
     private double FareExcVAT;
     private double FareIncVAT;
     private Timestamp timeBooked;
@@ -41,7 +41,7 @@ public class Booking {
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.numOfPassengers = numOfPassengers;
-        this.distanceKM = distanceKM;
+        this.distance = distanceKM;
         this.FareExcVAT = fareExcVAT;
         this.FareIncVAT = fareIncVAT;
         this.timeBooked = timeBooked;
@@ -58,7 +58,7 @@ public class Booking {
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.numOfPassengers = numOfPassengers;
-        this.distanceKM = distanceKM;
+        this.distance = distanceKM;
         this.FareExcVAT = fareExcVAT;
         this.FareIncVAT = fareIncVAT;
         this.timeBooked = timeBooked;
@@ -73,7 +73,7 @@ public class Booking {
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.numOfPassengers = numOfPassengers;
-        this.distanceKM = distanceKM;
+        this.distance = distanceKM;
         this.FareExcVAT = fareExcVAT;
         this.FareIncVAT = fareIncVAT;
         this.timeBooked = timeBooked;
@@ -121,12 +121,12 @@ public class Booking {
         this.destinationAddress = destinationAddress;
     }
 
-    public double getDistanceKM() {
-        return distanceKM;
+    public double getDistance() {
+        return distance;
     }
 
-    public void setDistanceKM(double distanceKM) {
-        this.distanceKM = distanceKM;
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     public Timestamp getTimeBooked() {

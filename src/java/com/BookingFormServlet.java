@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.BookingManager;
+import static model.BookingManager.ERR_ADDR_NOT_FOUND;
 import static model.BookingManager.ERR_CUST_NULL;
 import static model.BookingManager.ERR_DEP_DATE_NULL;
 import static model.BookingManager.ERR_SRC_HOME_NULL;
@@ -19,6 +20,7 @@ import static model.BookingManager.ERR_SRC_ADDR_NULL;
 import static model.BookingManager.ERR_DEST_ADDR_NULL;
 import static model.BookingManager.ERR_N_PAS_NULL;
 import static model.BookingManager.ERR_DEP_TIME_NULL;
+import static model.BookingManager.ERR_WITH_WEB_SERVICE;
 import model.CustomerManager;
 
 import model.Jdbc;
@@ -225,6 +227,12 @@ public class BookingFormServlet extends HttpServlet {
                 break;
             case ERR_DEP_DATE_NULL:
                 message += "Departure date not given";
+                break;
+            case ERR_ADDR_NOT_FOUND:
+                message += "Address not recognised";
+                break;
+            case ERR_WITH_WEB_SERVICE:
+                message += "Unable to calculate distance";
                 break;
             default:
                 message += "booking form error";
