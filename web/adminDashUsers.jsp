@@ -23,7 +23,6 @@
             </div>
             <table id="usersTable" class="display" style="width:100%">               
 
-                <c:out value="userTable"/>
                 ${userTable}
             </table>
         </form>
