@@ -35,9 +35,14 @@
            <b>Passengers:</b> <%=booking.getNumOfPassengers()%><br><br>
            
                      <div class="line"></div><br>
-            <b>Miles:</b><%=booking.getDistance()%> <br><br>
-            <b>Price before VAT:</b><%=booking.getFareExcVAT()%> <br><br>
-            <b>Total including VAT:</b><%=booking.getFareIncVAT()%> <br><br>
+            
+                  <%double roundOffDist = Math.round(booking.getDistance() * 100.0) / 100.0; %>
+                  <%double roundOffPreVAT = Math.round(booking.getFareExcVAT() * 100.0) / 100.0; %>
+                  <%double roundOffPostVAT = Math.round(booking.getFareIncVAT() * 100.0) / 100.0; %>
+                     
+                     <b>Miles:</b> <%=roundOffDist%> <br><br>
+            <b>Price before VAT: </b>£<%=roundOffPreVAT%> <br><br>
+            <b>Total including VAT: </b>£<%=roundOffPostVAT%> <br><br>
           
             
               
