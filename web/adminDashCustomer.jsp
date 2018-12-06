@@ -22,14 +22,6 @@
         <div class="container">
                 <div class="row">
                     <div class="col-sm-4">
-                        <label for='check'>Only show customer's served today</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="checkbox" id="checkBooking" name="checkBooking">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
                         <button type="submit" class="displayButton">Display Customers</button>
                     </div>
                 </div>
@@ -37,7 +29,6 @@
 
             <table id="customersTable" class="display" style="width:100%">               
             
-               <c:out value="customerTable"/>
                        ${customerTable}
             </table>
         </form>
