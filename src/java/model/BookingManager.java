@@ -287,6 +287,7 @@ public class BookingManager {
     public static Booking getBooking(Jdbc jdbc, long bookingId) {
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> bookingMap;
+        Driver driver;
 
         results = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS, bookingId);
 
@@ -301,9 +302,14 @@ public class BookingManager {
         Customer customer = CustomerManager.getCustomer(
                 Long.parseLong(bookingMap.get("CUSTOMERID")), jdbc);
 
-        Driver driver = DriverManager.getDriver(
-                Long.parseLong(bookingMap.get("DRIVERID")), jdbc);
-
+        if (bookingMap.get("DRIVERID") != null){
+            driver = DriverManager.getDriver(
+                    Long.parseLong(bookingMap.get("DRIVERID")), jdbc);
+        }
+        else{
+            driver = null;
+        }
+        
         GenericItem bookingStatus = new GenericItem(
                 Integer.parseInt(bookingMap.get("BOOKINGSTATUS")));
 
