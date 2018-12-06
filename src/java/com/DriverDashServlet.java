@@ -13,6 +13,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -174,12 +176,14 @@ if (booking.getDriver() == null ){
             if (status.equals("Complete")){
                 bookingStatus.setId(4);
                 booking.setBookingStatus(bookingStatus);
+                
+               //TIMESTAMP OF NOW
+                
+               // booking.setArrivalTime(arr);
+                
                 jdbc.update(booking); //4
                 
-                System.out.println("button complete");
-               //  jdbc.update(booking.getDepartureTime());
-                 
-                 request.getRequestDispatcher("/index.jsp").forward(request, response);
+              
                 
             }else if(status.equals("In Progress")){
                 
@@ -187,16 +191,10 @@ if (booking.getDriver() == null ){
                 bookingStatus.setId(2);
                 booking.setBookingStatus(bookingStatus);
                 
-             //  booking.setTimeArrived(Timestamp(date.getTime()));
-                
-                long err = jdbc.update(booking);
-                
-               
-               
-                System.out.println("button in prog");
-                
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
-                
+                             
+               jdbc.update(booking);
+                        
+                            
             }
             
             
