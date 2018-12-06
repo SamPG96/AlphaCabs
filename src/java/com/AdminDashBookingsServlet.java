@@ -150,6 +150,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
                 // Driver ID can be null if no driver assigned, so handle this.
                 if (booking.getDriver() == null) {
+
                     message += "<td><select name='drivers'>";
                     for (Driver driver : drivers) {
                         d_Display = "";
@@ -161,6 +162,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
                     }
                     message += "</select></td>";
+
                 } else {
                     message += "<td>" + booking.getDriver().getLastName() + "</td>";
                 }

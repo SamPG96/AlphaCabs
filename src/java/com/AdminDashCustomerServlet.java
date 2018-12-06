@@ -60,14 +60,11 @@ public class AdminDashCustomerServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
-
-        Customer[] aCustomer = CustomerManager.getAllCustomers(jdbc);
-        Booking[] aBooking = BookingManager.getBookings(jdbc);
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");       
         
-            
-        String message = "<thead><tr>\n"
+        Customer[] aCustomer = CustomerManager.getAllCustomers(jdbc);
+           
+                   String message = "<thead><tr>\n"
                 + "                    <th>First name</th>\n"
                 + "                    <th>Last name</th>\n"
                 + "                    <th>Address</th>\n"
@@ -83,19 +80,17 @@ public class AdminDashCustomerServlet extends HttpServlet {
             message +="<td>" + customer.getFirstName() + "</td>";
             message +="<td>" + customer.getLastName() + "</td>";
             message +="<td>" + customer.getAddress() + "</td>";
-            //message +="<td>" + booking.g() + "</td>";
             
             message += "</tr>";
             
-            //message += "</tr>"
               
         }
             message += "</tbody>";
         
         
         request.setAttribute("customerTable", message);
-
-     
+        
+       
 //
 //        request.setAttribute("bookingsTable", message + "</br>");
         //response.setIntHeader("Refresh", 0);

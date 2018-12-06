@@ -13,7 +13,6 @@
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
     
-    <jsp:include page="/common/head.jsp"/>
      
         <div class="main">
        

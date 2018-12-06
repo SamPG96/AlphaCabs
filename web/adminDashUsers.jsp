@@ -19,11 +19,10 @@
         <form method="GET" action="AdminDashUserServlet.do">
 
             <div class="mb-1">    
-                <input type="submit" value="Display all users"/>
+                <input class="btn" type="submit" value="Display all users"/>
             </div>
             <table id="usersTable" class="display" style="width:100%">               
 
-                <c:out value="userTable"/>
                 ${userTable}
             </table>
         </form>
@@ -36,7 +35,7 @@
         function getid(elem) {
             var id = $(elem).attr('name');
 
-            $.post("http://localhost:8080/AlphaCabs/AdminDashUserServlet.do", {"id": id});
+            $.post("AdminDashUserServlet.do", {"id": id});
         }
         ;
         $(document).ready(function () {

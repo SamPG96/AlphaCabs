@@ -19,12 +19,16 @@
     <body>
         <form method="GET" action="AdminDashCustomerServlet.do">
         
-        <div class="mb-1">    
-        <input type="submit" value="Display all customers"/>
-        </div>
+        <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <button type="submit" class="btn mb-1">Display Customers</button>
+                    </div>
+                </div>
+            </div>
+
             <table id="customersTable" class="display" style="width:100%">               
             
-               <c:out value="customerTable"/>
                        ${customerTable}
             </table>
         </form>
