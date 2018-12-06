@@ -311,7 +311,7 @@ public class BookingManager {
         }
         
         GenericItem bookingStatus = new GenericItem(
-                Integer.parseInt(bookingMap.get("BOOKINGSTATUS")));
+                Integer.parseInt(bookingMap.get("BOOKINGSTATUSID")));
 
         return new Booking(Long.parseLong(bookingMap.get("ID")),
                 customer,
