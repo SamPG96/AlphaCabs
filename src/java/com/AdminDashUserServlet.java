@@ -84,11 +84,6 @@ public class AdminDashUserServlet extends HttpServlet {
             message += "<td>" + name + "</td>";
 
             message += "<td>" + user.getUserStatus().getName() + "</td>";
-            if (user.getUserStatus().getName().equals("Unapproved")) {
-                message +="<td><button class=\"btn\" onclick=\"getUser(this)\" data-userid=" + user.getId() + " data-userstatus=" + user.getUserStatus().getName() + ">Approve</button></td>";
-            }else {
-                message +="<td><button class=\"btn\" onclick=\"getUser(this)\" data-userid=" + user.getId() + " data-userstatus=" + user.getUserStatus().getName() + ">Unapprove</button></td>";
-            }
 
             message += "</tr>";
         }
@@ -111,23 +106,7 @@ public class AdminDashUserServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
-        HttpSession session = request.getSession(false);
 
-        // Connect Jdbc to the DB
-        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-
-        long userId = Long.parseLong(request.getParameter("userid"));
-
-        String userStatus = request.getParameter("userstatus");
-
-        if (userStatus.equals("Unapproved")) {
-           UserManager.changeUserStatus(userId, getUserStatusObj(2, jdbc), jdbc);
-        }else{
-           UserManager.changeUserStatus(userId, getUserStatusObj(1, jdbc), jdbc);
-        }
-
-
-        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
     /**

@@ -29,7 +29,6 @@
                         <th>Type</th>
                         <th>Name</th>
                         <th>Status</th>
-                        <th>Approve</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,13 +45,6 @@
     <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript">
-        function getUser(elem) {
-            var userid = $(elem).attr('data-userid');
-            var userstatus = $(elem).attr('data-userstatus');
-
-            $.post("AdminDashUserServlet.do", {"userid": userid, "userstatus" : userstatus});
-        }
-        ;
         $(document).ready(function () {
             $('#usersTable').DataTable({
                 select: {
