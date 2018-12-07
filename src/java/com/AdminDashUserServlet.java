@@ -84,13 +84,9 @@ public class AdminDashUserServlet extends HttpServlet {
 
             message += "<td>" + user.getUserStatus().getName() + "</td>";
             if (user.getUserStatus().getName().equals("Unapproved")) {
-                message +="<td><button class=\"btn\" onclick=\"getUser(this)\"
-                data-userid=" + user.getId() + " data-userstatus=" +
-                user.getUserStatus().getName() + ">Approve</button></td>";
+                message +="<td><button class=\"btn\" onclick=\"getUser(this)\" data-userid=" + user.getId() + " data-userstatus=" + user.getUserStatus().getName() + ">Approve</button></td>";
             }else {
-                message +="<td><button class=\"btn\" onclick=\"getUser(this)\"
-                data-userid=" + user.getId() + " data-userstatus=" +
-                user.getUserStatus().getName() + ">Unapprove</button></td>";
+                message +="<td><button class=\"btn\" onclick=\"getUser(this)\" data-userid=" + user.getId() + " data-userstatus=" + user.getUserStatus().getName() + ">Unapprove</button></td>";
             }
 
             message += "</tr>";
