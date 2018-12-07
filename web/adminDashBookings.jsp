@@ -13,14 +13,6 @@
 
         <link rel="stylesheet" type="text/css" href="tables.css">
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
-        <title>Manage Bookings</title>
-
-        <!--<style>
-        </style>-->
-
     </head>
     <body>
 
@@ -39,6 +31,10 @@
         <form method="GET" action="AdminDashBookingsServlet.do">
 
             <div class="container">
+                <div class="row">   
+                    <h3>View Bookings</h3>
+                </div>
+                <div class="col-xs-12" style="height:20px;"></div>
                 <div class="row">
                     <div class="col-sm-4">
                         <label for='check'>Only outstanding bookings</label>
@@ -51,27 +47,44 @@
                     <div class="col-sm-4">
                         <button type="submit" class="btn mb-1">Display Bookings</button>
                     </div>
+                    <div class="col-sm-4">
+                        <button type="submit" name="assigndriver" class="btn mb-1">Assign Driver(s)</button>
+                    </div>
                 </div>
+                <div class="col-xs-12" style="height:20px;"></div>
+                <table id="bookingsTable" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Source address</th>
+                            <th>Destination address</th>
+                            <th>No. of Passengers</th>
+                            <th>Distance (Miles)</th>
+                            <th>Price ex. VAT (£)</th>
+                            <th>Price inc. VAT (£)</th>
+                            <th>Time of Booking</th>
+                            <th>Departure time</th>
+                            <th>Arrival time</th>
+                            <th>Driver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${bookingsTable}
+                    </tbody>
+                </table>
+                <div class="col-xs-12" style="height:20px;"></div>
             </div>
-
-            <table id="bookingsTable" class="display" style="width:100%">
-                ${bookingsTable}
-            </table>
-            <input type="submit" value="Assign Driver" name="assigndriver" class="driverassignment"/>
         </form>
 
-        <%                
-            //Displaying availiable drivers stage
+        <%            //Displaying availiable drivers stage
             //} else if (displayMode.equals("2") == true) {
         %>
-            
-        <%                
-            //Assigning Driver Stage
+
+        <%            //Assigning Driver Stage
             //} else if (displayMode.equals("3") == true) {
         %>
 
-        <%
-                //}
+        <%            //}
         %>
 
     </body>

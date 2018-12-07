@@ -37,7 +37,6 @@
         </div>
 
         <div id="Bookings" class="tabcontent">
-            <h3>Assign Drivers to Bookings</h3>
             <%@include file='adminDashBookings.jsp' %>
         </div>
 
