@@ -47,10 +47,10 @@
     <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript">
         function getUser(elem) {
-            var id = $(elem).attr('data-userid');
-            var status = $(elem).attr('data-userstatus');
+            var userid = $(elem).attr('data-userid');
+            var userstatus = $(elem).attr('data-userstatus');
 
-            $.post("AdminDashUserServlet.do", {"id": id, "status" : status});
+            $.post("AdminDashUserServlet.do", {"userid": userid, "userstatus" : userstatus});
         }
         ;
         $(document).ready(function () {

@@ -119,9 +119,9 @@ public class AdminDashUserServlet extends HttpServlet {
         // Connect Jdbc to the DB
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
 
-        String userId = request.getParameter("id");
+        String userId = request.getParameter("userid");
 
-        String userStatus = request.getParameter("status");
+        String userStatus = request.getParameter("userstatus");
 
         long longid = Long.parseLong(userId);
 
