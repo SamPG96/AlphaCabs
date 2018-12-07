@@ -23,7 +23,9 @@
             </form>
             <button class="tablinks" onclick="openTab(event, 'Bookings')">Bookings</button>
             <button class="tablinks" onclick="openTab(event, 'Customers')">Customers</button>
-            <button class="tablinks" onclick="openTab(event, 'Users')">Users</button>
+            <form method="GET" action="AdminDashUserServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'Users')">Users</button>
+            </form>
             <form method="GET" action="AdminDashReportServlet.do">
                 <button type="submit" class="tablinks" onclick="openTab(event, 'Report')">Daily Report</button>
             </form>
@@ -37,7 +39,6 @@
         </div>
 
         <div id="Bookings" class="tabcontent">
-            <h3>Assign Drivers to Bookings</h3>
             <%@include file='adminDashBookings.jsp' %>
         </div>
 
@@ -47,7 +48,6 @@
         </div>        
 
         <div id="Users" class="tabcontent">
-            <h3>Approve Users</h3>
             <%@include file='adminDashUsers.jsp' %>
         </div>
 

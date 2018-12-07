@@ -41,7 +41,7 @@ public class BookingManager {
             String destinationAddress, String numOfPassengers,
             String departureDate, String departureTime, Jdbc jdbc) {
         HashMap<String, String> fareResponse;
-        
+
         //SET appropriate error value and return null if a param is null or empty
         if (customer == null) {
             this.error = ERR_CUST_NULL;
@@ -73,16 +73,15 @@ public class BookingManager {
         }
 
         fareResponse = AlphaCabsServicesClient.calculateFare(sourceAddress, destinationAddress);
-        
-        if ("-1".equals(fareResponse.get("status"))){
+
+        if ("-1".equals(fareResponse.get("status"))) {
             this.error = ERR_ADDR_NOT_FOUND;
             return null;
-        }
-        else if ("-2".equals(fareResponse.get("status"))){
+        } else if ("-2".equals(fareResponse.get("status"))) {
             this.error = ERR_WITH_WEB_SERVICE;
             return null;
-        }        
-        
+        }
+
         //Resolve if source destination is the customers home address
         boolean isSSAH = Boolean.parseBoolean(isSourceSameAsHome);
         if (isSSAH) {
@@ -91,10 +90,10 @@ public class BookingManager {
         //Resolve data types from string params
         //Num of Passengers
         int nPassengers = Integer.parseInt(numOfPassengers);
-        
+
         //Distance
         double distance = Double.valueOf(fareResponse.get("distance"));
-        
+
         //Charge
         double fairExcVAT = Double.valueOf(fareResponse.get("fareNoVAT"));
         double fairIncVAT = Double.valueOf(fareResponse.get("fareWithVAT"));
@@ -102,7 +101,7 @@ public class BookingManager {
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
-        
+
         //Booking Status
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
@@ -115,7 +114,7 @@ public class BookingManager {
             String destinationAddress, String numOfPassengers,
             String departureDate, String departureTime, Jdbc jdbc) {
         HashMap<String, String> fareResponse;
-        
+
         //SET appropriate error value and return null if a param is null or empty
         if (sourceAddress == null || sourceAddress.isEmpty()) {
             this.error = ERR_SRC_ADDR_NULL;
@@ -139,30 +138,29 @@ public class BookingManager {
         }
 
         fareResponse = AlphaCabsServicesClient.calculateFare(sourceAddress, destinationAddress);
-        
-        if ("-1".equals(fareResponse.get("status"))){
+
+        if ("-1".equals(fareResponse.get("status"))) {
             this.error = ERR_ADDR_NOT_FOUND;
             return null;
-        }
-        else if ("-2".equals(fareResponse.get("status"))){
+        } else if ("-2".equals(fareResponse.get("status"))) {
             this.error = ERR_WITH_WEB_SERVICE;
             return null;
-        }          
-        
+        }
+
         //Resolve data types from string params
         //Num of Passengers
         int nPassengers = Integer.parseInt(numOfPassengers);
-       
+
         //Distance
         double distance = Double.valueOf(fareResponse.get("distance"));
-        
+
         //Charge
         double fairExcVAT = Double.valueOf(fareResponse.get("fareNoVAT"));
         double fairIncVAT = Double.valueOf(fareResponse.get("fareWithVAT"));
         //Departure Time
         String depDateTime = departureDate + " " + departureTime + ":00";
         Timestamp depTimestamp = Timestamp.valueOf(depDateTime);
-    
+
         //Booking Status
         GenericItem bookingStatus = new GenericItem(1, "Outstanding");
 
@@ -213,7 +211,7 @@ public class BookingManager {
                     map.get("SOURCEADDRESS"),
                     map.get("DESTINATIONADDRESS"),
                     Integer.parseInt(map.get("NUMOFPASSENGERS")),
-                    Double.parseDouble(map.get("DISTANCE")), 
+                    Double.parseDouble(map.get("DISTANCE")),
                     Double.parseDouble(map.get("FAREEXCVAT")),
                     Double.parseDouble(map.get("FAREINCVAT")),
                     Timestamp.valueOf(map.get("TIMEBOOKED")),
@@ -287,6 +285,7 @@ public class BookingManager {
     public static Booking getBooking(Jdbc jdbc, long bookingId) {
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> bookingMap;
+        Driver driver;
 
         results = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS, bookingId);
 
@@ -301,11 +300,21 @@ public class BookingManager {
         Customer customer = CustomerManager.getCustomer(
                 Long.parseLong(bookingMap.get("CUSTOMERID")), jdbc);
 
-        Driver driver = DriverManager.getDriver(
-                Long.parseLong(bookingMap.get("DRIVERID")), jdbc);
+        if (bookingMap.get("DRIVERID") != null) {
+            driver = DriverManager.getDriver(
+                    Long.parseLong(bookingMap.get("DRIVERID")), jdbc);
+        } else {
+            driver = null;
+        }
 
         GenericItem bookingStatus = new GenericItem(
-                Integer.parseInt(bookingMap.get("BOOKINGSTATUS")));
+                Integer.parseInt(bookingMap.get("BOOKINGSTATUSID")));
+
+        String sArrivalTime = bookingMap.get("ARRIVALTIME");
+        Timestamp arrivalTime = null;
+        if (sArrivalTime != null) {
+            arrivalTime = Timestamp.valueOf(sArrivalTime);
+        }
 
         return new Booking(Long.parseLong(bookingMap.get("ID")),
                 customer,
@@ -318,7 +327,7 @@ public class BookingManager {
                 Double.parseDouble(bookingMap.get("FAREINCVAT")),
                 Timestamp.valueOf(bookingMap.get("TIMEBOOKED")),
                 Timestamp.valueOf(bookingMap.get("DEPARTURETIME")),
-                Timestamp.valueOf(bookingMap.get("ARRIVALTIME")),
+                arrivalTime,
                 bookingStatus);
     }
 
@@ -340,6 +349,8 @@ public class BookingManager {
         if (booking == null) {
             return ERR_BOOKING_NULL;
         }
+        
+        booking.setBookingStatus(new GenericItem(2));
 
         return jdbc.update(booking);
     }
