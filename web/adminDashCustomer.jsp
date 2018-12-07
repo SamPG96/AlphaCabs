@@ -20,7 +20,7 @@
         <div class="container">
                 <div class="row">
                     <div class="col-sm-4">
-                        <button href="AdminCustRegister.jsp" class="btn mb-1">Add New Customer</button>
+                        <button onclick="window.location.href='adminCustRegister.jsp'" class="btn mb-1">Add New Customer</button>
                     </div>
                 </div>
             <table id="customersTable" class="display" style="width:100%">
