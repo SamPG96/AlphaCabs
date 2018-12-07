@@ -63,40 +63,22 @@ public class AdminDashCustomerServlet extends HttpServlet {
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");       
         
         Customer[] aCustomer = CustomerManager.getAllCustomers(jdbc);
-           
-                   String message = "<thead><tr>\n"
-                + "                    <th>First name</th>\n"
-                + "                    <th>Last name</th>\n"
-                + "                    <th>Address</th>\n"
-                + "                </tr></thead>";
+
+        String message = "";
         
-        
-            message += "<tbody>";
         for (Customer customer:aCustomer) {
             
-            
-            
-            message +=  "<tr>";
+            message += "<tr>";
             message +="<td>" + customer.getFirstName() + "</td>";
-            message +="<td>" + customer.getLastName() + "</td>";
             message +="<td>" + customer.getAddress() + "</td>";
             
-            message += "</tr>";
-            
-              
+            message += "</tr>";    
         }
-            message += "</tbody>";
         
-        
-        request.setAttribute("customerTable", message);
-        
-       
-//
-//        request.setAttribute("bookingsTable", message + "</br>");
-        //response.setIntHeader("Refresh", 0);
+        request.setAttribute("customersTable", message);
+
         request.getRequestDispatcher("index.jsp").forward(request, response);
-    
-    
+
     }
 
     /**

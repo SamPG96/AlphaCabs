@@ -22,7 +22,9 @@
                 <button class="tablinks" onclick="openTab(event, 'Drivers')">Drivers</button>
             </form>
             <button class="tablinks" onclick="openTab(event, 'Bookings')">Bookings</button>
-            <button class="tablinks" onclick="openTab(event, 'Customers')">Customers</button>
+            <form method="GET" action="AdminDashCustomerServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'Customers')">Customers</button>
+            </form>
             <form method="GET" action="AdminDashUserServlet.do">
                 <button class="tablinks" onclick="openTab(event, 'Users')">Users</button>
             </form>

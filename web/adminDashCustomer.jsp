@@ -16,22 +16,25 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
         
     </head>
-    <body>
-        <form method="GET" action="AdminDashCustomerServlet.do">
-        
+    <body> 
         <div class="container">
                 <div class="row">
                     <div class="col-sm-4">
-                        <button type="submit" class="btn mb-1">Display Customers</button>
+                        <button href="AdminCustRegister.jsp" class="btn mb-1">Add New Customer</button>
                     </div>
                 </div>
-            </div>
-
-            <table id="customersTable" class="display" style="width:100%">               
-            
-                       ${customerTable}
+            <table id="customersTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>  
+                    ${customersTable}
+                </tbody>
             </table>
-        </form>
+        </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
