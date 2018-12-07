@@ -27,9 +27,9 @@ public class UserManager {
     public static final int PASSWORDS_DONT_MATCH_ERR_CODE = -4;
 
     /*
-    * Set the status of a user account to 'active'
+    * Set a new status for the user account
     */
-    public static int approveUser(long userId, Jdbc jdbc){
+    public static int changeUserStatus(long userId, GenericItem newStatus, Jdbc jdbc){
         User user;
         
         user = getUser(userId, jdbc);
@@ -41,7 +41,7 @@ public class UserManager {
         
         // Retrieve existing info about the user and replace the status of the
         // user to active.
-        user.setUserStatus(getUserStatusObj(2, jdbc));
+        user.setUserStatus(newStatus);
         
         // Update the database
         jdbc.update(user);

@@ -18,6 +18,7 @@ import model.UserManager;
 import model.Jdbc;
 import model.tableclasses.User;
 import model.UserManager;
+import static model.UserManager.getUserStatusObj;
 import model.tableclasses.GenericItem;
 
 /**
@@ -115,17 +116,14 @@ public class AdminDashUserServlet extends HttpServlet {
         // Connect Jdbc to the DB
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
 
-        String userId = request.getParameter("userid");
+        long userId = Long.parseLong(request.getParameter("userid"));
 
         String userStatus = request.getParameter("userstatus");
 
-        long longid = Long.parseLong(userId);
-
-
         if (userStatus.equals("Unapproved")) {
-           UserManager.approveUser(longid, jdbc);
+           UserManager.changeUserStatus(userId, getUserStatusObj(2, jdbc), jdbc);
         }else{
-           UserManager.unapproveUser(longid, jdbc);
+           UserManager.changeUserStatus(userId, getUserStatusObj(1, jdbc), jdbc);
         }
 
 
