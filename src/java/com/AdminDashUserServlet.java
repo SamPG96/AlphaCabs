@@ -51,62 +51,50 @@ public class AdminDashUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                processRequest(request, response);
+        processRequest(request, response);
 
         HttpSession session = request.getSession(false);
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
 
-        User[] aUser = UserManager.getAllUsers(jdbc);   
-           
-        String message = "<thead><tr>\n"
-                + "                    <th class=\"p\">Username</th>\n"
-                + "                    <th>UserType</th>\n"
-                + "                    <th>CustomerId</th>\n"
-                + "                    <th>DriverId</th>\n"
-                + "                    <th>UserStatus</th>\n"
-                + "                    <th>Approve</th>\n"
-                + "                </tr></thead>";
-        
-        //if () {
+        User[] aUser = UserManager.getAllUsers(jdbc);
+
+        String message = "";
+        String name = "";
+        for (User user : aUser) {
+            message += "<tr>";
+            message += "<td class=\"username\">" + user.getUsername() + "</td>";
+            message += "<td>" + user.getUserType().getName() + "</td>";
             
-        //}
-        
-        for (User user:aUser) {
-            //GenericItem userTypea = user.getUserType();
-            
-            //if (userTypea == 2) {
-                
-            //}
-            
-            
-            message +="<tr>";
-            
-            message +="<td class=\"username\">" + user.getUsername() + "</td>";
-            message +="<td>" + user.getUserType().getName() + "</td>";
-            message +="<td>" + user.getCustomerId() + "</td>";
-            message +="<td>" + user.getDriverId() + "</td>";
-            message +="<td>" + user.getUserStatus().getName() + "</td>";
-            if (user.getUserStatus().getName().equals("Unapproved")) {
-                message +="<td><button \"btn\" onclick=\"getid(this)\" name=" + user.getId() +">Approve</button></td>";
-            }else {
-                message +="<td> </td>";
+            //Find name
+            switch ((int) user.getUserType().getId()) {
+                case 1://Admin
+                    name = "N/A";
+                    break;
+                case 2://Driver
+                    name = user.getDriver().getFirstName() + " "
+                            + user.getDriver().getLastName();
+                    break;
+                case 4://Customer
+                    name = user.getCustomer().getFirstName() + " "
+                            + user.getCustomer().getLastName();
+                    break;
             }
-                
+            message += "<td>" + name + "</td>";
             
+            message += "<td>" + user.getUserStatus().getName() + "</td>";
+            if (user.getUserStatus().getName().equals("Unapproved")) {
+                message += "<td><button class=\"btn\" onclick=\"getid(this)\" name=" + user.getId() + ">Approve</button></td>";
+            } else {
+                message += "<td> </td>";
+            }
+
             message += "</tr>";
         }
-
         request.setAttribute("userTable", message);
 
-     
-//
-//        request.setAttribute("bookingsTable", message + "</br>");
-        //response.setIntHeader("Refresh", 0);
         request.getRequestDispatcher("index.jsp").forward(request, response);
-    
-    
+
     }
 
     /**
@@ -121,20 +109,18 @@ public class AdminDashUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
+
         HttpSession session = request.getSession(false);
-        
+
         // Connect Jdbc to the DB
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        
+
         long id = Long.parseLong(request.getParameter("id"));
-        
+
         UserManager.approveUser(id, jdbc);
         
         request.getRequestDispatcher("index.jsp").forward(request, response);
-        
-        }
-
+    }
 
     /**
      * Returns a short description of the servlet.

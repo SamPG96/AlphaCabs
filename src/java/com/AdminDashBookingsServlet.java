@@ -66,241 +66,115 @@ public class AdminDashBookingsServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
 
-        String x = request.getParameter("checkOutstanding");
-        if (x == null) {
-            x = "off";
-        }
-
         HttpSession session = request.getSession(false);
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
 
-        //DISPLAY All Bookings
-        Booking[] bookings;
-        Driver[] drivers;
-
-        String displayDrivers = null;
-
-        //request.getSession().setAttribute("displayMode", 1);
-        //String displayMode = request.getSession().getAttribute("displayMode").toString();
-        //-----------------------------------------------------------------------------------------
-        if (x.equals("on") == true) {
-            bookings = BookingManager.getBookings(jdbc, 1);
-            drivers = DriverManager.getAllDrivers(jdbc);
-            //----------------------------------------------------
-            /*
-            drivers = DriverManager.getAllDrivers(jdbc);
-
-            for (Driver driver : drivers) {
-                displayDrivers += "<td>" + driver.getFirstName() + "</td>";
-                displayDrivers += "<td>" + driver.getLastName() + "</td>";
-                displayDrivers += "<td>" + driver.getRegistration() + "</td>";
-            }
-             */
-            String d_Display = "<tr>\n"
-                    + "\n"
-                    + "\n"
-                    + "\n"
-                    + "</tr>";
-
-            String message = "<tr>\n"
-                    + "                    <th>Source address</th>\n"
-                    + "                    <th>Destination address</th>\n"
-                    + "                    <th>Passengers</th>\n"
-                    + "                    <th>Distance (Miles)</th>\n"
-                    + "                    <th>Price ex. VAT (£)</th>\n"
-                    + "                    <th>Price inc. VAT (£)</th>\n"
-                    + "                    <th>Date</th>\n"
-                    + "                    <th>Depature time</th>\n"
-                    + "                    <th>Arrival time</th>\n"
-                    + "                    <th>Customer lastname</th>\n"
-                    + "                    <th>Driver</th>\n"
-                    + "                </tr>";
-
-            for (Driver driver : drivers) {
-                d_Display += "<tr>";
-                d_Display += "<td>" + driver.getFirstName() + "</td>";
-                d_Display += "<td>" + driver.getLastName() + "</td>";
-                d_Display += "<td>" + driver.getRegistration() + "</td>";
-            }
-
-            request.setAttribute("availabledrivers", d_Display);
-
-            for (Booking booking : bookings) {
-
-                message += "<tr>";
-                message += "<td>" + booking.getSourceAddress() + "</td>";
-                message += "<td>" + booking.getDestinationAddress() + "</td>";
-                message += "<td>" + booking.getNumOfPassengers() + "</td>";
-                message += "<td>" + booking.getDistance() + " </td>";
-                message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareExcVAT()) + "</td>";
-                message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareIncVAT()) + "</td>";
-                message += "<td>" + booking.getTimeBooked() + "</td>";
-                message += "<td>" + booking.getDepartureTime() + "</td>";
-
-                // Arrival time can be null, so handle this.
-                if (booking.getTimeArrived() == null) {
-                    message += "<td>N/A</td>";
-                } else {
-                    message += "<td>" + booking.getTimeArrived() + "</td>";
-                }
-
-                message += "<td>" + booking.getCustomer().getLastName() + "</td>";
-
-                // Driver ID can be null if no driver assigned, so handle this.
-                if (booking.getDriver() == null) {
-
-                    message += "<td><select name='drivers'><option value=\"\"></option>";
-                    for (Driver driver : drivers) {
-                        d_Display = "";
-                        d_Display += driver.getFirstName() + " ";
-                        d_Display += driver.getLastName() + " ";
-                        d_Display += driver.getRegistration();
-
-                        message += "<option value = " + d_Display + ">" + d_Display + "</option>";
-
-                    }
-                    message += "</select></td>";
-
-                } else {
-                    message += "<td>" + booking.getDriver().getLastName() + "</td>";
-                }
-
-                message += "</tr>";
-            }
-
-            request.setAttribute("bookingsTable", message);
-            //request.getRequestDispatcher("index.jsp").forward(request, response);
-
-            //---------------------------------------------------------------------------------
-        } else if (x.equals("off") == true) {
-
-            bookings = BookingManager.getBookings(jdbc);
-            drivers = DriverManager.getAllDrivers(jdbc);
-
-            //ArrayList<String> d_Display = new ArrayList<String>();
-            //Map<Integer, String> d_Display = new HashMap<Integer, String>();
-            //for (Driver driver : drivers) {
-            //   put(1, driver.getFirstName() driver.getLastName())
-            //}
-            //for (Driver driver : drivers) {
-            //    d_Display.add(driver.getFirstName());
-            //    d_Display.add(driver.getLastName());
-            //    d_Display.add(driver.getRegistration());
-            //}
-            String d_Display = "";
-//            String d_Display = "<tr>\n"
-//                    + "\n"
-//                    + "\n"
-//                    + "\n"
-//                    + "</tr>";
-
-            String message = "<tr>\n"
-                    + "                    <th>Source address</th>\n"
-                    + "                    <th>Destination address</th>\n"
-                    + "                    <th>Passengers</th>\n"
-                    + "                    <th>Distance (Miles)</th>\n"
-                    + "                    <th>Price ex. VAT (£)</th>\n"
-                    + "                    <th>Price inc. VAT (£)</th>\n"
-                    + "                    <th>Date</th>\n"
-                    + "                    <th>Depature time</th>\n"
-                    + "                    <th>Arrival time</th>\n"
-                    + "                    <th>Customer lastname</th>\n"
-                    + "                    <th>Driver</th>\n"
-                    + "                </tr>";
-
-//            for (Driver driver : drivers) {
-//                d_Display += driver.getFirstName();
-//                d_Display += driver.getLastName();
-//                d_Display += driver.getRegistration();
-//            }
-            request.setAttribute("availabledrivers", d_Display);
-
-            for (Booking booking : bookings) {
-
-                message += "<tr>";
-                message += "<td>" + booking.getSourceAddress() + "</td>";
-                message += "<td>" + booking.getDestinationAddress() + "</td>";
-                message += "<td>" + booking.getNumOfPassengers() + "</td>";
-                message += "<td>" + booking.getDistance() + " </td>";
-                message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareExcVAT()) + "</td>";
-                message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareIncVAT()) + "</td>";
-                message += "<td>" + booking.getTimeBooked() + "</td>";
-                message += "<td>" + booking.getDepartureTime() + "</td>";
-
-                // Arrival time can be null, so handle this.
-                if (booking.getTimeArrived() == null) {
-                    message += "<td>N/A</td>";
-                } else {
-                    message += "<td>" + booking.getTimeArrived() + "</td>";
-                }
-
-                message += "<td>" + booking.getCustomer().getLastName() + "</td>";
-
-                // Driver ID can be null if no driver assigned, so handle this.
-                if (booking.getDriver() == null) {
-
-                    message += "<td><select name='drivers'><option value=\"\"></option>";
-                    for (Driver driver : drivers) {
-                        d_Display = "";
-                        d_Display += driver.getRegistration()+ " ";
-                        d_Display += driver.getFirstName()+ " ";
-                        d_Display += driver.getLastName();
-
-                        message += "<option value = " + d_Display + ">" + d_Display + "</option>";
-
-                    }
-                    message += "</select></td>";
-
-                    //message += "<td><button onclick=\"getid(this)\" name=" + booking.getId() + ">Assign Driver</button></td>";
-                    // message += "<td><select name='drivers'><option value = 'availabledrivers'>" + d_Display + "</option></select></td>";
-                    //message += "<td>"
-                } else {
-                    message += "<td>" + booking.getDriver().getLastName() + "</td>";
-                }
-
-                message += "</tr>";
-            }
-
-            request.setAttribute("bookingsTable", message);
-            //request.getRequestDispatcher("index.jsp").forward(request, response);
-
+        //Resolve checkbox
+        String box = request.getParameter("checkOutstanding");
+        if (box == null) {
+            box = "off";
         }
 
-        //String i = request.getParameter("assigndriver");
-        //if (i.equals("driverassignment") == true) {
-        //    request.setAttribute("availableDrivers", displayDrivers);
-        //} else {
-        //}
-        //request.setAttribute("bookingsTable", message);
-        //--------------------------------------------------------------------
-        //request.getRequestDispatcher("index.jsp").forward(request, response);
-        if (request.getParameter("assigndriver") != null) {
+        Booking[] bookings;
+        if (box.equals("on") == true) {
+            bookings = BookingManager.getBookings(jdbc, 1);
+        } else {
             bookings = BookingManager.getBookings(jdbc);
-            drivers = DriverManager.getAllDrivers(jdbc);
+        }
+
+        Driver[] drivers;
+        drivers = DriverManager.getAllDrivers(jdbc);
+
+        boolean hasUpdated = false;
+        if (request.getParameter("assigndriver") != null) {
             for (Booking booking : bookings) {
                 if (booking.getDriver() == null) {
 
                     String selectedDriver = (String) request.getParameter("drivers");
 
-                    //String[] splitStr = selectedDriver.split("\\s+");
-
-                    //String registration = splitStr[2];
-
                     for (Driver driver : drivers) {
                         if (selectedDriver.equals(driver.getRegistration())) {
                             BookingManager.assignDriver(driver.getId(), booking.getId(), jdbc);
+                            hasUpdated = true;
                         }
                     }
 
                 }
             }
 
+            if (hasUpdated) {
+                if (box.equals("on") == true) {
+                    bookings = BookingManager.getBookings(jdbc, 1);
+                } else {
+                    bookings = BookingManager.getBookings(jdbc);
+                }
+            }
         }
 
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        String d_Display = "<tr>\n"
+                + "\n"
+                + "\n"
+                + "\n"
+                + "</tr>";
 
+        for (Driver driver : drivers) {
+            d_Display += "<tr>";
+            d_Display += "<td>" + driver.getFirstName() + "</td>";
+            d_Display += "<td>" + driver.getLastName() + "</td>";
+            d_Display += "<td>" + driver.getRegistration() + "</td>";
+        }
+
+        request.setAttribute("availabledrivers", d_Display);
+
+        String message = "";
+        String custName;
+        String driverName;
+        for (Booking booking : bookings) {
+            message += "<tr>";
+            custName = booking.getCustomer().getFirstName() + " "
+                    + booking.getCustomer().getLastName();
+            message += "<td>" + custName + "</td>";
+            message += "<td>" + booking.getSourceAddress() + "</td>";
+            message += "<td>" + booking.getDestinationAddress() + "</td>";
+            message += "<td>" + booking.getNumOfPassengers() + "</td>";
+            message += "<td>" + booking.getDistance() + " </td>";
+            message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareExcVAT()) + "</td>";
+            message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareIncVAT()) + "</td>";
+            message += "<td>" + booking.getTimeBooked() + "</td>";
+            message += "<td>" + booking.getDepartureTime() + "</td>";
+
+            // Arrival time can be null, so handle this.
+            if (booking.getTimeArrived() == null) {
+                message += "<td>N/A</td>";
+            } else {
+                message += "<td>" + booking.getTimeArrived() + "</td>";
+            }
+
+            // Driver ID can be null if no driver assigned, so handle this.
+            if (booking.getDriver() == null) {
+                message += "<td><select name='drivers'><option value=\"\"></option>";
+                for (Driver driver : drivers) {
+                    d_Display = "";
+                    d_Display += driver.getRegistration() + " ";
+                    d_Display += driver.getLastName() + " ";
+                    d_Display += driver.getFirstName();
+
+                    message += "<option value = " + d_Display + ">" + d_Display + "</option>";
+                }
+                message += "</select></td>";
+            } else {
+                driverName = booking.getDriver().getFirstName() + " "
+                        + booking.getDriver().getLastName();
+                message += "<td>" + driverName + "</td>";
+            }
+
+            message += "</tr>";
+        }
+
+        request.setAttribute("bookingsTable", message);
+
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
     /**
