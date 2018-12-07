@@ -9,23 +9,24 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Template</title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
-    
+
     <jsp:include page="/common/head.jsp"/>
-     
-        <div class="main">
-        
-            <h1>Profile</h1>
-            
-            
-            
+
+    <div class="main">
+        <div class="container">
             <form method="POST" action="LogoutServlet.do">
-                <input type="submit" value="Logout"/>
-            </form>
-                
-            <button type="button">Edit</button>
-            
+                <center><h1>Profile</h1></center>
+                <div style="height:20px;"></div>
+                <center><button type="submit" class="btn" name="logout">Logout</button></center>
+                <div style="height:20px;"></div>
+                <center><button type="submit" class="btn" name="edit">Edit Your Details</button></center>
         </div>
+    </form>
+</div>
+
+</div>
+
+<jsp:include page="/common/foot.jsp"/>
 </html>
