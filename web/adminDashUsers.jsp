@@ -32,10 +32,11 @@
     <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript">
-        function getid(elem) {
-            var id = $(elem).attr('name');
+        function getUser(elem) {
+            var id = $(elem).attr('data-userid');
+            var status = $(elem).attr('data-userstatus');
 
-            $.post("AdminDashUserServlet.do", {"id": id});
+            $.post("AdminDashUserServlet.do", {"id": id, "status" : status});
         }
         ;
         $(document).ready(function () {

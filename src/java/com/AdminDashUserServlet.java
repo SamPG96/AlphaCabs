@@ -57,7 +57,9 @@ public class AdminDashUserServlet extends HttpServlet {
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
         //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
 
-        User[] aUser = UserManager.getAllUsers(jdbc);   
+        User[] aUser = UserManager.getAllUsers(jdbc);
+        
+        String spc = " ";
            
         String message = "<thead><tr>\n"
                 + "                    <th class=\"p\">Username</th>\n"
@@ -88,9 +90,9 @@ public class AdminDashUserServlet extends HttpServlet {
             message +="<td>" + user.getDriverId() + "</td>";
             message +="<td>" + user.getUserStatus().getName() + "</td>";
             if (user.getUserStatus().getName().equals("Unapproved")) {
-                message +="<td><button \"btn\" onclick=\"getid(this)\" name=" + user.getId() +">Approve</button></td>";
+                message +="<td><button class=\"btn\" onclick=\"getUser(this)\" data-userid=" + user.getId() + " data-userstatus=" + user.getUserStatus().getName() + ">Approve</button></td>";
             }else {
-                message +="<td> </td>";
+                message +="<td><button class=\"btn\" onclick=\"getUser(this)\" data-userid=" + user.getId() + " data-userstatus=" + user.getUserStatus().getName() + ">Unapprove</button></td>";
             }
                 
             
@@ -125,9 +127,19 @@ public class AdminDashUserServlet extends HttpServlet {
         
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
         
-        long id = Long.parseLong(request.getParameter("id"));
+        String userId = request.getParameter("id");
         
-        UserManager.approveUser(id, jdbc);
+        String userStatus = request.getParameter("status");
+        
+        long longid = Long.parseLong(userId);
+        
+        
+        if (userStatus.equals("Unapproved")) {
+           UserManager.approveUser(longid, jdbc); 
+        }else{
+           UserManager.unapproveUser(longid, jdbc); 
+        }
+        
         
         request.getRequestDispatcher("index.jsp").forward(request, response);
         
