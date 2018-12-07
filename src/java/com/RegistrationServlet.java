@@ -139,6 +139,7 @@ public class RegistrationServlet extends HttpServlet {
                 customerId,
                 UserManager.getUserStatusObj(1, dbBean),
                 dbBean);
+        // Create user account for a customer by an admin. Set account to active.
         }else if (activateAccount.equals("on")) {
         userId = UserManager.newCustomerUser(
                 request.getParameter("password"),
@@ -159,7 +160,7 @@ public class RegistrationServlet extends HttpServlet {
         // also inform them of there automated username.
         String username = UserManager.getUsernameForCustomer(customerId, dbBean);
         request.setAttribute("newUsername", username);
-        
+        //Distinguish between admin user and no uer logged in. 
         if (session != null && session.getAttribute("userID") != null) {
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }else {
