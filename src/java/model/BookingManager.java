@@ -5,7 +5,7 @@
  */
 package model;
 
-import ServiceClients.AlphaCabsServicesClient;
+import serviceclients.AlphaCabsServicesClient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
