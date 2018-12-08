@@ -49,7 +49,14 @@ function getUser(elem) {
     var userstatus = $(elem).attr('data-userstatus');
 
         $.post("AdminDashCustomerServlet.do", {"userid": userid, "userstatus" : userstatus});
+    //wait is needed otherwise sql crashes. currently set to half a second
+    window.setTimeout(loadpage, 500);
+    
 };
+function loadpage(){
+   //reloads page
+    window.location.reload(); 
+}
 $(document).ready(function() {
     $('#customersTable').DataTable( {
         select: {
