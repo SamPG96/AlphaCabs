@@ -130,14 +130,25 @@ public class RegistrationServlet extends HttpServlet {
                 request.getParameter("lastName"),
                 request.getParameter("homeAddress"),
                 dbBean);
-
+            String activateAccount = request.getParameter("activateAccount");
         // Create user account for customer. Set account to require approval.
+        if (activateAccount == null) {
         userId = UserManager.newCustomerUser(
                 request.getParameter("password"),
                 request.getParameter("passwordConfirm"),
                 customerId,
                 UserManager.getUserStatusObj(1, dbBean),
                 dbBean);
+        // Create user account for a customer by an admin. Set account to active.
+        }else if (activateAccount.equals("on")) {
+        userId = UserManager.newCustomerUser(
+                request.getParameter("password"),
+                request.getParameter("passwordConfirm"),
+                customerId,
+                UserManager.getUserStatusObj(2, dbBean),
+                dbBean);
+        }
+
         
         // By default the user account for the customer is not active. So cache
         // the customer ID for the booking servlet to access.
@@ -149,7 +160,12 @@ public class RegistrationServlet extends HttpServlet {
         // also inform them of there automated username.
         String username = UserManager.getUsernameForCustomer(customerId, dbBean);
         request.setAttribute("newUsername", username);
-        request.getRequestDispatcher("regConfirm.jsp").forward(request, response);
+        //Distinguish between admin user and no uer logged in. 
+        if (session != null && session.getAttribute("userID") != null) {
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }else {
+            request.getRequestDispatcher("regConfirm.jsp").forward(request, response);
+        }
 
         processRequest(request, response);
     }

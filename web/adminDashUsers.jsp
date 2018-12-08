@@ -16,28 +16,35 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
     </head>
     <body>
-        <form method="GET" action="AdminDashUserServlet.do">
+        <div class="container">
 
-            <div class="mb-1">    
-                <input class="btn" type="submit" value="Display all users"/>
+            <div class="row">   
+                <h3>Approve Users</h3>
             </div>
-            <table id="usersTable" class="display" style="width:100%">               
-
-                ${userTable}
+            <div class="col-xs-12" style="height:20px;"></div>
+            <table id="usersTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${userTable}
+                </tbody>
             </table>
-        </form>
+        </div>
     </body>
+
+
+
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript">
-        function getid(elem) {
-            var id = $(elem).attr('name');
-
-            $.post("AdminDashUserServlet.do", {"id": id});
-        }
-        ;
         $(document).ready(function () {
             $('#usersTable').DataTable({
                 select: {
