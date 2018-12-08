@@ -88,7 +88,7 @@ public class AdminDashDriversServlet extends HttpServlet {
             table += "<td>" + driverName + "</td>";
             table += "<td>" + driver.getRegistration() + "</td>";
             table += "<td>" + user.getUserStatus().getName() + "</td>";
-            table += "<td>" + "<button class=\"btn\" onclick=\"document.getElementById('id02').style.display = 'block'\">Update</button>" + "</td>";
+            table += "<td>" + "<button class=\"btn\" onclick=\"document.location.href = 'adminDashChangeDriverDetails.jsp'\">Update</button>" + "</td>";
             table += "<td>" + "<button class=\"btn\" onclick=\"document.getElementById('id03').style.display = 'block'\">Remove</button>" + "</td>";
             table += "</tr>";
         }
