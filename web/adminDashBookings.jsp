@@ -18,23 +18,8 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
         <title>Manage Bookings</title>
 
-        <!--<style>
-        </style>-->
-
     </head>
     <body>
-
-        <%
-            //int displayMode = Integer.valueOf(request.getParameter("currentMode"));
-            //String displayMode = request.getParameter("displayMode");
-
-            //if (request.getParameter("displayMode") != null) {
-            //    displayMode = request.getParameter("displayMode");
-            //}
-            //session.setAttribute("displayMode", 1);
-            //Displaying bookings stage
-            //if (displayMode.equals("1") == true) {
-        %>
 
         <form method="GET" action="AdminDashBookingsServlet.do">
 
@@ -59,20 +44,6 @@
             </table>
             <input type="submit" value="Assign Driver" name="assigndriver" class="driverassignment"/>
         </form>
-
-        <%                
-            //Displaying availiable drivers stage
-            //} else if (displayMode.equals("2") == true) {
-        %>
-            
-        <%                
-            //Assigning Driver Stage
-            //} else if (displayMode.equals("3") == true) {
-        %>
-
-        <%
-                //}
-        %>
 
     </body>
 
