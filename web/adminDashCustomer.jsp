@@ -19,10 +19,11 @@
     <body> 
         <div class="container">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <button onclick="window.location.href='adminCustRegister.jsp'" class="btn mb-1">Add New Customer</button>
-                    </div>
+                    <h3>Change Customer Details</h3>
                 </div>
+                    <div class="col-xs-12">
+                        <button onclick="window.location.href='adminCustRegister.jsp'" class="btn">Add New Customer</button>
+                    </div>
             <table id="customersTable" class="display" style="width:100%">
                 <thead>
                     <tr>
