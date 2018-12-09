@@ -30,8 +30,6 @@ import model.tableclasses.Customer;
  */
 public class AdminDashReportServlet extends HttpServlet {
 
-    public double todaysTurnover = 100.2;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
