@@ -194,14 +194,15 @@ public class UserManager {
      * details have been given or a user was found but is not of the given types
      * then an error code is returned.
      */
-    public static long loginSpecificUserTypes(String user, String pass,
+    public static long loginSpecificUserTypes(String userName, String pass,
             ArrayList<GenericItem> validTypes, Jdbc jdbc){
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> userDBInfo;
         boolean userTypeIsValid;
+        User user;
         
         // Retrieve user information from the DB
-        results = jdbc.retrieve(TABLE_NAME_USERS, "USERNAME", user);        
+        results = jdbc.retrieve(TABLE_NAME_USERS, "USERNAME", userName);        
         
         // If no user was found with given username then return failure
         if (results.isEmpty()){
@@ -218,8 +219,10 @@ public class UserManager {
         // Should only be one result, so index the first
         userDBInfo = results.get(0);
         
+        user = getUser(Long.valueOf(userDBInfo.get("ID")), jdbc);
+        
         // Incorrect login attempt if the password is correct
-        if (userDBInfo.get("PASSWORD").equals(pass) == false){
+        if (user.getPassword().equals(pass) == false){
             return -1;
         }
         
@@ -227,17 +230,23 @@ public class UserManager {
         // allowed to sign in.
         userTypeIsValid = false;
         for (GenericItem validType: validTypes){
-            if (validType.getId() == Long.valueOf(userDBInfo.get("USERTYPEID"))){
+            if (validType.getId() == user.getUserType().getId()){
                 userTypeIsValid = true;
                 break;
             }
         }
-
+        
+        // Return an error if the user is infact of a non valid type
         if (userTypeIsValid == false){
             return -1;
         }
         
-        return Long.valueOf(userDBInfo.get("ID"));        
+        // Do not allow non active users to sign in
+        if (user.getUserStatus().getId() != 2){
+            return -1;
+        }
+        
+        return user.getId();        
     }
     
     /*
