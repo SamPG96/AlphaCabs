@@ -139,8 +139,8 @@ public class AdminDashBookingsServlet extends HttpServlet {
             message += "<td>" + booking.getDestinationAddress() + "</td>";
             message += "<td>" + booking.getNumOfPassengers() + "</td>";
             message += "<td>" + booking.getDistance() + " </td>";
-            message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareExcVAT()) + "</td>";
-            message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareIncVAT()) + "</td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareExcVAT()) + "</td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareIncVAT()) + "</td>";
             message += "<td>" + booking.getTimeBooked() + "</td>";
             message += "<td>" + booking.getDepartureTime() + "</td>";
 

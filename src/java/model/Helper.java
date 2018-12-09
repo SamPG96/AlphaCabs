@@ -5,22 +5,21 @@
  */
 package model;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+
 /**
  *
  * @author Conor
  */
 public class Helper {
-    public static String doubleToCurrencyFormat(double d){
-        String s = String.valueOf(d);
-        String[] strArr = s.split("\\.");
-        
-        if(strArr.length != 2){
-            return null;
-        }
-        
-        if(strArr[1].endsWith("0") || strArr[1].length() == 1){
-            s += "0";
-        }
-        return s;
+
+    public static String doubleToTwoDecPlacesString(double d) {
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        DecimalFormatSymbols decimalFormatSymbols = ((DecimalFormat) nf).getDecimalFormatSymbols();
+        decimalFormatSymbols.setCurrencySymbol("");
+        ((DecimalFormat) nf).setDecimalFormatSymbols(decimalFormatSymbols);
+        return nf.format(d).trim();
     }
 }

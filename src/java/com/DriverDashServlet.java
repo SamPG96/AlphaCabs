@@ -115,7 +115,7 @@ public class DriverDashServlet extends HttpServlet {
                 }
 
                 roundOffPostVAT = Math.round(booking.getFareIncVAT() * 100.0) / 100.0;
-                message += "<td>" + Helper.doubleToCurrencyFormat(roundOffPostVAT) + "</td>";
+                message += "<td>" + Helper.doubleToTwoDecPlacesString(roundOffPostVAT) + "</td>";
                 
                 GenericItem bookingStatus = booking.getBookingStatus();
                 if (bookingStatus == null) {

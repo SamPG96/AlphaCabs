@@ -93,7 +93,7 @@ public class AdminDashReportServlet extends HttpServlet {
         String nCustDelta = resolveDelta(reportManager.getnCustomersDelta());
         
         String dailyTurnover = "Daily Turnover: £"
-                + Helper.doubleToCurrencyFormat(reportManager.getDailyTurnover())
+                + Helper.doubleToTwoDecPlacesString(reportManager.getDailyTurnover())
                 + turnoverDelta;
         request.setAttribute("todaysTurnover", dailyTurnover);
 
