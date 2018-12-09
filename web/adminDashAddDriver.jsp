@@ -25,38 +25,50 @@
     </head>
     <jsp:include page="/common/head.jsp"/>
     <body>
-        <form class="modal-content" method="POST" action="AdminDashDriversServlet.do">
-            <div class='container'>
-                <hr>
+        <div class="main">
+            <div class="container">
 
-                <label for='Forename'><b>Forename</b></label>
-                <input type='text' placeholder='Enter First Name' name='forename' required>
-
-                <label for='Surname'><b>Surname</b></label>
-                <input type='text' placeholder='Enter Last Name' name='surname' required>
-
-                <label for='registration'><b>Registration</b></label>
-                <input type='text' placeholder='Enter Car Registration' name='registration' required>
-
-                <label for='password'><b>Password</b></label>
-                <input type='text' placeholer='Enter a Password' name='password' required>
-
-                <label for='confirmation'><b>Confirm Password</b></label>
-                <input type='text' placeholer='Confirm Password' name='confirmation' required>
-
-                <div class="clearfix">
-                    <button type="button" onclick="document.location.href = 'index.jsp'" class="cancel">Cancel</button>
-
-                    <button type="submit" class="newdriver" name="button_click" value="newdriver">Add Driver</button>
-
-                </div>
-
+                <form method="POST" action="DriverFormServlet.do">
+                    <center><h1>Add Driver</h1></center>
+                    <div style="height:20px;"></div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label>First Name:</label>
+                            <input class="form-control" type="text" name="firstname" />
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Last Name:</label>
+                            <input class="form-control" type="text" name="lastname" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label>Registration:</label>
+                            <input class="form-control" type="text" name="registration"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label>Password:</label>
+                            <input class="form-control" type="password" name="password"  />
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Confirm Password:</label>
+                            <input class="form-control" type="password" name="confpassword" />
+                        </div>
+                    </div>
+                    <div class="errMessage"><%=((String) (request.getAttribute("errMsg")) != null) ? (String) (request.getAttribute("errMsg")) : ""%></div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <button class="btn my-1 " style="width:100%" onclick="document.location.href = 'index.jsp'" class="cancel">Cancel</button>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <input class="btn my-1 " style="width:100%" type="submit" value="Submit"/>
+                        </div>
+                    </div>
+                </form>
             </div>
-
-            <br>New Driver Username:
-            <br><b><%=request.getParameter("userName")%></b>
-
-        </form>
+        </div>
     </body>
         <jsp:include page="/common/foot.jsp"/>
 </html>
