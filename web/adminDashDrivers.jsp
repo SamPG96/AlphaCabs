@@ -60,7 +60,7 @@
         </div>
 
         <!--REMOVE DRIVER-->
-        <div id="id03" class="modal">
+        <!--<div id="id03" class="modal">
             <span onclick="document.getElementById('id03').style.display = 'none'" class="close" title="Close">Enter the Details of the Driver</span>
 
             <form class="modal-content" method="POST" action="AdminDashDriversServlet.do">
@@ -79,7 +79,7 @@
 
                 </div>
             </form>
-        </div> 
+        </div>-->
 
         <!--CHANGE DRIVER DETAILS FORM-->
         <!--<div id="id02" class="modal">
