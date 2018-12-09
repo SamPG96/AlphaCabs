@@ -6,22 +6,15 @@
 package com;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.Statement;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.BookingManager;
-import model.CustomerManager;
 import model.UserManager;
 import model.Jdbc;
 import static model.UserManager.getUserStatusObj;
 import model.tableclasses.Customer;
-import model.tableclasses.Booking;
 import model.tableclasses.User;
 
 /**

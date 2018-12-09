@@ -90,7 +90,7 @@ public class RegistrationServlet extends HttpServlet {
                 request.getParameter("lastName"),
                 request.getParameter("homeAddress"));
         
-        newUserErrCode = UserManager.validateNewUserAttribs(
+        newUserErrCode = UserManager.validateUserAttribs(
                 request.getParameter("firstName"),
                 request.getParameter("lastName"),
                 request.getParameter("password"),
