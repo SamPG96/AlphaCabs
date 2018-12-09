@@ -17,6 +17,11 @@ import java.time.format.DateTimeFormatter;
  */
 public class Helper {
 
+    public static String formatDateWithOnlyTime(Timestamp date){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+        return dtf.format(date.toLocalDateTime());
+    }
+    
     public static String formatDateWithTime(Timestamp date){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         return dtf.format(date.toLocalDateTime());
