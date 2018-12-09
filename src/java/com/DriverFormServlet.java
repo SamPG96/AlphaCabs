@@ -85,7 +85,7 @@ public class DriverFormServlet extends HttpServlet {
         User user;
         Driver driver;
         long driverId;
-        
+
         ServletContext sc = request.getServletContext();
 
         // Go straight to an error page if their where problems connecting to
@@ -100,7 +100,7 @@ public class DriverFormServlet extends HttpServlet {
         dbBean.connect((Connection) sc.getAttribute("connection"));
 
         String sUserId = request.getParameter("userid");
-        if(sUserId != null){
+        if (sUserId != null) {
             userId = Long.parseLong(sUserId);
         }
         String firstName = request.getParameter("firstname");
@@ -108,7 +108,7 @@ public class DriverFormServlet extends HttpServlet {
         String registration = request.getParameter("registration");
         String password = request.getParameter("password");
         String confPassword = request.getParameter("confpassword");
-        
+
         // Validate entry for a new user and customer before it is inserted into
         // the DB.
         validationCode = DriverManager.validateDriverAttribs(
@@ -126,17 +126,33 @@ public class DriverFormServlet extends HttpServlet {
             request.setAttribute("errMsg", errMsgStr + "</br>");
             request.getRequestDispatcher("adminDashUpdateDriver.jsp").forward(request, response);
         }
-        
-        user = UserManager.getUser(userId, dbBean);
-        user.setPassword(password);
-        dbBean.update(user);
-        
-        driver = DriverManager.getDriver(user.getDriverId(), dbBean);
-        driver.setFirstName(firstName);
-        driver.setLastName(lastName);
-        driver.setRegistration(registration);
-        dbBean.update(driver);
-        
+
+        if (userId != 0) {//Update
+            user = UserManager.getUser(userId, dbBean);
+            user.setPassword(password);
+            dbBean.update(user);
+
+            driver = DriverManager.getDriver(user.getDriverId(), dbBean);
+            driver.setFirstName(firstName);
+            driver.setLastName(lastName);
+            driver.setRegistration(registration);
+            dbBean.update(driver);
+        }else{//Register
+            driverId = DriverManager.addNewDriver(firstName,
+                    lastName,
+                    registration,
+                    dbBean);
+
+            UserManager.newDriverUser(
+                    password,
+                    confPassword,
+                    driverId,
+                    UserManager.getUserStatusObj(2, dbBean),
+                    dbBean);
+
+            //String userName = UserManager.getUsernameForDriver(driverId, dbBean);
+        }
+
         response.sendRedirect("index.jsp");
 
         processRequest(request, response);

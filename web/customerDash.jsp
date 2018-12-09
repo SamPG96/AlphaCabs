@@ -14,7 +14,7 @@ and open the template in the editor.
         <link rel="stylesheet" type="text/css" href="dashboards.css">
     </head>
     <body>
-        <h1>Customer Dashboard</h1>
+        <h1>&nbsp;&nbsp;Customer Dashboard</h1>
 
         <div class="tab">
             <form method="GET" action="BookingFormServlet.do">
