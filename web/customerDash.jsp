@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -13,21 +14,35 @@ and open the template in the editor.
     </head>
     <body>
         <h1>Customer Dashboard</h1>
-        
+
         <div class="tab">
             <button class="tablinks" onclick="openTab(event, 'NewBooking')" id="bookingTab">New Booking</button>
+            <form method="GET" action="CustDashUpcomingJourneysServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'UpcomingJourneys')">Upcoming Journeys</button>
+            </form>
+            <form method="GET" action="CustDashPreviousJourneysServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'PreviousJourneys')">Previous Journeys</button>
+            </form>
             <button class="tablinks" onclick="openTab(event, 'Details')">Edit Details</button>
         </div>
-        
+
         <div id="NewBooking" class="tabcontent">
             <jsp:include page="booking.jsp"/>
         </div>
-        
+
+        <div id="UpcomingJourneys" class="tabcontent">
+            <%@include file='custDashUpcomingJourneys.jsp' %>
+        </div>
+
+        <div id="PreviousJourneys" class="tabcontent">
+            <%@include file='custDashPreviousJourneys.jsp' %>
+        </div>
+
         <div id="Details" class="tabcontent">
             <h3>Edit Your Details</h3>
             <p>INPUT JSP FILE HERE - Request changes to Details here</p>
         </div>
-        
+
         <script>
             function openTab(evt, option) {
                 var i, tabcontent, tablinks;
@@ -42,9 +57,18 @@ and open the template in the editor.
                 document.getElementById(option).style.display = "block";
                 evt.currentTarget.className += " active";
             }
-            // Open booking tab by default
-            document.getElementById("bookingTab").click();
         </script>
-			
+        <script>
+            function displayTables() {
+                if (window.location.href.indexOf("CustDashUpcomingJourneysServlet.do") > -1) {
+                    openTab(event, 'UpcomingJourneys');
+                } else if (window.location.href.indexOf("BookingFormServlet.do") > -1) {
+                    openTab(event, 'NewBooking');
+                }else if (window.location.href.indexOf("CustDashPreviousJourneysServlet.do") > -1) {
+                    openTab(event, 'PreviousJourneys');
+                }
+            }
+            window.onload = displayTables;
+        </script>
     </body>
 </html>
