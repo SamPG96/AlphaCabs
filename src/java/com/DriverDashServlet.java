@@ -59,13 +59,14 @@ public class DriverDashServlet extends HttpServlet {
         HttpSession session;
         String todaysBookings;
         User user;
+        boolean onlyToday = true;
 
         processRequest(request, response);
 
         session = request.getSession(false);
         jdbc = (Jdbc) session.getAttribute("dbbean");
         user = UserManager.getUser((long) session.getAttribute("userID"), jdbc);
-        
+
         loggedInDriverId = user.getDriverId();
 
         todaysBookings = request.getParameter("checkToday");
@@ -73,9 +74,8 @@ public class DriverDashServlet extends HttpServlet {
         // Get all bookings for a driver. Bookings can be filtered for today only.
         if (todaysBookings == null || todaysBookings.equals("off")) {
             bookings = BookingManager.getAllDriverBookings(loggedInDriverId, false, jdbc);
-        }
-        
-        else{
+            onlyToday = false;
+        } else {
             bookings = BookingManager.getAllDriverBookings(loggedInDriverId, true, jdbc);
         }
 
@@ -89,25 +89,39 @@ public class DriverDashServlet extends HttpServlet {
             message += "<td>" + booking.getSourceAddress() + "</td>";
             message += "<td>" + booking.getDestinationAddress() + "</td>";
             message += "<td>" + booking.getNumOfPassengers() + "</td>";
-            message += "<td>" + Helper.formatDateWithTime(booking.getDepartureTime()) + "</td>";
+            if (onlyToday) {
+                message += "<td>" + Helper.formatDateWithOnlyTime(booking.getDepartureTime()) + "</td>";
+            } else {
+                message += "<td>" + Helper.formatDateWithTime(booking.getDepartureTime()) + "</td>";
+            }
 
             // Arrival time can be null, so handle this.
             if (booking.getTimeArrived() == null) {
                 message += "<td>N/A</td>";
             } else {
-                message += "<td>" + Helper.formatDateWithTime(booking.getTimeArrived()) + "</td>";
+                if (onlyToday) {
+                    message += "<td>" + Helper.formatDateWithOnlyTime(booking.getTimeArrived()) + "</td>";
+                } else {
+                    message += "<td>" + Helper.formatDateWithTime(booking.getTimeArrived()) + "</td>";
+                }
             }
 
             message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareIncVAT()) + "</td>";
 
             GenericItem bookingStatus = booking.getBookingStatus();
             if (bookingStatus != null) {
-                switch((int) bookingStatus.getId()){
+                switch ((int) bookingStatus.getId()) {
                     case 1://In Progress
-                        message += "<td>" + "<input type=\"submit\" name=\"" + booking.getId() + "\" value=\"In Progress\"/>" + "</td>";
+                        message += "<td><button class=\"btn\" onclick=\"getBooking(this)\""
+                        + " data-bookingid=" + booking.getId()
+                        + " data-bookingstatus=" + booking.getBookingStatus().getName()
+                        + ">In Progress</button></td>";
                         break;
                     case 2://Complete
-                        message += "<td>" + "<input type=\"submit\" name=\"" + booking.getId() + "\" value=\"Complete\"/>" + "</td>";
+                        message += "<td><button class=\"btn\" onclick=\"getBooking(this)\""
+                        + " data-bookingid=" + booking.getId()
+                        + " data-bookingstatus=" + booking.getBookingStatus().getName()
+                        + ">Complete</button></td>";
                         break;
                     case 4://Completed
                         message += "<td>" + "Completed" + "</td>";
@@ -122,46 +136,9 @@ public class DriverDashServlet extends HttpServlet {
 
             message += "</tr>";
         }
-        
+
         request.setAttribute("bookingsTable", message);
         request.getRequestDispatcher("index.jsp").forward(request, response);
-
-        for (Booking booking : bookings) {
-
-            long i = booking.getId();
-
-            String j = Long.toString(i);
-            String status = request.getParameter(j);
-
-            GenericItem bookingStatus = booking.getBookingStatus();
-
-            if (status != null) {
-                System.out.println("button not null");
-//                bookingStatus.setId(4);
-//              jdbc.update(booking); //4
-//              
-//              request.getRequestDispatcher("/login.jsp").forward(request, response);
-                if (status.equals("Complete")) {
-                    bookingStatus.setId(4);
-                    booking.setBookingStatus(bookingStatus);
-
-                    //TIMESTAMP OF NOW
-                    booking.setArrivalTime(new Timestamp(System.currentTimeMillis()));
-                    jdbc.update(booking); //4
-
-                } else if (status.equals("In Progress")) {
-
-                    bookingStatus.setId(2);
-                    booking.setBookingStatus(bookingStatus);
-
-                    jdbc.update(booking);
-
-                }
-
-            }
-
-        }
-
     }
 
     /**
@@ -176,6 +153,21 @@ public class DriverDashServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
+        HttpSession session = request.getSession(false);
+
+        // Connect Jdbc to the DB
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+
+        long bookingId = Long.parseLong(request.getParameter("bookingid"));
+        String bookingStatus = request.getParameter("bookingstatus");
+
+        Booking booking = BookingManager.getBooking(jdbc, bookingId);
+
+        booking.setBookingStatus(new GenericItem(4));
+        booking.setArrivalTime(new Timestamp(System.currentTimeMillis()));
+
+        jdbc.update(booking);
     }
 
     /**

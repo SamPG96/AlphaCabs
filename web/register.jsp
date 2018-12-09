@@ -18,7 +18,7 @@
         <div class="main"> 
             <div class="container">
                 <form method="POST" action="RegistrationServlet.do">
-                <center><h1>Register:</h1></center>
+                <center><h1>Register</h1></center>
                     <div class="form-row">
                         <div class="form-group col-sm-6">
                             <label>First name:</label>
@@ -45,10 +45,10 @@
                             <input class="form-control" type="password" name="passwordConfirm"/>
                         </div>
                     </div>
-                        <div class="form-check">
+                        <!--<div class="form-check">
                             <input id="activateAccount" class="form-check-input" type="checkbox" name="activateAccount">
                             <label class="form-check-label" for="activateAccount">Activate Account</label> 
-                        </div>
+                        </div>-->
                     <input class="btn my-1" style="width: 100%" type="submit" value="Register"/>
                     <div class="errMessage"><%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%></div>
                     </form>

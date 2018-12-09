@@ -15,7 +15,7 @@
     </head>
     
     <body>
-        <h1>Administrative Dashboard</h1>
+        <h1>&nbsp;&nbsp;Administrative Dashboard</h1>
 
         <div class="tab">
             <form method="GET" action="AdminDashDriversServlet.do">
