@@ -6,21 +6,13 @@
 package com;
 
 import java.io.IOException;
-import java.sql.Connection;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.DriverManager;
 import model.Jdbc;
 import model.UserManager;
-import static model.UserManager.NO_USER_FIRST_NAME_ERR_CODE;
-import static model.UserManager.NO_USER_LAST_NAME_ERR_CODE;
-import static model.UserManager.NO_USER_PASSWORD_ERR_CODE;
-import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
-import static model.UserManager.getUserStatusObj;
 import model.tableclasses.Driver;
 import model.tableclasses.GenericItem;
 import model.tableclasses.User;
