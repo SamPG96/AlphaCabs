@@ -5,6 +5,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,18 +17,22 @@ and open the template in the editor.
         <h1>Customer Dashboard</h1>
 
         <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'NewBooking')" id="bookingTab">New Booking</button>
+            <form method="GET" action="BookingFormServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'NewBooking')">New Booking</button>
+            </form>
+            <form method="GET" action="CustomerDashEditServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'Details')">Edit Details</button>
+            </form>
             <form method="GET" action="CustDashUpcomingJourneysServlet.do">
                 <button class="tablinks" onclick="openTab(event, 'UpcomingJourneys')">Upcoming Journeys</button>
             </form>
             <form method="GET" action="CustDashPreviousJourneysServlet.do">
                 <button class="tablinks" onclick="openTab(event, 'PreviousJourneys')">Previous Journeys</button>
             </form>
-            <button class="tablinks" onclick="openTab(event, 'Details')">Edit Details</button>
         </div>
 
         <div id="NewBooking" class="tabcontent">
-            <jsp:include page="booking.jsp"/>
+            <%@include file="booking.jsp" %>
         </div>
 
         <div id="UpcomingJourneys" class="tabcontent">
@@ -39,8 +44,7 @@ and open the template in the editor.
         </div>
 
         <div id="Details" class="tabcontent">
-            <h3>Edit Your Details</h3>
-            <p>INPUT JSP FILE HERE - Request changes to Details here</p>
+            <%@include file="customerDashEdit.jsp" %>
         </div>
 
         <script>
@@ -60,10 +64,12 @@ and open the template in the editor.
         </script>
         <script>
             function displayTables() {
-                if (window.location.href.indexOf("CustDashUpcomingJourneysServlet.do") > -1) {
-                    openTab(event, 'UpcomingJourneys');
+                if (window.location.href.indexOf("CustomerDashEditServlet.do") > -1) {
+                    openTab(event, "Details");
                 } else if (window.location.href.indexOf("BookingFormServlet.do") > -1) {
-                    openTab(event, 'NewBooking');
+                    openTab(event, "NewBooking");
+                } else if (window.location.href.indexOf("CustDashUpcomingJourneysServlet.do") > -1) {
+                    openTab(event, 'UpcomingJourneys');
                 }else if (window.location.href.indexOf("CustDashPreviousJourneysServlet.do") > -1) {
                     openTab(event, 'PreviousJourneys');
                 }

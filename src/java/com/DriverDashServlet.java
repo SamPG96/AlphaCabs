@@ -53,85 +53,79 @@ public class DriverDashServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Booking[] bookings;
+        Jdbc jdbc;
+        long loggedInDriverId;
+        HttpSession session;
+        String todaysBookings;
+        User user;
+
         processRequest(request, response);
 
-        HttpSession session = request.getSession(false);
+        session = request.getSession(false);
+        jdbc = (Jdbc) session.getAttribute("dbbean");
+        user = UserManager.getUser((long) session.getAttribute("userID"), jdbc);
+        
+        loggedInDriverId = user.getDriverId();
 
-        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+        todaysBookings = request.getParameter("checkToday");
 
-        Booking[] bookings = BookingManager.getBookings(jdbc);
-
-        User user = UserManager.getUser((long) session.getAttribute("userID"), jdbc);
-        long loggedInDriver = 0;
-        loggedInDriver = user.getDriverId();
-
-        String x = request.getParameter("checkToday");
-        if (x == null) {
-            x = "off";
+        // Get all bookings for a driver. Bookings can be filtered for today only.
+        if (todaysBookings == null || todaysBookings.equals("off")) {
+            bookings = BookingManager.getAllDriverBookings(loggedInDriverId, false, jdbc);
         }
-
-        if (x.equals("on")) {
-            ReportManager repMan = new ReportManager(jdbc);
-            bookings = repMan.getTodaysBookings();
+        
+        else{
+            bookings = BookingManager.getAllDriverBookings(loggedInDriverId, true, jdbc);
         }
 
         String message = "";
         String custName;
         for (Booking booking : bookings) {
-            if (booking.getDriver() == null) {
-                continue;
+            message += "<tr>";
+            custName = booking.getCustomer().getFirstName() + " "
+                    + booking.getCustomer().getLastName();
+            message += "<td>" + custName + "</td>";
+            message += "<td>" + booking.getSourceAddress() + "</td>";
+            message += "<td>" + booking.getDestinationAddress() + "</td>";
+            message += "<td>" + booking.getNumOfPassengers() + "</td>";
+            message += "<td>" + Helper.formatDateWithTime(booking.getDepartureTime()) + "</td>";
+
+            // Arrival time can be null, so handle this.
+            if (booking.getTimeArrived() == null) {
+                message += "<td>N/A</td>";
+            } else {
+                message += "<td>" + Helper.formatDateWithTime(booking.getTimeArrived()) + "</td>";
             }
 
-            if (loggedInDriver == booking.getDriver().getId()) {
-                message += "<tr>";
-                custName = booking.getCustomer().getFirstName() + " "
-                        + booking.getCustomer().getLastName();
-                message += "<td>" + custName + "</td>";
-                message += "<td>" + booking.getSourceAddress() + "</td>";
-                message += "<td>" + booking.getDestinationAddress() + "</td>";
-                message += "<td>" + booking.getNumOfPassengers() + "</td>";
-                message += "<td>" + Helper.formatDateWithTime(booking.getDepartureTime()) + "</td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareIncVAT()) + "</td>";
 
-                // Arrival time can be null, so handle this.
-                if (booking.getTimeArrived() == null) {
-                    message += "<td>N/A</td>";
-                } else {
-                    message += "<td>" + Helper.formatDateWithTime(booking.getTimeArrived()) + "</td>";
+            GenericItem bookingStatus = booking.getBookingStatus();
+            if (bookingStatus != null) {
+                switch((int) bookingStatus.getId()){
+                    case 1://In Progress
+                        message += "<td>" + "<input type=\"submit\" name=\"" + booking.getId() + "\" value=\"In Progress\"/>" + "</td>";
+                        break;
+                    case 2://Complete
+                        message += "<td>" + "<input type=\"submit\" name=\"" + booking.getId() + "\" value=\"Complete\"/>" + "</td>";
+                        break;
+                    case 4://Completed
+                        message += "<td>" + "Completed" + "</td>";
+                        break;
+                    case 8://Cancelled
+                        message += "<td>" + "<button type=\"button\">Cancelled</button>" + "</td>";
+                        break;
                 }
-
-                message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareIncVAT()) + "</td>";
-
-                GenericItem bookingStatus = booking.getBookingStatus();
-                if (bookingStatus != null) {
-                    switch((int) bookingStatus.getId()){
-                        case 1://In Progress
-                            message += "<td>" + "<input type=\"submit\" name=\"" + booking.getId() + "\" value=\"In Progress\"/>" + "</td>";
-                            break;
-                        case 2://Complete
-                            message += "<td>" + "<input type=\"submit\" name=\"" + booking.getId() + "\" value=\"Complete\"/>" + "</td>";
-                            break;
-                        case 4://Completed
-                            message += "<td>" + "Completed" + "</td>";
-                            break;
-                        case 8://Cancelled
-                            message += "<td>" + "<button type=\"button\">Cancelled</button>" + "</td>";
-                            break;
-                    }
-                } else {
-                    message += "<td>ERROR</td>";
-                }
-                
-                message += "</tr>";
+            } else {
+                message += "<td>ERROR</td>";
             }
+
+            message += "</tr>";
         }
+        
         request.setAttribute("bookingsTable", message);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
 
-//        request.setAttribute("bookingsTable", message + "</br>");
-        request.getRequestDispatcher("/index.jsp").forward(request, response);
-//JDBC.update 
-
-        // <input type="submit" name="Complete" value="delete"/>
-//<input type="submit" name="In Progress" value="update"/>
         for (Booking booking : bookings) {
 
             long i = booking.getId();

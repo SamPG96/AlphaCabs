@@ -25,7 +25,7 @@
             %>
 
             <div class="mx-auto">
-                <a class="badge badge-light" href="profile.jsp"> Profile </a>
+                <a class="badge badge-light" href="LogoutServlet.do"> Logout </a>
             </div>
 
             <%

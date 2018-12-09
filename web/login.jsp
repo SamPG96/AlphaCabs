@@ -13,11 +13,10 @@
         <title>Login</title>
     </head>
     <jsp:include page="/common/head.jsp"/>
-
-    <div class="main">
-        <div class="container">
-            <form method="POST" action="LoginServlet.do">
-                <form class="row-sm-8">
+    <body>
+        <div class="main">
+            <div class="container">
+                <form method="POST" action="LoginServlet.do">
                     <center><h1>Login</h1></center>
                     <div style="height:20px;"></div>
                     <div class="form-row">
@@ -40,10 +39,9 @@
                         </div>
                     </div>
                 </form>
-            </form>
+            </div>
         </div>
-    </div>
-
+    </body>
     <jsp:include page="/common/foot.jsp"/>
 </html>
 
