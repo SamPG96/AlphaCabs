@@ -25,38 +25,44 @@
     </head>
     <jsp:include page="/common/head.jsp"/>
     <body>
-        <form class="modal-content" method="POST" action="AdminDashDriversServlet.do">
-            <div class='container'>
-                <hr>
+        <div class="main">
+            <div class="container">
+                <form method="POST" action="AdminDashDriversServlet.do">
+                    <center><h1>Add New Driver</h1></center>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label>Forename:</label>
+                                <input class="form-control" type='text' name='forename' required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Surname:</label>
+                                <input class="form-control" type='text' name='surname' required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label>Car Registration:</label>
+                                <input class="form-control" type='text' name='registration' required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label>Password:</label>
+                                <input class="form-control" type='password' name='password' required>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Confirm Password:</label>
+                                <input class="form-control" type='password' placeholer='Confirm Password' name='confirmation' required>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <button class="btn my-1" type="button" onclick="document.location.href = 'index.jsp'">Cancel</button>
 
-                <label for='Forename'><b>Forename</b></label>
-                <input type='text' placeholder='Enter First Name' name='forename' required>
-
-                <label for='Surname'><b>Surname</b></label>
-                <input type='text' placeholder='Enter Last Name' name='surname' required>
-
-                <label for='registration'><b>Registration</b></label>
-                <input type='text' placeholder='Enter Car Registration' name='registration' required>
-
-                <label for='password'><b>Password</b></label>
-                <input type='text' placeholer='Enter a Password' name='password' required>
-
-                <label for='confirmation'><b>Confirm Password</b></label>
-                <input type='text' placeholer='Confirm Password' name='confirmation' required>
-
-                <div class="clearfix">
-                    <button type="button" onclick="document.location.href = 'index.jsp'" class="cancel">Cancel</button>
-
-                    <button type="submit" class="newdriver" name="button_click" value="newdriver">Add Driver</button>
-
-                </div>
-
+                            <button class="btn my-1" type="submit" name="button_click" value="newdriver">Add Driver</button>
+                        </div>
+                </form>
             </div>
-
-            <br>New Driver Username:
-            <br><b><%=request.getParameter("userName")%></b>
-
-        </form>
+        </div>
     </body>
-        <jsp:include page="/common/foot.jsp"/>
+    <jsp:include page="/common/foot.jsp"/>
 </html>
