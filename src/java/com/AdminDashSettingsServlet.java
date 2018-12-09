@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.AdminManager;
+import model.Helper;
 import model.Jdbc;
 import model.tableclasses.Configuration;
 import model.tableclasses.User;
@@ -83,8 +84,8 @@ public class AdminDashSettingsServlet extends HttpServlet {
             AdminManager.updateVAT(vat, jdbc);
         }
 
-        request.setAttribute("pricePerMile", String.valueOf(pricePerMile));
-        request.setAttribute("shortDistPrice", String.valueOf(shortDistPrice));
+        request.setAttribute("pricePerMile", Helper.doubleToTwoDecPlacesString(pricePerMile));
+        request.setAttribute("shortDistPrice", Helper.doubleToTwoDecPlacesString(shortDistPrice));
         request.setAttribute("shortDist", String.valueOf(shortDist));
         request.setAttribute("vat", String.valueOf(vat));
 
