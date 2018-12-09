@@ -16,12 +16,12 @@
     <jsp:include page="/common/head.jsp"/>
 
     <div class="main">
-        <h1>Account created!</h1>
-        <p>Issued username: <%= request.getAttribute("newUsername") %></p>
-        <p>Your account is pending administrative approval</p>
+        <center><h1>Account created!</h1></center>
+        <center><p>Issued username: <%= request.getAttribute("newUsername") %></p></center>
+        <center><p>Your account is pending administrative approval</p></center>
 
         <form method="POST" action="BookingFormServlet.do">
-            <input type="submit" value="Confirm booking" />
+            <center><input class="btn" type="submit" value="Confirm booking" /></center>
         </form>
     </div>
 </html>
