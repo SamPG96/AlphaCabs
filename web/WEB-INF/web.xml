@@ -71,6 +71,10 @@
         <servlet-name>AdminDashDriversServlet</servlet-name>
         <servlet-class>com.AdminDashDriversServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerDashEditServlet</servlet-name>
+        <servlet-class>com.CustomerDashEditServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet.do</url-pattern>
@@ -118,6 +122,10 @@
     <servlet-mapping>
         <servlet-name>AdminDashDriversServlet</servlet-name>
         <url-pattern>/AdminDashDriversServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerDashEditServlet</servlet-name>
+        <url-pattern>/CustomerDashEditServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -4,6 +4,8 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,17 +17,20 @@ and open the template in the editor.
         <h1>Customer Dashboard</h1>
         
         <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'NewBooking')" id="bookingTab">New Booking</button>
-            <button class="tablinks" onclick="openTab(event, 'Details')">Edit Details</button>
+            <form method="GET" action="BookingFormServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'NewBooking')">New Booking</button>
+            </form>
+            <form method="GET" action="CustomerDashEditServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'Details')">Edit Details</button>
+            </form>
         </div>
         
         <div id="NewBooking" class="tabcontent">
-            <jsp:include page="booking.jsp"/>
+            <%@include file="booking.jsp" %>
         </div>
         
         <div id="Details" class="tabcontent">
-            <h3>Edit Your Details</h3>
-            <p>INPUT JSP FILE HERE - Request changes to Details here</p>
+            <%@include file="customerDashEdit.jsp" %>
         </div>
         
         <script>
@@ -42,9 +47,17 @@ and open the template in the editor.
                 document.getElementById(option).style.display = "block";
                 evt.currentTarget.className += " active";
             }
-            // Open booking tab by default
-            document.getElementById("bookingTab").click();
         </script>
-			
+        
+        <script>
+            function displayTables() {
+                if (window.location.href.indexOf("CustomerDashEditServlet.do") > -1) {
+                    openTab(event, "Details");
+                } else if (window.location.href.indexOf("BookingFormServlet.do") > -1) {
+                    openTab(event, "NewBooking");
+                }
+            }
+            window.onload = displayTables;
+        </script>
     </body>
 </html>

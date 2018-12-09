@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Jdbc;
 import model.UserManager;
+import model.tableclasses.Customer;
 import model.tableclasses.User;
 
 /**
@@ -51,66 +52,67 @@ public class CustomerDashEditServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Jdbc jdbc;
+        HttpSession session;
+        long userID;
+        User user;
+        
         processRequest(request, response);
 
-        HttpSession session = request.getSession(false);
-
-        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-
-        User[] users = UserManager.getAllUsers(jdbc);
-
-        String table = "";
-
-        for (User user : users) {
-
-            long sessID = session.getAttribute("userID");
-//Can't get the session ID to long please help!
-            if (user.getId() ==) {
-
-                table += "<tr>";
-                table += "<td>First Name</td><td><input type=\"text\" name=\"fName\" value=\"" + user.getCustomer().getFirstName() + "\"></td>";
-                table += "</tr>";
-                table += "<tr>";
-                table += "<td>Last Name</td><td><input type=\"text\" name=\"lName\" value=\"" + user.getCustomer().getLastName() + "\"></td>";
-                table += "</tr>";
-                table += "<tr>";
-table += "<td>Address</td><td><input type=\"text\" name=\"address\" value=\"" + user.getCustomer().getAddress() + "\"></td>";
-                table += "</tr>";
-            }
-
-        }
-
-                request.setAttribute("editTable", table);
-
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        session = request.getSession(false);
         
-        
-        if(request.getParameter("edit") != null){
-             for (User user : users) {
-                 
-                 user.getCustomer().setFirstName("fName");
-                 user.getCustomer().setLastName("lName");
-                 user.getCustomer().setAddress("address");
-                 
-                 jdbc.update(user);
-                 
-             }
-            
-            
-            
-            
-        }
-        
-        
-        
+        jdbc = (Jdbc) session.getAttribute("dbbean");
+        userID = (long)session.getAttribute("userID");
+        user = UserManager.getUser(userID, jdbc);
+
+        setTableAttribs(user.getCustomer(), request);
+        request.getRequestDispatcher("index.jsp").forward(request, response);                 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Customer customer;
+        Jdbc jdbc;
+        HttpSession session;
+        long userID;
+        User user;
+        
         processRequest(request, response);
+
+        session = request.getSession(false);
+        
+        jdbc = (Jdbc) session.getAttribute("dbbean");
+        userID = (long)session.getAttribute("userID");
+        user = UserManager.getUser(userID, jdbc);
+        customer = user.getCustomer();
+ 
+        // Update customer details
+        if (request.getParameter("firstName").equals(customer.getFirstName()) == false){
+            customer.setFirstName(request.getParameter("firstName"));
+        }
+        if (request.getParameter("lastName").equals(customer.getLastName()) == false){
+            customer.setLastName(request.getParameter("lastName"));
+        }
+        if (request.getParameter("address").equals(customer.getAddress()) == false){
+            customer.setAddress(request.getParameter("address"));
+        }
+                 
+        jdbc.update(customer);
+        
+        setTableAttribs(user.getCustomer(), request);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
+    /*
+    * Set all neccessary table attributes
+    */
+    private void setTableAttribs(Customer customer, HttpServletRequest request){
+        request.setAttribute("firstName", customer.getFirstName());
+        request.setAttribute("lastName", customer.getLastName());
+        request.setAttribute("address", customer.getAddress());
+    }
+    
     /**
      * Returns a short description of the servlet.
      *
