@@ -110,7 +110,7 @@ public class AdminDashReportServlet extends HttpServlet {
             message += "<td>" + custName + "</td>";
             message += "<td>" + booking.getSourceAddress() + "</td>";
             message += "<td>" + booking.getDestinationAddress() + "</td>";
-            message += "<td>" + Helper.formatDateWithTime(booking.getDepartureTime()) + "</td>";
+            message += "<td>" + Helper.formatDateWithOnlyTime(booking.getDepartureTime()) + "</td>";
             message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareExcVAT()) + "</td>";
             message += "</tr>";
         }
