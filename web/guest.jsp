@@ -14,37 +14,32 @@
     </head>
     
     <jsp:include page="/common/head.jsp"/>
-     
-        <div class="main">
-            Please enter the following details:
-        <center><form method="POST" action="GuestServlet.do">
-            <table>
-                <tr>
-                <td>First name:</td><td>Last name:</td>
-            </tr>
-            <tr>
-                <td><input type="text" name="firstName"/></td><td><input type="text" name="lastName"/></td>
-            </tr>
-            <tr>
-               <td>Home address:</td><td></td>
-            </tr>
-            <tr>
-                <td><input type="text" name="homeAddress"/></td><td></td>
-            </tr>
-            <tr>
-                <td><input type="submit" value="Book"/></td><td></td>
-            </tr>
-            
-                
-            </table>
+    <body>
+        <div class="main"> 
+            <div class="container">
+                <form method="POST" action="GuestServlet.do">
+                    <center><h1>Guest Booking</h1></center>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <label>First name:</label>
+                            <input class="form-control" type="text" name="firstName"/>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>Last name:</label>
+                            <input class="form-control" type="text" name="lastName"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Home address:</label>
+                            <input class="form-control" type="text" name="homeAddress"/>
+                        </div>
+                    </div>
+                    <input class="btn my-1" style="width: 100%" type="submit" value="Book"/>
+                    <div class="errMessage"><%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%></div>
                 </form>
-            <div class="errMessage"><%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%></div>
-        </center>
-            
-            
-            
-            
-            
-       
+            </div>
         </div>
+    </body>
+    <jsp:include page="/common/foot.jsp"/>
 </html>
