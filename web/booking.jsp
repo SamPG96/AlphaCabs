@@ -12,14 +12,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
-
-
     <body>
         <div class="main">
             <div class="container">
                 <form method="POST" action="BookingFormServlet.do">
-                         <center><h1>Booking Form</h1></center>
-                         <div style="height:20px;"></div>
+                    <form>
+                        <center><h1>Booking Form</h1></center>
+                        <div style="height:20px;"></div>
                         <div class="form-row">
                             <div class="form-group col-sm-6">
                                 <label>Source Address:</label>
@@ -50,6 +49,7 @@
                         <input class="btn my-1 " style="width:100%" type="submit" value="Submit"/>
                         <div class="errMessage"><%=((String) (request.getAttribute("errMsg")) != null) ? (String) (request.getAttribute("errMsg")) : ""%></div>
                     </form>
+                </form>
             </div>
         </div>
     </body>

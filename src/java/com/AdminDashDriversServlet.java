@@ -6,7 +6,6 @@
 package com;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -21,11 +20,9 @@ import static model.UserManager.NO_USER_FIRST_NAME_ERR_CODE;
 import static model.UserManager.NO_USER_LAST_NAME_ERR_CODE;
 import static model.UserManager.NO_USER_PASSWORD_ERR_CODE;
 import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
-//import static model.UserManager.NO_FIRST_NAME_ERR_CODE;
-//import static model.UserManager.NO_LAST_NAME_ERR_CODE;
-//import static model.UserManager.NO_PASSWORD_ERR_CODE;
-//import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
+import static model.UserManager.getUserStatusObj;
 import model.tableclasses.Driver;
+import model.tableclasses.GenericItem;
 import model.tableclasses.User;
 
 /**
@@ -36,6 +33,7 @@ public class AdminDashDriversServlet extends HttpServlet {
 
     private String returnPage = "index.jsp";
 
+    private User driverUser;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -65,22 +63,31 @@ public class AdminDashDriversServlet extends HttpServlet {
         processRequest(request, response);
 
         HttpSession session = request.getSession(false);
-
+        
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");  
+        
+        
+        if (driverUser != null) {
+            request.setAttribute("driverUser", driverUser);
+            driverUser = null;
+            request.getRequestDispatcher("adminDashUpdateDriver.jsp").forward(
+                    request, response);
+            //response.sendRedirect("adminDashUpdateDriver.jsp");
+        } 
 
         //GET All Driver users
         User[] users = UserManager.getAllUsers(jdbc);
         
+
         String table = "";
         Driver driver;
         String driverName;
         for (User user : users) {
             driver = user.getDriver();
-            if(driver == null){
+            if (driver == null) {
                 continue;
             }
-            
+
             table += "<tr>";
             table += "<td>" + driver.getId() + "</td>";
             driverName = driver.getFirstName() + " "
@@ -88,15 +95,31 @@ public class AdminDashDriversServlet extends HttpServlet {
             table += "<td>" + driverName + "</td>";
             table += "<td>" + driver.getRegistration() + "</td>";
             table += "<td>" + user.getUserStatus().getName() + "</td>";
-            table += "<td>" + "<button class=\"btn\" onclick=\"document.location.href = 'adminDashChangeDriverDetails.jsp'\">Update</button>" + "</td>";
-            table += "<td>" + "<button class=\"btn\" onclick=\"document.location.href = 'adminDashRemoveDriver.jsp'\">Remove</button>" + "</td>";
-            //table += "<td>" + "<button class=\"btn\" onclick=\"document.getElementById('id03').style.display = 'block'\">Remove</button>" + "</td>";
+            //table += "<td>" + "<button class=\"btn\" onclick=\"document.location.href = 'adminDashChangeDriverDetails.jsp'\">Update</button>" + "</td>";
+            //table += "<td>" + "<button class=\"btn\" onclick=\"document.location.href = 'adminDashRemoveDriver.jsp'\">Remove</button>" + "</td>";
+            table += "<td><button class=\"btn\" onclick=\"getDriverUser(this)\""
+                    + " data-userid=" + user.getId()
+                    + " data-userstatus=" + user.getUserStatus().getName()
+                    + " data-action=update"
+                    + ">Update</button></td>";
+            if (user.getUserStatus().getId() == 2) {//Active
+                table += "<td><button class=\"btn\" onclick=\"getDriverUser(this)\""
+                        + " data-userid=" + user.getId()
+                        + " data-userstatus=" + user.getUserStatus().getName()
+                        + " data-action=remove"
+                        + ">Remove</button></td>";
+            } else {
+                table += "<td><button class=\"btn\" onclick=\"getDriverUser(this)\""
+                        + " data-userid=" + user.getId()
+                        + " data-userstatus=" + user.getUserStatus().getName()
+                        + " data-action=remove"
+                        + ">Reinstate</button></td>";
+            }
             table += "</tr>";
         }
         request.setAttribute("driversTable", table);
 
         request.getRequestDispatcher("index.jsp").forward(request, response);
-
     }
 
     /**
@@ -111,6 +134,33 @@ public class AdminDashDriversServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        processRequest(request, response);
+
+        HttpSession session = request.getSession(false);
+
+        // Connect Jdbc to the DB
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+
+        long userId = Long.parseLong(request.getParameter("userid"));
+        String userStatus = request.getParameter("userstatus");
+        String action = request.getParameter("action");
+
+        if (action.equals("update")) {
+            User user = UserManager.getUser(userId, jdbc);
+            this.driverUser = user;
+            request.setAttribute("driverUser", user);
+            request.getRequestDispatcher("adminDashUpdateDriver.jsp").forward(
+                    request, response);
+            response.sendRedirect("adminDashUpdateDriver.jsp");
+        } else if (action.equals("remove")) {
+            if (userStatus.equals("Active")) {
+                UserManager.changeUserStatus(userId, new GenericItem(4), jdbc);
+            } else {
+                UserManager.changeUserStatus(userId, new GenericItem(2), jdbc);
+            }
+        }
+
+        /*
         //-------------------------------VARIABLES----------------------------------
         long driverId;
         long userId;
@@ -151,7 +201,7 @@ public class AdminDashDriversServlet extends HttpServlet {
             //} else if (null != request.getParameter("buttonB_click")) {
         } else if (x.equals("newdriver")) {
 
-            newUserErrCode = UserManager.validateNewUserAttribs(
+            newUserErrCode = UserManager.validateUserAttribs(
                     request.getParameter("forename"),
                     request.getParameter("surname"),
                     request.getParameter("password"),
@@ -192,6 +242,7 @@ public class AdminDashDriversServlet extends HttpServlet {
 
         }
         response.sendRedirect(returnPage);
+         */
     }
 
     /*

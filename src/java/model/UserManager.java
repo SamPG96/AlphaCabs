@@ -101,7 +101,7 @@ public class UserManager {
         user.setUserStatus(userStatus);
         
         // Validate parameters for the new user account
-        err = validateNewUserAttribs(userFirstName, userLastName, password,
+        err = validateUserAttribs(userFirstName, userLastName, password,
                 passwordConfirm);
         if (err < 0){
             return err;
@@ -116,7 +116,7 @@ public class UserManager {
     /*
      * Validates parameters required for a new user account.
      */
-    public static int validateNewUserAttribs(String userFirstName,
+    public static int validateUserAttribs(String userFirstName,
             String userLastName, String password, String passwordConfirm){
         if (userFirstName == null || userFirstName.isEmpty()){
             return NO_USER_FIRST_NAME_ERR_CODE;

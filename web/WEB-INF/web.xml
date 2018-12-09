@@ -83,6 +83,14 @@
         <servlet-name>CustDashPreviousJourneysServlet</servlet-name>
         <servlet-class>com.CustDashPreviousJourneysServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DriverFormServlet</servlet-name>
+        <servlet-class>com.DriverFormServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DriverFormServlet</servlet-name>
+        <url-pattern>/DriverFormServlet.do</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CustDashPreviousJourneysServlet</servlet-name>
         <url-pattern>/CustDashPreviousJourneysServlet.do</url-pattern>

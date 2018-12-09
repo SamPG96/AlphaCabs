@@ -11,19 +11,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.7/css/select.dataTables.min.css">
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
-        
     </head>
     <body> 
         <div class="container">
-                <div class="row">
-                    <h3>Change Customer Details</h3>
-                </div>
-                    <div class="col-xs-12">
-                        <button onclick="window.location.href='adminCustRegister.jsp'" class="btn">Add New Customer</button>
-                    </div>
+            <div class="row">
+                <h3>Manage Customers</h3>
+            </div>
+            <div class="col-xs-12" style="height:20px;"></div>
+            <div class="row">
+                <button onclick="window.location.href = 'adminCustRegister.jsp'" class="btn">Add New Customer</button>
+            </div>
+            <div class="col-xs-12" style="height:20px;"></div>
             <table id="customersTable" class="display" style="width:100%">
                 <thead>
                     <tr>
@@ -45,25 +43,27 @@
     <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript">
-function getUser(elem) {
-    var userid = $(elem).attr('data-userid');
-    var userstatus = $(elem).attr('data-userstatus');
+                    function getUser(elem) {
+                        var userid = $(elem).attr('data-userid');
+                        var userstatus = $(elem).attr('data-userstatus');
 
-        $.post("AdminDashCustomerServlet.do", {"userid": userid, "userstatus" : userstatus});
-    //wait is needed otherwise sql crashes. currently set to half a second
-    window.setTimeout(loadpage, 500);
-    
-};
-function loadpage(){
-   //reloads page
-    window.location.reload(); 
-}
-$(document).ready(function() {
-    $('#customersTable').DataTable( {
-        select: {
-            style: 'single'
-        }
-    } );
-} );
-</script>
+                        $.post("AdminDashCustomerServlet.do", {"userid": userid, "userstatus": userstatus});
+                        //wait is needed otherwise sql crashes. currently set to half a second
+                        window.setTimeout(loadpage, 500);
+
+                    };
+
+                    function loadpage() {
+                        //reloads page
+                        window.location.reload();
+                    }
+                    
+                    $(document).ready(function () {
+                        $('#customersTable').DataTable({
+                            select: {
+                                style: 'single'
+                            }
+                        });
+                    });
+    </script>
 </html>
