@@ -19,7 +19,7 @@
             </div>
             <div class="col-xs-12" style="height:20px;"></div>
             <div class="row">
-                <button onclick="window.location.href = 'adminCustRegister.jsp'" class="btn">Add New Customer</button>
+                <button onclick="window.location.href = 'adminDashAddCustomer.jsp'" class="btn">Add New Customer</button>
             </div>
             <div class="col-xs-12" style="height:20px;"></div>
             <table id="customersTable" class="display" style="width:100%">
