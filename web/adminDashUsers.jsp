@@ -19,7 +19,7 @@
         <div class="container">
 
             <div class="row">   
-                <h3>Approve Users</h3>
+                <h3>View Users</h3>
             </div>
             <div class="col-xs-12" style="height:20px;"></div>
             <table id="usersTable" class="display" style="width:100%">
