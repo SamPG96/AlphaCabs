@@ -84,15 +84,21 @@ public class AdminDashBookingsServlet extends HttpServlet {
         }
 
         Driver[] drivers;
+        
+        //Driver driver = null;
+        
         drivers = DriverManager.getAllDrivers(jdbc);
 
+        //ASSIGN DRIVER process
         boolean hasUpdated = false;
         if (request.getParameter("assigndriver") != null) {
             for (Booking booking : bookings) {
                 if (booking.getDriver() == null) {
 
+                    //Select the driver from the drop down list
                     String selectedDriver = (String) request.getParameter("drivers");
 
+                    //For every driver
                     for (Driver driver : drivers) {
                         if (selectedDriver.equals(driver.getRegistration())) {
                             BookingManager.assignDriver(driver.getId(), booking.getId(), jdbc);
@@ -153,6 +159,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
             // Driver ID can be null if no driver assigned, so handle this.
             if (booking.getDriver() == null) {
+                //Display all drivers in Drop Down List
                 message += "<td><select name='drivers'><option value=\"\"></option>";
                 for (Driver driver : drivers) {
                     d_Display = "";
