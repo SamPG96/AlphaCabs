@@ -5,7 +5,6 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <html>
     <head>
@@ -24,14 +23,12 @@ and open the template in the editor.
             <form method="GET" action="CustomerDashEditServlet.do">
                 <button class="tablinks" onclick="openTab(event, 'Details')">Edit Details</button>
             </form>
-            <button class="tablinks" onclick="openTab(event, 'NewBooking')" id="bookingTab">New Booking</button>
             <form method="GET" action="CustDashUpcomingJourneysServlet.do">
                 <button class="tablinks" onclick="openTab(event, 'UpcomingJourneys')">Upcoming Journeys</button>
             </form>
             <form method="GET" action="CustDashPreviousJourneysServlet.do">
                 <button class="tablinks" onclick="openTab(event, 'PreviousJourneys')">Previous Journeys</button>
             </form>
-            <button class="tablinks" onclick="openTab(event, 'Details')">Edit Details</button>
         </div>
 
         <div id="NewBooking" class="tabcontent">
@@ -73,8 +70,6 @@ and open the template in the editor.
                     openTab(event, "NewBooking");
                 } else if (window.location.href.indexOf("CustDashUpcomingJourneysServlet.do") > -1) {
                     openTab(event, 'UpcomingJourneys');
-                } else if (window.location.href.indexOf("BookingFormServlet.do") > -1) {
-                    openTab(event, 'NewBooking');
                 }else if (window.location.href.indexOf("CustDashPreviousJourneysServlet.do") > -1) {
                     openTab(event, 'PreviousJourneys');
                 }

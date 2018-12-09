@@ -75,6 +75,7 @@
         <servlet-name>CustomerDashEditServlet</servlet-name>
         <servlet-class>com.CustomerDashEditServlet</servlet-class>
     </servlet>
+    <servlet>
         <servlet-name>CustDashUpcomingJourneysServlet</servlet-name>
         <servlet-class>com.CustDashUpcomingJourneysServlet</servlet-class>
     </servlet>
