@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Conor
  */
-@WebFilter(filterName = "LoggedInFilter", servletNames = {"AdminDashDriversServlet", "AdminDashSettingsServlet", "AdminDashUserServlet", "AdminDashReportServlet", "AdminDashCustomerServlet", "LogoutServlet", "DriverDashServlet", "AdminDashBookingsServlet", "AdminApproveCustomer"})
+@WebFilter(filterName = "LoggedInFilter", servletNames = {"DriverFormServlet","CustomerDashEditServlet","CustDashPreviousJourneysServlet","CustDashUpcomingJourneysServlet","AdminDashDriversServlet", "AdminDashSettingsServlet", "AdminDashUserServlet", "AdminDashReportServlet", "AdminDashCustomerServlet", "LogoutServlet", "DriverDashServlet", "AdminDashBookingsServlet"})
 public class LoggedInFilter implements Filter {
     
     private static final boolean debug = true;
