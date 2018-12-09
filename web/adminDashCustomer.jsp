@@ -19,10 +19,11 @@
     <body> 
         <div class="container">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <button onclick="window.location.href='adminCustRegister.jsp'" class="btn mb-1">Add New Customer</button>
-                    </div>
+                    <h3>Change Customer Details</h3>
                 </div>
+                    <div class="col-xs-12">
+                        <button onclick="window.location.href='adminCustRegister.jsp'" class="btn">Add New Customer</button>
+                    </div>
             <table id="customersTable" class="display" style="width:100%">
                 <thead>
                     <tr>
@@ -49,7 +50,14 @@ function getUser(elem) {
     var userstatus = $(elem).attr('data-userstatus');
 
         $.post("AdminDashCustomerServlet.do", {"userid": userid, "userstatus" : userstatus});
+    //wait is needed otherwise sql crashes. currently set to half a second
+    window.setTimeout(loadpage, 500);
+    
 };
+function loadpage(){
+   //reloads page
+    window.location.reload(); 
+}
 $(document).ready(function() {
     $('#customersTable').DataTable( {
         select: {

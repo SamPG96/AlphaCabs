@@ -45,7 +45,6 @@
         </div>
 
         <div id="Customers" class="tabcontent">
-            <h3>Change Customer Details</h3>
             <%@include file='adminDashCustomer.jsp' %>
         </div>        
 

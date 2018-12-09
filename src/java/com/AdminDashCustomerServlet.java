@@ -122,11 +122,7 @@ public class AdminDashCustomerServlet extends HttpServlet {
            UserManager.changeUserStatus(userId, getUserStatusObj(2, jdbc), jdbc);
         }else{
            UserManager.changeUserStatus(userId, getUserStatusObj(1, jdbc), jdbc);
-        }
-
-
-        request.getRequestDispatcher("index.jsp").forward(request, response);
-        
+        }     
     }
 
     /**
