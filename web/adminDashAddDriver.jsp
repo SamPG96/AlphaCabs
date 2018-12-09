@@ -27,7 +27,6 @@
     <body>
         <div class="main">
             <div class="container">
-
                 <form method="POST" action="DriverFormServlet.do">
                     <center><h1>Add Driver</h1></center>
                     <div style="height:20px;"></div>
@@ -70,5 +69,5 @@
             </div>
         </div>
     </body>
-        <jsp:include page="/common/foot.jsp"/>
+    <jsp:include page="/common/foot.jsp"/>
 </html>

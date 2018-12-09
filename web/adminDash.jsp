@@ -89,10 +89,13 @@
                     openTab(event, 'Drivers');
                 } else if (window.location.href.indexOf("AdminDashSettingsServlet.do") > -1) {
                     openTab(event, 'Settings');
+                } else if (window.location.href.indexOf("RegistrationServlet.do") > -1) {
+                    window.location.replace("AdminDashCustomerServlet.do");//When coming from add customer
+                } else if (window.location.href.indexOf("index.jsp") > -1) {
+                    window.location.replace("AdminDashDriversServlet.do");//When coming from add driver
                 }
             }
             window.onload = displayTables;
         </script>
-
     </body>
 </html>
