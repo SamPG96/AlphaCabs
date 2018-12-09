@@ -12,8 +12,8 @@
         <title>Administrative Dashboard</title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
         <link rel="stylesheet" type="text/css" href="dashboards.css">
-
     </head>
+    
     <body>
         <h1>Administrative Dashboard</h1>
 
