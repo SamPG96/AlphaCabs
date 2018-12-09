@@ -9,38 +9,80 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <jsp:include page="/common/head.jsp"/>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
+        <title>Invoice</title>
     </head>
-    <jsp:include page="/common/head.jsp"/>
 
-    <%Booking booking = (Booking) request.getAttribute("booking");%>
-
-    <div class="main">
-        <center><h1>Invoice</h1></center>
+    <body>
 
 
+        <%Booking booking = (Booking) request.getAttribute("booking");%>
 
-        <div style="float:left;"> <%=booking.getTimeBooked()%></div> <div style="float:right;">Order Reference: <%=booking.getId()%>       </div><br>
 
-        <div class="line"></div><br>
+        <div class="main">
+            <center><h1>Invoice</h1></center>
+            <center><h2>Thank you for choosing AlphaCabs!</h2></center>
+            <div class="container">
 
-        <h2>Thank you for choosing AlphaCabs</h2> <br><br>
 
-        <b>Your Journey Details</b> <br><br>
-
-        <b>Name:</b> <%=booking.getCustomer().getFirstName()%> <%=booking.getCustomer().getLastName()%> <br><br>
-        <b>Source:</b> <%=booking.getSourceAddress()%><br><br>
-        <b>Destination:</b> <%=booking.getDestinationAddress()%><br><br>
-        <b>Passengers:</b> <%=booking.getNumOfPassengers()%><br><br>
-
-        <div class="line"></div><br>
-
-        <b>Miles:</b> <%=Helper.doubleToTwoDecPlacesString(booking.getDistance())%> <br><br>
-        <b>Price ex. VAT: </b>£<%=Helper.doubleToTwoDecPlacesString(booking.getFareExcVAT())%> <br><br>
-        <b>Total inc. VAT: </b>£<%=Helper.doubleToTwoDecPlacesString(booking.getFareIncVAT())%> <br><br>
-
-    </div>
+                <div class="col-xs-12" style="height:20px;"></div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        Time of Booking: <%=Helper.formatDateWithTime(booking.getTimeBooked())%>
+                    </div>
+                    <div class="col-sm-4">
+                        Order Reference: <%=booking.getId()%>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="col-xs-12" style="height:20px;"></div>
+                <div class="row">  
+                    <div class="col-md-6">
+                        <h3>Your Journey Details</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        Booked Under The Name: <%=booking.getCustomer().getFirstName()%> <%=booking.getCustomer().getLastName()%>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        Journey Departure Time: <%=Helper.formatDateWithTime(booking.getDepartureTime())%>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        Departing From: <%=booking.getSourceAddress()%>
+                    </div>
+                    <div class="col-sm-4">
+                        Arriving At: <%=booking.getDestinationAddress()%>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        Distance (Miles): <%=Helper.doubleToTwoDecPlacesString(booking.getDistance())%>
+                    </div>
+                    <div class="col-sm-4">
+                        Number of Passengers: <%=booking.getNumOfPassengers()%>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        Fare Charge ex. VAT: £<%=Helper.doubleToTwoDecPlacesString(booking.getFareExcVAT())%>
+                    </div>
+                    <div class="col-sm-4">
+                        Fare Charge inc. VAT: £<%=Helper.doubleToTwoDecPlacesString(booking.getFareIncVAT())%> 
+                    </div>
+                </div>
+                    <div class="col-xs-12" style="height:20px;"></div>
+                    <center><button class="btn" onClick="javascript:window.print()">Print Invoice</button></center>
+            </div>
+        </div>
+    </body>
     <jsp:include page="/common/foot.jsp"/>
 </html>
