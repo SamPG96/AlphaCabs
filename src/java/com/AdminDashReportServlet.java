@@ -6,6 +6,7 @@
 package com;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -82,10 +83,10 @@ public class AdminDashReportServlet extends HttpServlet {
 
         Booking[] todaysBookings = reportManager.getTodaysBookings();
         
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDateTime now = LocalDateTime.now();
+        String now = Helper.formatDateWithoutTime(
+                new Timestamp(System.currentTimeMillis()));
         String todaysDate = "Date Today: "
-                + dtf.format(now);
+                + now;
         request.setAttribute("todaysDate", todaysDate);
         
         //Resolve deltas
