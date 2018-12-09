@@ -18,7 +18,7 @@
     <div class="main">
         <h1>Account created!</h1>
         <p>Issued username: <%= request.getAttribute("newUsername") %></p>
-        <p>Your details have been sent to an Admin for approval</p>
+        <p>Your account is pending administrative approval</p>
 
         <form method="POST" action="BookingFormServlet.do">
             <input type="submit" value="Confirm booking" />
