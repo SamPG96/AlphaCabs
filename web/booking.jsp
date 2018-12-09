@@ -18,7 +18,6 @@
     <div class="main">
         <div class="container">
             <form method="POST" action="BookingFormServlet.do">
-                <form>
                      <center><h1>Booking Form</h1></center>
                      <div style="height:20px;"></div>
                     <div class="form-row">
@@ -51,10 +50,7 @@
                     <input class="btn my-1 " style="width:100%" type="submit" value="Submit"/>
                     <div class="errMessage"><%=((String) (request.getAttribute("errMsg")) != null) ? (String) (request.getAttribute("errMsg")) : ""%></div>
                 </form>
-            </form>
         </div>
     </div>
-
-
-
+           
 </html>
