@@ -85,7 +85,8 @@ public class DriverDashServlet extends HttpServlet {
         }
         
         if(x.equals("on")){
-            bookings = ReportManager.GetTodaysBookings(jdbc);
+            ReportManager repMan = new ReportManager(jdbc);
+            bookings = repMan.getTodaysBookings();
         }
         
         String message = "";
