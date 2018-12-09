@@ -16,17 +16,36 @@ import model.tableclasses.Booking;
  */
 public class ReportManager {
 
-    private final double dailyTurnover;
-    private final int nCustomersToday;
-    private final Booking[] todaysBookings;
+    private final double dailyTurnover, yesterdaysTurnover;
+    private final double turnoverDelta, nCustomersDelta;
+    private final int nCustomersToday, nCustomersYesterday;
+    private final Booking[] todaysBookings, yesterdaysBookings;
 
     public ReportManager(Jdbc jdbc) {
-        this.todaysBookings = GetTodaysBookings(jdbc);
+        //Today
+        this.todaysBookings = findTodaysBookings(jdbc);
         this.nCustomersToday = this.todaysBookings.length;
-        this.dailyTurnover = calcDailyTurnover();
+        this.dailyTurnover = calcTurnover(this.todaysBookings);
+        //Yesterday
+        this.yesterdaysBookings = findYesterdaysBookings(jdbc);
+        this.nCustomersYesterday = this.yesterdaysBookings.length;
+        this.yesterdaysTurnover = calcTurnover(this.yesterdaysBookings);
+        //Deltas
+        if(this.yesterdaysTurnover != 0 && this.dailyTurnover != 0 
+                && this.yesterdaysTurnover != this.dailyTurnover){
+            this.turnoverDelta = 100 / this.yesterdaysTurnover * this.dailyTurnover - 100;
+        }else{
+            this.turnoverDelta = 0;
+        }
+        if(this.nCustomersYesterday != 0 && this.nCustomersToday != 0
+                && this.nCustomersYesterday != this.nCustomersToday){
+            this.nCustomersDelta = 100 / this.nCustomersYesterday * this.nCustomersToday - 100;
+        }else{
+            this.nCustomersDelta = 0;
+        }
     }
 
-    public static Booking[] GetTodaysBookings(Jdbc jdbc) {
+    public static Booking[] findTodaysBookings(Jdbc jdbc) {
         Booking[] allBookings = BookingManager.getBookings(jdbc);
         ArrayList<Booking> todaysBookings = new ArrayList<>();
         Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -53,16 +72,46 @@ public class ReportManager {
         return ret;
     }
     
-    private double calcDailyTurnover(){
+    public static Booking[] findYesterdaysBookings(Jdbc jdbc) {
+        Booking[] allBookings = BookingManager.getBookings(jdbc);
+        ArrayList<Booking> yesterdaysBookings = new ArrayList<>();
+        
+        //Calc yesterday calendar
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.setTime(now);
+        yesterday.set(Calendar.DAY_OF_YEAR, 
+                yesterday.get(Calendar.DAY_OF_YEAR) - 1);
+        
+        Calendar bookingCal = Calendar.getInstance();
+        boolean sameDay;
+        for (Booking booking : allBookings) {
+            Timestamp ts = booking.getDepartureTime();
+            bookingCal.setTime(ts);
+            sameDay = yesterday.get(Calendar.DAY_OF_YEAR) == bookingCal.get(Calendar.DAY_OF_YEAR)
+                && yesterday.get(Calendar.YEAR) == bookingCal.get(Calendar.YEAR);
+            if(sameDay){
+                yesterdaysBookings.add(booking);
+            }
+        }
+
+        Booking[] ret = new Booking[yesterdaysBookings.size()];
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = yesterdaysBookings.get(i);
+        }
+        return ret;
+    }
+    
+    private double calcTurnover(Booking[] bookings){
         double ret = 0;
         
-        for(Booking booking : this.todaysBookings){
+        for(Booking booking : bookings){
             ret += booking.getFareExcVAT();
         }
         
         return ret;
     }
-
+    
     public double getDailyTurnover() {
         return dailyTurnover;
     }
@@ -74,6 +123,27 @@ public class ReportManager {
     public Booking[] getTodaysBookings() {
         return todaysBookings;
     }
+
+    public double getYesterdaysTurnover() {
+        return yesterdaysTurnover;
+    }
+
+    public double getTurnoverDelta() {
+        return turnoverDelta;
+    }
+
+    public double getnCustomersDelta() {
+        return nCustomersDelta;
+    }
+
+    public int getnCustomersYesterday() {
+        return nCustomersYesterday;
+    }
+
+    public Booking[] getYesterdaysBookings() {
+        return yesterdaysBookings;
+    }
+    
     
     
 }

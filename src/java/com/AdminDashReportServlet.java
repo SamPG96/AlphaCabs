@@ -44,6 +44,22 @@ public class AdminDashReportServlet extends HttpServlet {
             throws ServletException, IOException {
 
     }
+    
+    private String resolveDelta(double d){
+        String ret = "";
+        String textColour;
+        if(d != 0){
+            String sDelta = String.valueOf(Math.round(d));
+            if(d > 0){
+                textColour = "green";
+            }else{
+                textColour = "red";
+            }
+            
+            ret =  "<font color=\"" + textColour + "\">&nbsp; " + sDelta +"%</font>";
+        }
+        return ret;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -71,13 +87,19 @@ public class AdminDashReportServlet extends HttpServlet {
         String todaysDate = "Date Today: "
                 + dtf.format(now);
         request.setAttribute("todaysDate", todaysDate);
-
+        
+        //Resolve deltas
+        String turnoverDelta = resolveDelta(reportManager.getTurnoverDelta());
+        String nCustDelta = resolveDelta(reportManager.getnCustomersDelta());
+        
         String dailyTurnover = "Daily Turnover: £"
-                + Helper.doubleToCurrencyFormat(reportManager.getDailyTurnover());
+                + Helper.doubleToCurrencyFormat(reportManager.getDailyTurnover())
+                + turnoverDelta;
         request.setAttribute("todaysTurnover", dailyTurnover);
 
         String numCustServed = "Number of Customers served today: "
-                + reportManager.getnCustomersToday();
+                + reportManager.getnCustomersToday()
+                + nCustDelta;
         request.setAttribute("numCustServed", numCustServed);
 
         String message = "";
