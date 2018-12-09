@@ -7,6 +7,10 @@ package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import static model.UserManager.NO_USER_FIRST_NAME_ERR_CODE;
+import static model.UserManager.NO_USER_LAST_NAME_ERR_CODE;
+import static model.UserManager.NO_USER_PASSWORD_ERR_CODE;
+import static model.UserManager.PASSWORDS_DONT_MATCH_ERR_CODE;
 import model.tableclasses.Driver;
 import model.tableclasses.User;
 
@@ -16,9 +20,9 @@ import model.tableclasses.User;
  * @author Sam
  */
 public class DriverManager {
-    public static int NO_DRIVER_FIRST_NAME_ERR_CODE = -20;
-    public static int NO_DRIVER_LAST_NAME_ERR_CODE = -21;
-    public static int NO_DRIVER_REGISTRATION_ERR_CODE = -22;
+    public static final int NO_DRIVER_FIRST_NAME_ERR_CODE = -20,
+            NO_DRIVER_LAST_NAME_ERR_CODE = -21,
+            NO_DRIVER_REGISTRATION_ERR_CODE = -22;
     
     /*
     * Add a new record driver to the DB
@@ -103,5 +107,28 @@ public class DriverManager {
         }   
         
         return customerArr;
+    }
+    
+    /*
+     * Validates parameters required for a new user account.
+     */
+    public static int validateDriverAttribs(String firstName,
+            String lastName, String registration, String password, String passwordConfirm){
+        if (firstName == null || firstName.isEmpty()){
+            return NO_USER_FIRST_NAME_ERR_CODE;
+        }
+        if (lastName == null || lastName.isEmpty()){
+            return NO_USER_LAST_NAME_ERR_CODE;
+        }
+        if(registration == null || registration.isEmpty()){
+            return NO_DRIVER_REGISTRATION_ERR_CODE;
+        }
+        if (password == null || password.isEmpty()){
+            return NO_USER_PASSWORD_ERR_CODE;
+        }
+        if (passwordConfirm == null || !passwordConfirm.equals(password)){
+            return PASSWORDS_DONT_MATCH_ERR_CODE;
+        }   
+        return 0;
     }
 }
