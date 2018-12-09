@@ -19,9 +19,10 @@
         <form method="GET" action="DriverDashServlet.do">
 
             <div class="container">
+                <div class="col-xs-12" style="height:20px;"></div>
                 <div class="row">
                     <div class="col-sm-4">
-                        <label for='check'>Only todays bookings</label>
+                        <label for='check'>Only show bookings for today</label>
                     </div>
                     <div class="col-sm-4">
                         <input type="checkbox" id="checkToday" name="checkToday">
@@ -29,9 +30,10 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-4">
-                        <input type="submit" value="Display Bookings"/>
+                        <input class="btn" type="submit" value="Display Bookings"/>
                     </div>
-                </div>            
+                </div>     
+                <div class="col-xs-12" style="height:20px;"></div>
                 <table id="driverBookings" class="display" style="width:100%">
                     <thead>
                         <tr>
@@ -57,6 +59,22 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript">
+
+        function getBooking(elem) {
+            var bookingid = $(elem).attr('data-bookingid');
+            var bookingstatus = $(elem).attr('data-bookingstatus');
+
+            $.post("DriverDashServlet.do", {"bookingid": bookingid, "bookingstatus": bookingstatus});
+            //wait is needed otherwise sql crashes. currently set to half a second
+            window.setTimeout(loadpage, 500);
+
+        }
+        ;
+
+        function loadpage() {
+            //reloads page
+            window.location.reload();
+        }
 
         $(document).ready(function () {
             $('#driverBookings').DataTable();
