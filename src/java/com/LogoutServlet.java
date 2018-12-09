@@ -29,7 +29,11 @@ public class LogoutServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException {      
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+        request.getRequestDispatcher("index.jsp").forward(
+             request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -59,11 +63,6 @@ public class LogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-        HttpSession session = request.getSession(false);
-        session.invalidate();
-        request.getRequestDispatcher("index.jsp").forward(
-             request, response);
     }
 
     /**
