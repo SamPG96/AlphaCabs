@@ -75,6 +75,21 @@
         <servlet-name>CustomerDashEditServlet</servlet-name>
         <servlet-class>com.CustomerDashEditServlet</servlet-class>
     </servlet>
+        <servlet-name>CustDashUpcomingJourneysServlet</servlet-name>
+        <servlet-class>com.CustDashUpcomingJourneysServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustDashPreviousJourneysServlet</servlet-name>
+        <servlet-class>com.CustDashPreviousJourneysServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustDashPreviousJourneysServlet</servlet-name>
+        <url-pattern>/CustDashPreviousJourneysServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustDashUpcomingJourneysServlet</servlet-name>
+        <url-pattern>/CustDashUpcomingJourneysServlet.do</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet.do</url-pattern>
@@ -129,7 +144,7 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            20
         </session-timeout>
     </session-config>
 </web-app>

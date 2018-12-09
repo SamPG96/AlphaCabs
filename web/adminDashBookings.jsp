@@ -13,20 +13,9 @@
 
         <link rel="stylesheet" type="text/css" href="tables.css">
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
+
     </head>
     <body>
-
-        <%
-            //int displayMode = Integer.valueOf(request.getParameter("currentMode"));
-            //String displayMode = request.getParameter("displayMode");
-
-            //if (request.getParameter("displayMode") != null) {
-            //    displayMode = request.getParameter("displayMode");
-            //}
-            //session.setAttribute("displayMode", 1);
-            //Displaying bookings stage
-            //if (displayMode.equals("1") == true) {
-        %>
 
         <form method="GET" action="AdminDashBookingsServlet.do">
 
@@ -75,17 +64,6 @@
                 <div class="col-xs-12" style="height:20px;"></div>
             </div>
         </form>
-
-        <%            //Displaying availiable drivers stage
-            //} else if (displayMode.equals("2") == true) {
-        %>
-
-        <%            //Assigning Driver Stage
-            //} else if (displayMode.equals("3") == true) {
-        %>
-
-        <%            //}
-        %>
 
     </body>
 

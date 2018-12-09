@@ -30,10 +30,17 @@
             <div class="row">   
                 <h3>Manage Drivers</h3>
             </div>
-            <div class="col-xs-12" style="height:20px;"></div>
-            <button class="btn" onclick="document.getElementById('id01').style.display = 'block'">Add New Driver</button>
-            <div class="col-xs-12" style="height:20px;"></div>
-            
+            <!--<div class="col-xs-12" style="height:20px;"></div>-->
+            <!--<button class="btn" onclick="document.getElementById('id01').style.display = 'block'">Add New Driver</button>-->
+            <!--<div class="col-xs-12" style="height:20px;"></div>-->
+
+            <div id="addDriver" class="btn">
+                <button type="button" name="add_driver" onclick="document.location.href = 'adminDashAddDriver.jsp'">Add New Driver</button>
+            </div>
+            <!--<div id="changeDetails" class="btn">
+                <button type="button" name="change_details" onclick="document.location.href = 'adminDashChangeDriverDetails.jsp'">Change Driver Details</button>
+            </div>-->
+
             <table id="driversTable" class="display" style="width:100%">
                 <thead>
                     <tr>
@@ -51,9 +58,9 @@
             </table>
 
         </div>
-                
+
         <!--REMOVE DRIVER-->
-        <div id="id03" class="modal">
+        <!--<div id="id03" class="modal">
             <span onclick="document.getElementById('id03').style.display = 'none'" class="close" title="Close">Enter the Details of the Driver</span>
 
             <form class="modal-content" method="POST" action="AdminDashDriversServlet.do">
@@ -72,10 +79,10 @@
 
                 </div>
             </form>
-        </div> 
+        </div>-->
 
         <!--CHANGE DRIVER DETAILS FORM-->
-        <div id="id02" class="modal">
+        <!--<div id="id02" class="modal">
             <span onclick="document.getElementById('id02').style.display = 'none'" class="close" title ="Close">Change Driver Details</span>
 
             <form class="modal-content" method="POST" action="AdminDashDriversServlet.do">
@@ -101,10 +108,10 @@
                     </div>
                 </div>
             </form>
-        </div>
+        </div>-->
 
         <!--ADD NEW DRIVER-->
-        <div id="id01" class="modal">
+        <!--<div id="id01" class="modal">
             <span onclick="document.getElementById('id01').style.display = 'none'" class="close" title="Close">Enter Driver Details</span>
 
             <form class="modal-content" method="POST" action="AdminDashDriversServlet.do">
@@ -136,10 +143,10 @@
                 </div>
 
                 <br>New Driver Username:
-                <br><b><%=request.getParameter("userName")%></b>
+                <br><b><//%=request.getParameter("userName")%></b>
 
             </form>
-        </div>
+        </div>-->
 
         <script>
             // Get the models

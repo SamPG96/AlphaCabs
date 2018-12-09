@@ -14,10 +14,8 @@
         <link rel="stylesheet" type="text/css" href="dashboards.css">
     </head>
 
-    <h1>Driver Dashboard</h1>
-
     <body>
-
+        <h1>Driver Dashboard</h1>
         <form method="GET" action="DriverDashServlet.do">
 
             <div class="container">
@@ -36,20 +34,20 @@
                 </div>            
                 <table id="driverBookings" class="display" style="width:100%">
                     <thead>
-                            <tr>
-                                <th>Customer Name</th>
-                                <th>Source Address</th>
-                                <th>Destination Address</th>
-                                <th>No. of Passengers</th>
-                                <th>Departure Time</th>
-                                <th>Arrival Time</th>
-                                <th>Fair Inc. VAT (£)</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                             ${bookingsTable}
-                        </tbody>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Source Address</th>
+                            <th>Destination Address</th>
+                            <th>No. of Passengers</th>
+                            <th>Departure Time</th>
+                            <th>Arrival Time</th>
+                            <th>Fair Inc. VAT (£)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${bookingsTable}
+                    </tbody>
                 </table>
             </div>
         </form>

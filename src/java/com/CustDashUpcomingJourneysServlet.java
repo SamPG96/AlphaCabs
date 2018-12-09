@@ -6,27 +6,31 @@
 package com;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.AdminManager;
+import model.BookingManager;
+import model.CustomerManager;
 import model.Helper;
+import model.UserManager;
 import model.Jdbc;
-import model.tableclasses.Configuration;
+import model.ReportManager;
+import model.tableclasses.Booking;
+import model.tableclasses.Customer;
 import model.tableclasses.User;
 
 /**
  *
- * @author Tom
+ * @author jakec
  */
-public class AdminDashSettingsServlet extends HttpServlet {
-
-    private String returnPage = "index.jsp";
+public class CustDashUpcomingJourneysServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,7 +43,7 @@ public class AdminDashSettingsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -54,42 +58,31 @@ public class AdminDashSettingsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
 
         HttpSession session = request.getSession(false);
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
 
-        double pricePerMile, shortDistPrice, shortDist, vat;
-
-        String ppm = (String) request.getParameter("pricePerMile");
-        String sdp = (String) request.getParameter("shortDistPrice");
-        String sd = (String) request.getParameter("shortDist");
-        String sVat = (String) request.getParameter("vat");
-
-        if (ppm == null) {
-            pricePerMile = AdminManager.getPricePerMile(jdbc);
-            shortDistPrice = AdminManager.getShortDistPrice(jdbc);
-            shortDist = AdminManager.getShortDistance(jdbc);
-            vat = AdminManager.getVAT(jdbc);
-        } else {
-            pricePerMile = (double) Double.valueOf(ppm);
-            shortDistPrice = (double) Double.valueOf(sdp);
-            shortDist = (double) Double.valueOf(sd);
-            vat = (double) Double.valueOf(sVat);
-
-            AdminManager.updatePricePerMile(pricePerMile, jdbc);
-            AdminManager.updateShortDistPrice(shortDistPrice, jdbc);
-            AdminManager.updateShortDistance(shortDist, jdbc);
-            AdminManager.updateVAT(vat, jdbc);
+        long userId = (long) session.getAttribute("userID");
+        
+        User user = UserManager.getUser(userId, jdbc);
+        Booking[] bookings = BookingManager.getCustomersUpcomingBookings(jdbc, user.getCustomerId());
+        
+        String message = "";
+        for (Booking booking : bookings) {
+            message += "<tr>";
+            message += "<td>" + booking.getSourceAddress() + "</td>";
+            message += "<td>" + booking.getDestinationAddress() + "</td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getDistance()) + "</td>";
+            message += "<td>" + booking.getNumOfPassengers() + "</td>";
+            message += "<td>" + Helper.formatDateWithTime(booking.getDepartureTime()) + "</td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareIncVAT()) + "</td>";
+            message += "</tr>";
         }
-
-        request.setAttribute("pricePerMile", Helper.doubleToTwoDecPlacesString(pricePerMile));
-        request.setAttribute("shortDistPrice", Helper.doubleToTwoDecPlacesString(shortDistPrice));
-        request.setAttribute("shortDist", String.valueOf(shortDist));
-        request.setAttribute("vat", String.valueOf(vat));
+        request.setAttribute("upcomingBookingsTable", message);
 
         request.getRequestDispatcher("index.jsp").forward(request, response);
+
     }
 
     /**
@@ -103,21 +96,8 @@ public class AdminDashSettingsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-
         HttpSession session = request.getSession(false);
 
-        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-
-        String ppm = (String) request.getParameter("pricePerMile");
-        double pricePerMile = Double.valueOf(ppm);
-
-        AdminManager.updatePricePerMile(pricePerMile, jdbc);
-
-        //AdminManager.updatePricePerMile(
-        //        Double.valueOf(request.getParameter("newValue")),
-        //        jdbc);
-        response.sendRedirect(returnPage);
     }
 
     /**

@@ -84,15 +84,21 @@ public class AdminDashBookingsServlet extends HttpServlet {
         }
 
         Driver[] drivers;
+        
+        //Driver driver = null;
+        
         drivers = DriverManager.getAllDrivers(jdbc);
 
+        //ASSIGN DRIVER process
         boolean hasUpdated = false;
         if (request.getParameter("assigndriver") != null) {
             for (Booking booking : bookings) {
                 if (booking.getDriver() == null) {
 
+                    //Select the driver from the drop down list
                     String selectedDriver = (String) request.getParameter("drivers");
 
+                    //For every driver
                     for (Driver driver : drivers) {
                         if (selectedDriver.equals(driver.getRegistration())) {
                             BookingManager.assignDriver(driver.getId(), booking.getId(), jdbc);
@@ -138,21 +144,22 @@ public class AdminDashBookingsServlet extends HttpServlet {
             message += "<td>" + booking.getSourceAddress() + "</td>";
             message += "<td>" + booking.getDestinationAddress() + "</td>";
             message += "<td>" + booking.getNumOfPassengers() + "</td>";
-            message += "<td>" + booking.getDistance() + " </td>";
-            message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareExcVAT()) + "</td>";
-            message += "<td>" + Helper.doubleToCurrencyFormat(booking.getFareIncVAT()) + "</td>";
-            message += "<td>" + booking.getTimeBooked() + "</td>";
-            message += "<td>" + booking.getDepartureTime() + "</td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getDistance()) + " </td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareExcVAT()) + "</td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareIncVAT()) + "</td>";
+            message += "<td>" + Helper.formatDateWithTime(booking.getTimeBooked()) + "</td>";
+            message += "<td>" + Helper.formatDateWithTime(booking.getDepartureTime()) + "</td>";
 
             // Arrival time can be null, so handle this.
             if (booking.getTimeArrived() == null) {
                 message += "<td>N/A</td>";
             } else {
-                message += "<td>" + booking.getTimeArrived() + "</td>";
+                message += "<td>" + Helper.formatDateWithTime(booking.getTimeArrived()) + "</td>";
             }
 
             // Driver ID can be null if no driver assigned, so handle this.
             if (booking.getDriver() == null) {
+                //Display all drivers in Drop Down List
                 message += "<td><select name='drivers'><option value=\"\"></option>";
                 for (Driver driver : drivers) {
                     d_Display = "";

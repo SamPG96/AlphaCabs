@@ -6,6 +6,7 @@
 package com;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -29,8 +30,6 @@ import model.tableclasses.Customer;
  */
 public class AdminDashReportServlet extends HttpServlet {
 
-    public double todaysTurnover = 100.2;
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,6 +42,22 @@ public class AdminDashReportServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+    }
+    
+    private String resolveDelta(double d){
+        String ret = "";
+        String textColour;
+        if(d != 0){
+            String sDelta = String.valueOf(Math.round(d));
+            if(d > 0){
+                textColour = "green";
+            }else{
+                textColour = "red";
+            }
+            
+            ret =  "<font color=\"" + textColour + "\">&nbsp; " + sDelta +"%</font>";
+        }
+        return ret;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -66,18 +81,24 @@ public class AdminDashReportServlet extends HttpServlet {
 
         Booking[] todaysBookings = reportManager.getTodaysBookings();
         
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDateTime now = LocalDateTime.now();
+        String now = Helper.formatDateWithoutTime(
+                new Timestamp(System.currentTimeMillis()));
         String todaysDate = "Date Today: "
-                + dtf.format(now);
+                + now;
         request.setAttribute("todaysDate", todaysDate);
-
+        
+        //Resolve deltas
+        String turnoverDelta = resolveDelta(reportManager.getTurnoverDelta());
+        String nCustDelta = resolveDelta(reportManager.getnCustomersDelta());
+        
         String dailyTurnover = "Daily Turnover: £"
-                + Helper.doubleToCurrencyFormat(reportManager.getDailyTurnover());
+                + Helper.doubleToTwoDecPlacesString(reportManager.getDailyTurnover())
+                + turnoverDelta;
         request.setAttribute("todaysTurnover", dailyTurnover);
 
         String numCustServed = "Number of Customers served today: "
-                + reportManager.getnCustomersToday();
+                + reportManager.getnCustomersToday()
+                + nCustDelta;
         request.setAttribute("numCustServed", numCustServed);
 
         String message = "";
@@ -89,8 +110,8 @@ public class AdminDashReportServlet extends HttpServlet {
             message += "<td>" + custName + "</td>";
             message += "<td>" + booking.getSourceAddress() + "</td>";
             message += "<td>" + booking.getDestinationAddress() + "</td>";
-            message += "<td>" + booking.getDepartureTime() + "</td>";
-            message += "<td>" + booking.getFareExcVAT() + "</td>";
+            message += "<td>" + Helper.formatDateWithTime(booking.getDepartureTime()) + "</td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareExcVAT()) + "</td>";
             message += "</tr>";
         }
         request.setAttribute("todaysBookingsTable", message);

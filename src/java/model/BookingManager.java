@@ -331,6 +331,122 @@ public class BookingManager {
                 bookingStatus);
     }
 
+    public static Booking[] getCustomersUpcomingBookings(Jdbc jdbc, long customerId) {
+        ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
+        ArrayList<Booking> bookingsList = new ArrayList<>();
+
+        //Map bookingsMaps to BookingsArr
+        Customer customer;
+        String driverIdStr;
+        Driver driver = null;
+        GenericItem bookingStatus;
+        for (HashMap<String, String> map : bookingsMaps) {
+
+            bookingStatus = new GenericItem(
+                    Integer.parseInt(map.get("BOOKINGSTATUSID")));
+
+            if (bookingStatus.getId() == 4 || bookingStatus.getId() == 8) {
+                continue;
+            }
+
+            customer = CustomerManager.getCustomer(
+                    Long.parseLong(map.get("CUSTOMERID")), jdbc);
+
+            if (customer.getId() != customerId) {
+                continue;
+            }
+
+            driverIdStr = map.get("DRIVERID");
+            if (driverIdStr != null) {
+                driver = DriverManager.getDriver(
+                        Long.parseLong(driverIdStr), jdbc);
+            }
+
+            bookingsList.add(new Booking(Long.parseLong(map.get("ID")),
+                    customer,
+                    driver,
+                    map.get("SOURCEADDRESS"),
+                    map.get("DESTINATIONADDRESS"),
+                    Integer.parseInt(map.get("NUMOFPASSENGERS")),
+                    Double.parseDouble(map.get("DISTANCE")),
+                    Double.parseDouble(map.get("FAREEXCVAT")),
+                    Double.parseDouble(map.get("FAREINCVAT")),
+                    Timestamp.valueOf(map.get("TIMEBOOKED")),
+                    Timestamp.valueOf(map.get("DEPARTURETIME")),
+                    null,
+                    bookingStatus));
+        }
+
+        Booking[] bookingsArr = new Booking[bookingsList.size()];
+
+        for (int i = 0; i < bookingsArr.length; i++) {
+            bookingsArr[i] = bookingsList.get(i);
+        }
+
+        return bookingsArr;
+    }
+
+    public static Booking[] getCustomersPreviousBookings(Jdbc jdbc, long customerId) {
+        ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
+        ArrayList<Booking> bookingsList = new ArrayList<>();
+
+        //Map bookingsMaps to BookingsArr
+        Customer customer;
+        String driverIdStr, arrivalStr;
+        Driver driver = null;
+        Timestamp arrivalTime = null;
+        GenericItem bookingStatus;
+        for (HashMap<String, String> map : bookingsMaps) {
+
+            bookingStatus = new GenericItem(
+                    Integer.parseInt(map.get("BOOKINGSTATUSID")));
+
+            if (bookingStatus.getId() != 4) {
+                continue;
+            }
+
+            customer = CustomerManager.getCustomer(
+                    Long.parseLong(map.get("CUSTOMERID")), jdbc);
+
+            if (customer.getId() != customerId) {
+                continue;
+            }
+
+            driverIdStr = map.get("DRIVERID");
+            if (driverIdStr != null) {
+                driver = DriverManager.getDriver(
+                        Long.parseLong(driverIdStr), jdbc);
+            }
+
+            arrivalStr = map.get("ARRIVALTIME");
+            if (driverIdStr != null) {
+                arrivalTime = Timestamp.valueOf(arrivalStr);
+            }
+
+            bookingsList.add(new Booking(Long.parseLong(map.get("ID")),
+                    customer,
+                    driver,
+                    map.get("SOURCEADDRESS"),
+                    map.get("DESTINATIONADDRESS"),
+                    Integer.parseInt(map.get("NUMOFPASSENGERS")),
+                    Double.parseDouble(map.get("DISTANCE")),
+                    Double.parseDouble(map.get("FAREEXCVAT")),
+                    Double.parseDouble(map.get("FAREINCVAT")),
+                    Timestamp.valueOf(map.get("TIMEBOOKED")),
+                    Timestamp.valueOf(map.get("DEPARTURETIME")),
+                    arrivalTime,
+                    bookingStatus));
+        }
+
+        Booking[] bookingsArr = new Booking[bookingsList.size()];
+
+        for (int i = 0; i < bookingsArr.length; i++) {
+            bookingsArr[i] = bookingsList.get(i);
+        }
+
+        return bookingsArr;
+    }
+
     public static long assignDriver(long driverId, long bookingId, Jdbc jdbc) {
         Driver driver = DriverManager.getDriver(driverId, jdbc);
         if (driver == null) {
@@ -349,7 +465,7 @@ public class BookingManager {
         if (booking == null) {
             return ERR_BOOKING_NULL;
         }
-        
+
         booking.setBookingStatus(new GenericItem(2));
 
         return jdbc.update(booking);

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : adminDashReport
-    Created on : 03-Dec-2018, 16:16:48
-    Author     : c2-newcombe
+    Document   : custDashUpcomingJourneys
+    Created on : 09-Dec-2018, 14:36:16
+    Author     : Conor
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,35 +13,22 @@
         <div class="container">
 
             <div class="row">   
-                <h3>View Daily Report</h3>
+                <h3>Upcoming Journeys</h3>
             </div>
             <div class="col-xs-12" style="height:20px;"></div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div name='todaysDate' class="row">
-                        ${todaysDate}
-                    </div>
-                    <div name='todaysTurnover' class="row">
-                        ${todaysTurnover}
-                    </div>
-                    <div name='numCustServed' class="row">
-                        ${numCustServed}
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12" style="height:20px;"></div>
-            <table id="todaysBookings" class="display" style="width:100%">
+            <table id="upcomingBookings" class="display" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Customer Name</th>
                         <th>Source</th>
                         <th>Destination</th>
+                        <th>Distance (Miles)</th>
+                        <th>No. of Passengers</th>
                         <th>Time</th>
-                        <th>Fair ex. VAT (£)</th>
+                        <th>Fair inc. VAT (£)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${todaysBookingsTable}
+                    ${upcomingBookingsTable}
                 </tbody>
             </table>
         </div>
@@ -53,9 +40,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $('#todaysBookings').DataTable();
+            $('#upcomingBookings').DataTable();
         });
 
     </script>
-
 </html>
