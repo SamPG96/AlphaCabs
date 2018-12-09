@@ -56,7 +56,7 @@ public class ReportManager {
         
         boolean sameDay;
         for (Booking booking : allBookings) {
-            Timestamp ts = booking.getDepartureTime();
+            Timestamp ts = booking.getTimeBooked();
             bookingCal.setTime(ts);
             sameDay = today.get(Calendar.DAY_OF_YEAR) == bookingCal.get(Calendar.DAY_OF_YEAR)
                 && today.get(Calendar.YEAR) == bookingCal.get(Calendar.YEAR);
@@ -86,7 +86,7 @@ public class ReportManager {
         Calendar bookingCal = Calendar.getInstance();
         boolean sameDay;
         for (Booking booking : allBookings) {
-            Timestamp ts = booking.getDepartureTime();
+            Timestamp ts = booking.getTimeBooked();
             bookingCal.setTime(ts);
             sameDay = yesterday.get(Calendar.DAY_OF_YEAR) == bookingCal.get(Calendar.DAY_OF_YEAR)
                 && yesterday.get(Calendar.YEAR) == bookingCal.get(Calendar.YEAR);
