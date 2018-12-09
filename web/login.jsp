@@ -13,34 +13,35 @@
         <title>Login</title>
     </head>
     <jsp:include page="/common/head.jsp"/>
-
-    <div class="main">
-        <div class="container">
-            <form method="POST" action="LoginServlet.do">
-                <center><h1>Login</h1></center>
-                <div style="height:20px;"></div>
-                <div class="form-row">
-                    <div class="col-md-6 offset-md-3">
-                        <label>Username:</label>
-                        <input class="form-control" type="text" name="username"/>
+    <body>
+        <div class="main">
+            <div class="container">
+                <form method="POST" action="LoginServlet.do">
+                    <center><h1>Login</h1></center>
+                    <div style="height:20px;"></div>
+                    <div class="form-row">
+                        <div class="col-md-6 offset-md-3">
+                            <label>Username:</label>
+                            <input class="form-control" type="text" name="username"/>
+                        </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="col-md-6 offset-md-3">
-                        <label>Password</label>
-                        <input class="form-control" type="password" name="password"/>
+                    <div class="form-row">
+                        <div class="col-md-6 offset-md-3">
+                            <label>Password</label>
+                            <input class="form-control" type="password" name="password"/>
+                        </div>
                     </div>
-                </div>
-                <input type='hidden' name='reDirectOnSuccess' value=${param.reDirectOnSuccess} />
-                <div class="form-row">
-                    <div class="col-md-6 offset-md-3">
-                        <input class="btn my-1" style="width:100%" type="submit" value="Login"/>
-                        <div class="errMessage"><%=((String) (request.getAttribute("errMsg")) != null) ? (String) (request.getAttribute("errMsg")) : ""%></div>
+                    <input type='hidden' name='reDirectOnSuccess' value=${param.reDirectOnSuccess} />
+                    <div class="form-row">
+                        <div class="col-md-6 offset-md-3">
+                            <input class="btn my-1" style="width:100%" type="submit" value="Login"/>
+                            <div class="errMessage"><%=((String) (request.getAttribute("errMsg")) != null) ? (String) (request.getAttribute("errMsg")) : ""%></div>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+    </body>
     <jsp:include page="/common/foot.jsp"/>
 </html>
 
