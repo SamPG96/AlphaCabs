@@ -15,7 +15,7 @@
     </head>
 
     <body>
-        <h1>Driver Dashboard</h1>
+        <h1>&nbsp;&nbsp;Driver Dashboard</h1>
         <form method="GET" action="DriverDashServlet.do">
 
             <div class="container">
