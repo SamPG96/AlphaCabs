@@ -44,7 +44,6 @@
                                 <label>No. of Passengers</label>
                                 <input class="form-control" type="number" name="passengers"/>
                             </div>
-
                         </div>
                         <input class="btn my-1 " style="width:100%" type="submit" value="Submit"/>
                         <div class="errMessage"><%=((String) (request.getAttribute("errMsg")) != null) ? (String) (request.getAttribute("errMsg")) : ""%></div>

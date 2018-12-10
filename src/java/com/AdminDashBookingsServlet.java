@@ -38,6 +38,8 @@ import model.tableclasses.User;
  */
 public class AdminDashBookingsServlet extends HttpServlet {
 
+
+    private Booking assignBooking;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -70,6 +72,32 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
 
+        Driver[] drivers;
+        String d_Display;
+
+        if (assignBooking != null) {
+            request.setAttribute("assignBooking", assignBooking);
+            drivers = DriverManager.getAllAvailableDrivers(jdbc, assignBooking);
+            assignBooking = null;
+            String driverOptions = "";
+
+          driverOptions += "<option value=\"\"></option>";
+
+          for (Driver driver : drivers) {
+              d_Display = "";
+              d_Display += driver.getRegistration() + " ";
+              d_Display += driver.getFirstName() + " ";
+              d_Display += driver.getLastName();
+
+              driverOptions += "<option value = " + d_Display + ">" + d_Display + "</option>";
+          }
+          request.setAttribute("driverOptions", driverOptions);
+
+
+            request.getRequestDispatcher("adminDashAssignDriver.jsp").forward(
+                    request, response);
+        }
+
         //Resolve checkbox
         String box = request.getParameter("checkOutstanding");
         if (box == null) {
@@ -83,10 +111,6 @@ public class AdminDashBookingsServlet extends HttpServlet {
             bookings = BookingManager.getBookings(jdbc);
         }
 
-        Driver[] drivers;
-        
-        //Driver driver = null;
-        
         drivers = DriverManager.getAllDrivers(jdbc);
 
         //ASSIGN DRIVER process
@@ -118,7 +142,7 @@ public class AdminDashBookingsServlet extends HttpServlet {
             }
         }
 
-        String d_Display = "<tr>\n"
+        d_Display = "<tr>\n"
                 + "\n"
                 + "\n"
                 + "\n"
@@ -159,17 +183,9 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
             // Driver ID can be null if no driver assigned, so handle this.
             if (booking.getDriver() == null) {
-                //Display all drivers in Drop Down List
-                message += "<td><select name='drivers'><option value=\"\"></option>";
-                for (Driver driver : drivers) {
-                    d_Display = "";
-                    d_Display += driver.getRegistration() + " ";
-                    d_Display += driver.getLastName() + " ";
-                    d_Display += driver.getFirstName();
-
-                    message += "<option value = " + d_Display + ">" + d_Display + "</option>";
-                }
-                message += "</select></td>";
+              message += "<td><button class=\"btn\" onclick=\"getAssignBooking(this)\""
+                  + " data-bookingid=" + booking.getId()
+                  + ">Assign</button></td>";
             } else {
                 driverName = booking.getDriver().getFirstName() + " "
                         + booking.getDriver().getLastName();
@@ -201,16 +217,10 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
 
-        Long id = Long.parseLong(request.getParameter("id"));
-        //Booking[] bookings;
-
-        //BookingManager.assignDriver(, id, jdbc);
-        //if () {
-        //    BookingManager.assignDriver(
-        //            id,
-        //            ,
-        //            jdbc);
-        //}
+        long bookingId = Long.parseLong(request.getParameter("bookingid"));
+        Booking booking = BookingManager.getBooking(jdbc, bookingId);
+        this.assignBooking = booking;
+        request.setAttribute("assignBooking", booking);
     }
 
     //-----------------------------------------------------------------
