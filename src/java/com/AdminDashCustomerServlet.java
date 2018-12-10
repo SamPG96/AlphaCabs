@@ -6,19 +6,16 @@
 package com;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.Statement;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.CustomerManager;
 import model.UserManager;
 import model.Jdbc;
+import static model.UserManager.getUserStatusObj;
 import model.tableclasses.Customer;
+import model.tableclasses.User;
 
 /**
  *
@@ -58,38 +55,38 @@ public class AdminDashCustomerServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        //Jdbc jdbc = (Jdbc) session.getAttribute("jdbc");
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");       
+        
+        //Customer[] aCustomer = CustomerManager.getAllCustomers(jdbc);
+        User[] aUser = UserManager.getAllUsers(jdbc);
 
-        Customer[] aCustomer = CustomerManager.getAllCustomers(jdbc);
-        
-          String message = "<tr>\n"
-                + "                    <th>First name</th>\n"
-                + "                    <th>Last name</th>\n"
-                + "                    <th>Address</th>\n"                   
-                + "                </tr>";
-        
-        
-        for (Customer customer:aCustomer) {
-            
-            
-            
-            message +=  "<tr>";
-            message +="<td>" + customer.getFirstName() + "</td>";
-            message +="<td>" + customer.getLastName() + "</td>";
+        String message = "";
+        String customerName = "";
+        Customer customer;
+        for (User user:aUser) {
+            customer = user.getCustomer();
+            if(customer == null){
+                continue;
+            }
+            customerName = customer.getFirstName() + " " + customer.getLastName();
+            message += "<tr>";
+            message +="<td>" + customer.getId() + "</td>";
+            message +="<td>" + customerName + "</td>";
             message +="<td>" + customer.getAddress() + "</td>";
-          
-            message += "</tr>";
+            message +="<td>" + user.getUserStatus().getName() + "</td>";
+            if (user.getUserStatus().getName().equals("Unapproved")) {
+                message +="<td><button class=\"btn\" onclick=\"getUser(this)\" data-userid=" + user.getId() + " data-userstatus=" + user.getUserStatus().getName() + ">Approve</button></td>";
+            }else {
+                message +="<td><button class=\"btn\" onclick=\"getUser(this)\" data-userid=" + user.getId() + " data-userstatus=" + user.getUserStatus().getName() + ">Unapprove</button></td>";
+            }
+            
+            message += "</tr>";    
         }
+        
+        request.setAttribute("customersTable", message);
 
-        request.setAttribute("customerTable", message);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
 
-     
-//
-//        request.setAttribute("bookingsTable", message + "</br>");
-        request.getRequestDispatcher("/adminDashCustomer.jsp").forward(request, response);
-    
-    
     }
 
     /**
@@ -105,34 +102,20 @@ public class AdminDashCustomerServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-         ServletContext sc = request.getServletContext();
-        
-//        // Go straight to an error page if their where problems connecting to
-//        // the DB.
-//        if (sc.getAttribute("dBConnectionError") != null){
-//            request.getRequestDispatcher("conErr.jsp").forward(request, response);
-//        }
-//        
-//        // Connect Jdbc to the DB
-//        Jdbc dbBean = new Jdbc();
-//        dbBean.connect((Connection)sc.getAttribute("connection"));
-//         // Values from Booking.jsp
-//        
-//        if (request.getAttribute("buttonHit").equals("approve")) {
-//          int CustomertoApprove = UserManager.approveUser(
-//                request.getParameter("userId"),
-//                dbBean);
-//          
-//          request.getRequestDispatcher("AdminDashCustomer.jsp").forward(request, response);
-//          
-//        }else if (request.getAttribute("buttonHit").equals("edit")){
-//            int CustomertoEdit = UserManager.editUser(
-//                request.getParameter("userId"),
-//                dbBean);
-//            
-//            request.getRequestDispatcher("EditCustomer.jsp").forward(request, response);
-//        }
-        
+        HttpSession session = request.getSession(false);
+
+        // Connect Jdbc to the DB
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+
+        long userId = Long.parseLong(request.getParameter("userid"));
+
+        String userStatus = request.getParameter("userstatus");
+
+        if (userStatus.equals("Unapproved")) {
+           UserManager.changeUserStatus(userId, getUserStatusObj(2, jdbc), jdbc);
+        }else{
+           UserManager.changeUserStatus(userId, getUserStatusObj(1, jdbc), jdbc);
+        }
     }
 
     /**

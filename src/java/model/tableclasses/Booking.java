@@ -19,7 +19,9 @@ public class Booking {
     private String sourceAddress;
     private String destinationAddress;
     private int numOfPassengers;
-    private double distanceKM;
+    private double distance;
+    private double FareExcVAT;
+    private double FareIncVAT;
     private Timestamp timeBooked;
     private Timestamp departureTime;
     private Timestamp arrivalTime;
@@ -30,7 +32,7 @@ public class Booking {
 
     public Booking(long id, Customer customer, Driver driver, 
             String sourceAddress, String destinationAddress, 
-            int numOfPassengers, double distanceKM, Timestamp timeBooked, 
+            int numOfPassengers, double distanceKM, double fareExcVAT, double fareIncVAT, Timestamp timeBooked, 
             Timestamp departureTime, Timestamp arrivalTime, 
             GenericItem bookingStatus) {
         this.id = id;
@@ -39,36 +41,26 @@ public class Booking {
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.numOfPassengers = numOfPassengers;
-        this.distanceKM = distanceKM;
+        this.distance = distanceKM;
+        this.FareExcVAT = fareExcVAT;
+        this.FareIncVAT = fareIncVAT;
         this.timeBooked = timeBooked;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.bookingStatus = bookingStatus;
     }
     
-    public Booking(long id, Customer customer, String sourceAddress, 
-            String destinationAddress, int numOfPassengers, 
-            Timestamp timeBooked, Timestamp departureTime, 
-            GenericItem bookingStatus) {
-        this.id = id;
-        this.customer = customer;
-        this.sourceAddress = sourceAddress;
-        this.destinationAddress = destinationAddress;
-        this.numOfPassengers = numOfPassengers;
-        this.timeBooked = timeBooked;
-        this.departureTime = departureTime;
-        this.bookingStatus = bookingStatus;
-    }
-    
     public Booking(Customer customer, String sourceAddress, 
             String destinationAddress, int numOfPassengers, 
-            double distanceKM, Timestamp timeBooked, 
+            double distanceKM, double fareExcVAT, double fareIncVAT, Timestamp timeBooked, 
             Timestamp departureTime, GenericItem bookingStatus) {
         this.customer = customer;
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.numOfPassengers = numOfPassengers;
-        this.distanceKM = distanceKM;
+        this.distance = distanceKM;
+        this.FareExcVAT = fareExcVAT;
+        this.FareIncVAT = fareIncVAT;
         this.timeBooked = timeBooked;
         this.departureTime = departureTime;
         this.bookingStatus = bookingStatus;
@@ -76,12 +68,14 @@ public class Booking {
     
     public Booking(String sourceAddress, 
             String destinationAddress, int numOfPassengers, 
-            double distanceKM, Timestamp timeBooked, 
+            double distanceKM, double fareExcVAT, double fareIncVAT, Timestamp timeBooked, 
             Timestamp departureTime, GenericItem bookingStatus) {
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.numOfPassengers = numOfPassengers;
-        this.distanceKM = distanceKM;
+        this.distance = distanceKM;
+        this.FareExcVAT = fareExcVAT;
+        this.FareIncVAT = fareIncVAT;
         this.timeBooked = timeBooked;
         this.departureTime = departureTime;
         this.bookingStatus = bookingStatus;
@@ -127,12 +121,12 @@ public class Booking {
         this.destinationAddress = destinationAddress;
     }
 
-    public double getDistanceKM() {
-        return distanceKM;
+    public double getDistance() {
+        return distance;
     }
 
-    public void setDistanceKM(double distanceKM) {
-        this.distanceKM = distanceKM;
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     public Timestamp getTimeBooked() {
@@ -182,6 +176,23 @@ public class Booking {
     public void setArrivalTime(Timestamp arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
+
+    public double getFareExcVAT() {
+        return FareExcVAT;
+    }
+
+    public void setFareExcVAT(double FareExcVAT) {
+        this.FareExcVAT = FareExcVAT;
+    }
+
+    public double getFareIncVAT() {
+        return FareIncVAT;
+    }
+
+    public void setFareIncVAT(double FareIncVAT) {
+        this.FareIncVAT = FareIncVAT;
+    }
+
     
     
     

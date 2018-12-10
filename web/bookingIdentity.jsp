@@ -12,19 +12,17 @@
         <title>Template</title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
-    
-    <jsp:include page="/common/head.jsp"/>
-     
-        <div class="main">
-        
-       <jsp:include page="login.jsp"/>
-       <div class="line"></div>
-       
-      
-       <center><a href="guest.jsp" class="button">Book as guest</a>
-       <a href="register.jsp" class="button">Book with a new AlphaCabs account</a></center>
-        </div>
-    
-    <jsp:include page="/common/foot.jsp"/>
-    
+
+
+    <div class="main">
+
+        <!--Return back to the booking servlet if the customer signs in-->
+        <jsp:include page="login.jsp">
+            <jsp:param name="reDirectOnSuccess" value="BookingFormServlet.do" />
+        </jsp:include>
+
+        <center>
+            <input type="button" class="btn" onclick="location.href = 'guest.jsp';" value="Book as Guest" />
+            <input type="button" class="btn" onclick="location.href = 'register.jsp';" value="Register for Account" /></center>
+    </div>
 </html>

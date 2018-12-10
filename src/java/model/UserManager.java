@@ -6,6 +6,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import model.tableclasses.User;
 import java.util.HashMap;
 import model.tableclasses.Customer;
@@ -20,15 +21,15 @@ import static model.tableclasses.User.TABLE_NAME_USERS;
  * @author Sam
  */
 public class UserManager {
-    public static final long NO_FIRST_NAME_ERR_CODE = -1;
-    public static final long NO_LAST_NAME_ERR_CODE = -2;
-    public static final long NO_PASSWORD_ERR_CODE = -3;
+    public static final int NO_USER_FIRST_NAME_ERR_CODE = -1;
+    public static final int NO_USER_LAST_NAME_ERR_CODE = -2;
+    public static final int NO_USER_PASSWORD_ERR_CODE = -3;
     public static final int PASSWORDS_DONT_MATCH_ERR_CODE = -4;
 
     /*
-    * Set the status of a user account to 'active'
+    * Set a new status for the user account
     */
-    public static int approveUser(long userId, Jdbc jdbc){
+    public static int changeUserStatus(long userId, GenericItem newStatus, Jdbc jdbc){
         User user;
         
         user = getUser(userId, jdbc);
@@ -40,7 +41,7 @@ public class UserManager {
         
         // Retrieve existing info about the user and replace the status of the
         // user to active.
-        user.setUserStatus(new GenericItem(2));
+        user.setUserStatus(newStatus);
         
         // Update the database
         jdbc.update(user);
@@ -59,7 +60,7 @@ public class UserManager {
         
         user = new User();
         user.setPassword(password);
-        user.setUserType(new GenericItem(4, "Customer"));
+        user.setUserType(getUserTypeObj(4, jdbc));
         
         customer = CustomerManager.getCustomer(customerID, jdbc);
         user.setCustomer(customer);
@@ -79,7 +80,7 @@ public class UserManager {
         
         user = new User();
         user.setPassword(password);
-        user.setUserType(new GenericItem(2, "Driver"));
+        user.setUserType(getUserTypeObj(2, jdbc));
         
         driver = DriverManager.getDriver(driverId, jdbc);
         user.setDriver(driver);
@@ -97,11 +98,10 @@ public class UserManager {
             GenericItem userStatus, Jdbc jdbc){
         long err;
 
-        // TODO: set user status here!
         user.setUserStatus(userStatus);
         
         // Validate parameters for the new user account
-        err = validateNewUserAttribs(userFirstName, userLastName, password,
+        err = validateUserAttribs(userFirstName, userLastName, password,
                 passwordConfirm);
         if (err < 0){
             return err;
@@ -116,18 +116,18 @@ public class UserManager {
     /*
      * Validates parameters required for a new user account.
      */
-    public static long validateNewUserAttribs(String userFirstName,
+    public static int validateUserAttribs(String userFirstName,
             String userLastName, String password, String passwordConfirm){
-        if (userFirstName.isEmpty()){
-            return NO_FIRST_NAME_ERR_CODE;
+        if (userFirstName == null || userFirstName.isEmpty()){
+            return NO_USER_FIRST_NAME_ERR_CODE;
         }
-        if (userLastName.isEmpty()){
-            return NO_LAST_NAME_ERR_CODE;
+        if (userLastName == null || userLastName.isEmpty()){
+            return NO_USER_LAST_NAME_ERR_CODE;
         }
-        else if (password.isEmpty()){
-            return NO_PASSWORD_ERR_CODE;
+        else if (password == null || password.isEmpty()){
+            return NO_USER_PASSWORD_ERR_CODE;
         }
-        else if (password.equals(passwordConfirm) == false){
+        else if (passwordConfirm == null || password.equals(passwordConfirm) == false){
             return PASSWORDS_DONT_MATCH_ERR_CODE;
         }   
         return 0;
@@ -174,17 +174,35 @@ public class UserManager {
         
         return results.isEmpty() == false;
     }
-    
+
     /*
-     * Verify a users login details and return the associated ID of the user,
-     * If the username of password is invalid then -1 is returned.
+     * Login users of any type with their login details and return the
+     * associated ID of the user. If the user is unrecognised or incorrect
+     * details have been given then an error code is returned.
      */
-    public static long loginUser(String user, String pass, Jdbc jdbc){
+    public static long loginAnyUserType(String user, String pass, Jdbc jdbc){
+        ArrayList<GenericItem> allowedUserTypes;
+        
+        allowedUserTypes = new ArrayList<>(Arrays.asList(UserManager.getAllUserTypes(jdbc)));
+        
+        return loginSpecificUserTypes(user, pass, allowedUserTypes, jdbc);
+    }
+
+    /*
+     * Login users of a specific type with their login details and return the
+     * associated ID of the user. If the user is unrecognised or incorrect
+     * details have been given or a user was found but is not of the given types
+     * then an error code is returned.
+     */
+    public static long loginSpecificUserTypes(String userName, String pass,
+            ArrayList<GenericItem> validTypes, Jdbc jdbc){
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> userDBInfo;
+        boolean userTypeIsValid;
+        User user;
         
         // Retrieve user information from the DB
-        results = jdbc.retrieve(TABLE_NAME_USERS, "USERNAME", user);        
+        results = jdbc.retrieve(TABLE_NAME_USERS, "USERNAME", userName);        
         
         // If no user was found with given username then return failure
         if (results.isEmpty()){
@@ -201,66 +219,159 @@ public class UserManager {
         // Should only be one result, so index the first
         userDBInfo = results.get(0);
         
-        // Check the password is correct
-        if (userDBInfo.get("PASSWORD").equals(pass) == false){
+        user = getUser(Long.valueOf(userDBInfo.get("ID")), jdbc);
+        
+        // Incorrect login attempt if the password is correct
+        if (user.getPassword().equals(pass) == false){
             return -1;
         }
         
-        return Long.valueOf(userDBInfo.get("ID"));
+        // Identify the type of user and return an error if their type is not
+        // allowed to sign in.
+        userTypeIsValid = false;
+        for (GenericItem validType: validTypes){
+            if (validType.getId() == user.getUserType().getId()){
+                userTypeIsValid = true;
+                break;
+            }
+        }
+        
+        // Return an error if the user is infact of a non valid type
+        if (userTypeIsValid == false){
+            return -1;
+        }
+        
+        // Do not allow non active users to sign in
+        if (user.getUserStatus().getId() != 2){
+            return -1;
+        }
+        
+        return user.getId();        
+    }
+    
+    /*
+    * Return all user types
+    */
+    public static GenericItem[] getAllUserTypes(Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        GenericItem[] allUserTypes;
+        int i;
+        
+        results = jdbc.retrieve(TABLE_NAME_USERTYPE);
+        allUserTypes = new GenericItem[results.size()];
+        
+        i = 0;
+        for (HashMap<String, String> row: results){
+            allUserTypes[i++] = new GenericItem(
+                    Long.valueOf(row.get("ID")),
+                    row.get("USERTYPE")
+            );
+        }   
+        
+        return allUserTypes;
+    }
+    
+    /*
+    * Create a generic item object for a user type ID
+    */
+    public static GenericItem getUserTypeObj(long typeId, Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        HashMap<String, String> userTypeMap;
+        
+        results = jdbc.retrieve(TABLE_NAME_USERTYPE, typeId);
+        
+        userTypeMap = results.get(0);
+        
+        return new GenericItem(
+                Long.valueOf(userTypeMap.get("ID")),
+                userTypeMap.get("USERTYPE"));
     }
 
+    /*
+    * Create a generic item object for a user status ID
+    */
+    public static GenericItem getUserStatusObj(long statusId, Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        HashMap<String, String> userStatusMap;
+        
+        results = jdbc.retrieve(TABLE_NAME_USERSTATUS, statusId);
+        
+        userStatusMap = results.get(0);
+        
+        return new GenericItem(
+                Long.valueOf(userStatusMap.get("ID")),
+                userStatusMap.get("STATUS"));
+    }
+    
+    /*
+    * Return a list of all users in the database
+    */
+    public static User[] getAllUsers(Jdbc jdbc){
+        ArrayList<HashMap<String, String>> usersMap;
+        User[] userArr;
+        
+        usersMap = jdbc.retrieve(User.TABLE_NAME_USERS);
+        userArr = new User[usersMap.size()];
+
+        int i = 0;
+
+        // Map each row to a user object
+        for (HashMap<String, String> map : usersMap) {          
+            userArr[i++] = generateUserObj(map, jdbc);
+        }   
+        
+        return userArr;
+    }
+    
     /*
      * Queriues the DB for information about a user. All information is returned
      * as a User object.
      */
     public static User getUser(long userID, Jdbc jdbc){
         HashMap<String, String> userDBInfo;
-        ArrayList<HashMap<String, String>> userTypeOpts;
-        ArrayList<HashMap<String, String>> userStatusOpts;
-        String userTypeName = null;
-        String userStatusName = null;
-        User user;
 
         // Retrieve user information from the DB. Note ID is primary key so
         // their should only ever be one result.
         ArrayList<HashMap<String, String>> results = jdbc.retrieve(TABLE_NAME_USERS, userID);
-        userDBInfo = results.get(0);
-
-        // Identify the name of the user type for user
-        userTypeOpts = jdbc.retrieve(TABLE_NAME_USERTYPE);
-        for (HashMap<String, String> row: userTypeOpts){
-            if (row.get("ID").equals(userDBInfo.get("USERTYPEID"))){
-                userTypeName = row.get("USERTYPE");
-            }
-        }
+        userDBInfo = results.get(0);    
         
-        // Identify the name of status set for the user
-        userStatusOpts = jdbc.retrieve(TABLE_NAME_USERSTATUS);
-         for (HashMap<String, String> row: userStatusOpts){
-            if (row.get("ID").equals(userDBInfo.get("USERSTATUSID"))){
-                userStatusName = row.get("STATUS");
-            }
-        }       
+        return generateUserObj(userDBInfo, jdbc);
+    }
+    
+    /*
+    * Retrieve a user by a driver ID.
+    */
+    public static User getUserByDriverId(long driverId, Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        
+        results = jdbc.retrieve(TABLE_NAME_USERS, "DRIVERID", driverId);
+        
+        return getUser(Long.valueOf(results.get(0).get("ID")), jdbc);
+    }
+    
+    /*
+    * Generates a user object from the output of the DB
+    */
+    private static User generateUserObj(HashMap<String, String> dbMap, Jdbc jdbc){
+        User user;
         
         // Initialize User object
         user = new User(
-                userID,
-                userDBInfo.get("USERNAME"),
-                userDBInfo.get("PASSWORD"),
-                new GenericItem(Integer.valueOf(userDBInfo.get("USERTYPEID")),
-                        userTypeName),
-                new GenericItem(Integer.valueOf(userDBInfo.get("USERSTATUSID")),
-                        userStatusName));
+                Long.valueOf(dbMap.get("ID")),
+                dbMap.get("USERNAME"),
+                dbMap.get("PASSWORD"),
+                getUserTypeObj(Long.valueOf(dbMap.get("USERTYPEID")), jdbc),
+                getUserStatusObj(Long.valueOf(dbMap.get("USERSTATUSID")), jdbc));
         
         if (user.getUserType().getId() == 2){
             user.setDriver(DriverManager.getDriver(
-                    Long.valueOf(userDBInfo.get("DRIVERID")), jdbc));
+                    Long.valueOf(dbMap.get("DRIVERID")), jdbc));
         }
         else if (user.getUserType().getId() == 4){
             user.setCustomer(CustomerManager.getCustomer(
-                    Long.valueOf(userDBInfo.get("CUSTOMERID")), jdbc));
+                    Long.valueOf(dbMap.get("CUSTOMERID")), jdbc));
         }
-        
+
         return user;
     }
     
@@ -283,10 +394,25 @@ public class UserManager {
         // username
         return results.get(0).get("USERNAME");
     }
+
     /*
-     * Queries the database to check the status of a user account 
-     */
-//    public static int getUserAccountStatus(User user, Jdbc jdbc){
-//        
-//    }
+    * Retrieves the username of a driver.
+    */
+    public static String getUsernameForDriver(long driverId, Jdbc jdbc){
+        ArrayList<HashMap<String, String>> results;
+        results = jdbc.retrieve(
+                TABLE_NAME_USERS,
+                "DRIVERID",
+                driverId);
+        
+        if (results.isEmpty()){
+            // Cannot find a user with the given customerID
+            return null;
+        }
+        
+        // Fetch the first result (their should only be one) and return the
+        // username
+        return results.get(0).get("USERNAME");
+    }
+
 }

@@ -3,24 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.usermanagement;
+package com;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.BookingManager;
+import model.CustomerManager;
+import model.Helper;
+import model.UserManager;
 import model.Jdbc;
+import model.ReportManager;
+import model.tableclasses.Booking;
+import model.tableclasses.Customer;
+import model.tableclasses.User;
 
 /**
  *
- * @author me-aydin
+ * @author jakec
  */
-@WebServlet(name = "Delete", urlPatterns = {"/Delete.do"})
-public class DeleteServlet extends HttpServlet {
+public class CustDashUpcomingJourneysServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,31 +43,7 @@ public class DeleteServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-           HttpSession session = request.getSession(false);
-        
-        String [] query = new String[2];
-        query[0] = (String)request.getParameter("username");
-        query[1] = (String)request.getParameter("password");
-        //String insert = "INSERT INTO `Users` (`username`, `password`) VALUES ('";
-      
-        Jdbc jdbc = (Jdbc)session.getAttribute("dbbean"); 
-        
-        if (jdbc == null)
-            request.getRequestDispatcher("/conErr.jsp").forward(request, response);
-        
-        if(query[0]==null) {
-            request.setAttribute("message", "Username cannot be NULL");
-        } 
-        else if(jdbc.exists(query[0])){
-            jdbc.delete(query[0]);
-            request.setAttribute("message", "User with "+query[0]+" username is deleted");
-        }
-        else {
-            request.setAttribute("message", query[0]+" does not exist");
-        }
-         
-        request.getRequestDispatcher("/user.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,7 +58,31 @@ public class DeleteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        HttpSession session = request.getSession(false);
+
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+
+        long userId = (long) session.getAttribute("userID");
+        
+        User user = UserManager.getUser(userId, jdbc);
+        Booking[] bookings = BookingManager.getCustomersUpcomingBookings(jdbc, user.getCustomerId());
+        
+        String message = "";
+        for (Booking booking : bookings) {
+            message += "<tr>";
+            message += "<td>" + booking.getSourceAddress() + "</td>";
+            message += "<td>" + booking.getDestinationAddress() + "</td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getDistance()) + "</td>";
+            message += "<td>" + booking.getNumOfPassengers() + "</td>";
+            message += "<td>" + Helper.formatDateWithTime(booking.getDepartureTime()) + "</td>";
+            message += "<td>" + Helper.doubleToTwoDecPlacesString(booking.getFareIncVAT()) + "</td>";
+            message += "</tr>";
+        }
+        request.setAttribute("upcomingBookingsTable", message);
+
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+
     }
 
     /**
@@ -86,7 +96,8 @@ public class DeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession(false);
+
     }
 
     /**

@@ -3,21 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.usermanagement;
+package com;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.UserManager;
 import model.Jdbc;
+import model.tableclasses.User;
+import model.UserManager;
+import static model.UserManager.getUserStatusObj;
+import model.tableclasses.GenericItem;
 
 /**
  *
- * @author me-aydin
+ * @author jakec
  */
-public class NewUserServlet extends HttpServlet {
+public class AdminDashUserServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,32 +38,6 @@ public class NewUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
-        HttpSession session = request.getSession(false);
-        
-        String [] query = new String[2];
-        query[0] = (String)request.getParameter("username");
-        query[1] = (String)request.getParameter("password");
-        //String insert = "INSERT INTO `Users` (`username`, `password`) VALUES ('";
-      
-        Jdbc jdbc = (Jdbc)session.getAttribute("dbbean"); 
-        
-        if (jdbc == null)
-            request.getRequestDispatcher("/conErr.jsp").forward(request, response);
-        
-        if(query[0].equals("") ) {
-            request.setAttribute("message", "Username cannot be NULL");
-        } 
-        else if(jdbc.exists(query[0])){
-            request.setAttribute("message", query[0]+" is already taken as username");
-        }
-        else {
-            jdbc.insert(query);
-            request.setAttribute("message", query[0]+" is added");
-        }
-         
-        request.getRequestDispatcher("/user.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -71,6 +53,44 @@ public class NewUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
+        HttpSession session = request.getSession(false);
+
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+
+        User[] aUser = UserManager.getAllUsers(jdbc);
+
+        String message = "";
+        String name = "";
+        for (User user : aUser) {
+            message += "<tr>";
+            message += "<td class=\"username\">" + user.getUsername() + "</td>";
+            message += "<td>" + user.getUserType().getName() + "</td>";
+
+            //Find name
+            switch ((int) user.getUserType().getId()) {
+                case 1://Admin
+                    name = "N/A";
+                    break;
+                case 2://Driver
+                    name = user.getDriver().getFirstName() + " "
+                            + user.getDriver().getLastName();
+                    break;
+                case 4://Customer
+                    name = user.getCustomer().getFirstName() + " "
+                            + user.getCustomer().getLastName();
+                    break;
+            }
+            message += "<td>" + name + "</td>";
+
+            message += "<td>" + user.getUserStatus().getName() + "</td>";
+
+            message += "</tr>";
+        }
+        request.setAttribute("userTable", message);
+
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+
     }
 
     /**
@@ -85,6 +105,8 @@ public class NewUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
+
     }
 
     /**

@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : index
     Created on : 09-Nov-2018, 13:05:42
     Author     : Alex, Sam
@@ -15,60 +15,43 @@
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
     <jsp:include page="/common/head.jsp"/>
-     
-        <div class="main">
-            
-            
-            
-            <%
-        try {
-            if(session != null && session.getAttribute("userID") != null)  {
-                
-           GenericItem userType = (GenericItem)session.getAttribute("userType");
-            
-           if(userType.getId() == 1){
 
-            %>
-            <%@include file="adminDash.jsp"%>
-            <%
-            }
-           if(userType.getId() == 2){ 
-            %>
-            <%@include file="driverDash.jsp"%>
-            <%
-            }
-            if(userType.getId() == 4){ 
-            %>
-            <%@include file="customerDash.jsp"%>
-            <%
-            }
-              
+    <div class="main">
+
+
+
+        <%
+            if (session != null && session.getAttribute("userID") != null) {
+
+                GenericItem userType = (GenericItem) session.getAttribute("userType");
+
+                if (userType.getId() == 1) {
+
+        %>
+                    <%@include file="adminDash.jsp"%>
+        <%      }
+                else if (userType.getId() == 2) {
+        %>
+                    <%@include file="driverDash.jsp"%>
+        <%
+                }
+                else if (userType.getId() == 4) {
+        %>
+                    <%@include file="customerDash.jsp"%>
+        <%
+                }
             } else {
-    %>
-            
-           
-            
-        <jsp:include page="booking.jsp"/>
-           
-        
-        
-       
-            
-            
-            <%
-       
+                // Reset cached objects
+                session.removeAttribute("cachedCustomerID");
+                session.removeAttribute("cachedBooking");
+        %>
+                <jsp:include page="booking.jsp"/>
+        <%
             }
-        } catch (Exception e) {
+        %>
 
-        }
-    %>
-            
-            
-         
+    </div>
         
-        
-        
-        </div>
     <jsp:include page="/common/foot.jsp"/>
-    
+
 </html>

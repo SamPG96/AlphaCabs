@@ -1,5 +1,5 @@
 <%-- 
-    Document   : default
+    Document   : booking
     Created on : 21-Nov-2018, 00:41:02
     Author     : yuugy
 --%>
@@ -10,42 +10,46 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-       <link rel="stylesheet" type="text/css" href="stylesheet.css">
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
     </head>
-    
-    
-     
+    <body>
         <div class="main">
-        
-             <center> <h1>Alphacab Customer Form</h1></center>
-            <center> Please fill out this form to request a taxi:</center>
-            
-            
-            
-            <center><form method="POST" action="BookingFormServlet.do">
-               <table>
-                    <tr>
-                        <td>Source:</td><td></td><td>Destination</td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="source"/></td><td></td><td><input type="text" name="destination"/></td>
-                    </tr>
-                    <tr>
-                        <td>Date:</td><td>Time:</td><td>Passengers:</td>
-                    </tr><tr>
-                        <td><input type="date" name="date"/></td><td><input type="time" name="time"/></td><td><input type="value" name="passengers"/></td>
-                    </tr><tr>
-                        <td></td><td><input type="submit" value="Submit"/></td><td></td>
-                    </tr>
-
-                </table>
-            </form>
-            <div class="errMessage"><%=((String)(request.getAttribute("errMsg"))!=null)?(String)(request.getAttribute("errMsg")):""%></div>
-            </center>
-                            
-                
+            <div class="container">
+                <form method="POST" action="BookingFormServlet.do">
+                    <form>
+                        <center><h1>Booking Form</h1></center>
+                        <div style="height:20px;"></div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label>Source Address:</label>
+                                <input class="form-control" type="text" name="source"/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Destination Address:</label>
+                                <input class="form-control" type="text" name="destination"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label>Date</label>
+                                <input class="form-control" type="date" name="date"/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Time</label>
+                                <input class="form-control" type="time" name="time"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label>No. of Passengers</label>
+                                <input class="form-control" type="number" name="passengers"/>
+                            </div>
+                        </div>
+                        <input class="btn my-1 " style="width:100%" type="submit" value="Submit"/>
+                        <div class="errMessage"><%=((String) (request.getAttribute("errMsg")) != null) ? (String) (request.getAttribute("errMsg")) : ""%></div>
+                    </form>
+                </form>
+            </div>
         </div>
-    
-   
-    
+    </body>
 </html>

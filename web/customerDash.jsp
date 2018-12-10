@@ -1,69 +1,52 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Customer Dashboard</title>
         <link rel="stylesheet" type="text/css" href="stylesheet.css">
-        
-        
-        <style>
-            .tab {
-                overflow: hidden;
-                border: 1px solid #ccc;
-                background-color: #f1f1f1;                
-            }
-            
-            .tab button {
-                background-color: inherit;
-                float: left;
-                border: none;
-                outline: none;
-                cursor: pointer;
-                padding: 14px 16px;
-                transition: 0.3s;
-                font-size: 17px;
-            }
-            
-            .tab button:hover {
-                background-color: #ddd
-            }
-            .tab button.active {
-                background-color: #ccc
-            }
-            
-            .tabcontent {
-                display: none;
-                padding: 6px 12px;
-                border: 1px solid #ccc;
-                border-top: none;
-            }            
-        
-        </style>
-        
+        <link rel="stylesheet" type="text/css" href="dashboards.css">
     </head>
     <body>
-        <h1>CUSTOMER Dashboard</h1>
-        
+        <h1>&nbsp;&nbsp;Customer Dashboard</h1>
+
         <div class="tab">
-            <button class="tablinks" onclick="openTab(event, 'Booking')" id="bookingTab">Booking</button>
-            <button class="tablinks" onclick="openTab(event, 'Details')">Edit Details</button>
+            <form method="GET" action="BookingFormServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'NewBooking')">New Booking</button>
+            </form>
+            <form method="GET" action="CustomerDashEditServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'Details')">Edit Details</button>
+            </form>
+            <form method="GET" action="CustDashUpcomingJourneysServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'UpcomingJourneys')">Upcoming Journeys</button>
+            </form>
+            <form method="GET" action="CustDashPreviousJourneysServlet.do">
+                <button class="tablinks" onclick="openTab(event, 'PreviousJourneys')">Previous Journeys</button>
+            </form>
         </div>
-        
-        <div id="Booking" class="tabcontent">
-            <h3>Make a Booking</h3>
-            <jsp:include page="booking.jsp"/>
+
+        <div id="NewBooking" class="tabcontent">
+            <%@include file="booking.jsp" %>
         </div>
-        
+
+        <div id="UpcomingJourneys" class="tabcontent">
+            <%@include file='custDashUpcomingJourneys.jsp' %>
+        </div>
+
+        <div id="PreviousJourneys" class="tabcontent">
+            <%@include file='custDashPreviousJourneys.jsp' %>
+        </div>
+
         <div id="Details" class="tabcontent">
-            <h3>Edit Your Details</h3>
-            <p>INPUT JSP FILE HERE - Request changes to Details here</p>
+            <%@include file="customerDashEdit.jsp" %>
         </div>
-        
+
         <script>
             function openTab(evt, option) {
                 var i, tabcontent, tablinks;
@@ -78,10 +61,20 @@ and open the template in the editor.
                 document.getElementById(option).style.display = "block";
                 evt.currentTarget.className += " active";
             }
-            // Open booking tab by default
-            document.getElementById("bookingTab").click();
         </script>
-			
+        <script>
+            function displayTables() {
+                if (window.location.href.indexOf("CustomerDashEditServlet.do") > -1) {
+                    openTab(event, "Details");
+                } else if (window.location.href.indexOf("BookingFormServlet.do") > -1) {
+                    openTab(event, "NewBooking");
+                } else if (window.location.href.indexOf("CustDashUpcomingJourneysServlet.do") > -1) {
+                    openTab(event, 'UpcomingJourneys');
+                }else if (window.location.href.indexOf("CustDashPreviousJourneysServlet.do") > -1) {
+                    openTab(event, 'PreviousJourneys');
+                }
+            }
+            window.onload = displayTables;
+        </script>
     </body>
-    <jsp:include page="/common/foot.jsp"/>
 </html>
