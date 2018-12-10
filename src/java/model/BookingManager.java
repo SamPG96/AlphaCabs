@@ -283,6 +283,69 @@ public class BookingManager {
         return bookingsArr;
     }
 
+    public static Booking[] getBookings(Jdbc jdbc, long driverId) {
+        ArrayList<HashMap<String, String>> bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
+        ArrayList<Booking> bookingsList = new ArrayList<>();
+
+        //Map bookingsMaps to BookingsArr
+        Customer customer;
+        String driverIdStr, arrivalStr;
+        long dId;
+        Driver driver = null;
+        Timestamp arrivalTime = null;
+        GenericItem bookingStatus;
+        for (HashMap<String, String> map : bookingsMaps) {
+
+            bookingStatus = new GenericItem(
+                    Integer.parseInt(map.get("BOOKINGSTATUSID")));
+
+            customer = CustomerManager.getCustomer(
+                    Long.parseLong(map.get("CUSTOMERID")), jdbc);
+
+            driverIdStr = map.get("DRIVERID");
+            if (driverIdStr != null) {
+                dId = Long.parseLong(driverIdStr);
+                if (dId == driverId) {
+                    driver = DriverManager.getDriver(
+                            Long.parseLong(driverIdStr), jdbc);
+                } else {
+                    continue;
+                }
+            } else {
+                continue;
+            }
+
+            if (bookingStatus.getId() == 4) {
+                arrivalStr = map.get("ARRIVALTIME");
+                if (arrivalStr != null) {
+                    arrivalTime = Timestamp.valueOf(arrivalStr);
+                }
+            }
+
+            bookingsList.add(new Booking(Long.parseLong(map.get("ID")),
+                    customer,
+                    driver,
+                    map.get("SOURCEADDRESS"),
+                    map.get("DESTINATIONADDRESS"),
+                    Integer.parseInt(map.get("NUMOFPASSENGERS")),
+                    Double.parseDouble(map.get("DISTANCE")),
+                    Double.parseDouble(map.get("FAREEXCVAT")),
+                    Double.parseDouble(map.get("FAREINCVAT")),
+                    Timestamp.valueOf(map.get("TIMEBOOKED")),
+                    Timestamp.valueOf(map.get("DEPARTURETIME")),
+                    arrivalTime,
+                    bookingStatus));
+        }
+
+        Booking[] bookingsArr = new Booking[bookingsList.size()];
+
+        for (int i = 0; i < bookingsArr.length; i++) {
+            bookingsArr[i] = bookingsList.get(i);
+        }
+
+        return bookingsArr;
+    }
+
     public static Booking getBooking(Jdbc jdbc, long bookingId) {
         ArrayList<HashMap<String, String>> results;
         HashMap<String, String> bookingMap;
@@ -450,8 +513,8 @@ public class BookingManager {
 
     /*
     * Get all bookings for a specififc driver
-    */
-    public static Booking[] getAllDriverBookings(long driverId, boolean todaysOnly, Jdbc jdbc){
+     */
+    public static Booking[] getAllDriverBookings(long driverId, boolean todaysOnly, Jdbc jdbc) {
         ArrayList<HashMap<String, String>> bookingsMaps;
         ArrayList<Booking> bookingsList;
         Calendar today;
@@ -461,19 +524,19 @@ public class BookingManager {
         boolean sameDay;
 
         String bookingDriverIdStr;
-        
+
         bookingsMaps = jdbc.retrieve(Booking.TABLE_NAME_BOOKINGS);
         bookingsList = new ArrayList<>();
-        
+
         now = new Timestamp(System.currentTimeMillis());
         today = Calendar.getInstance();
         bookingCal = Calendar.getInstance();
         today.setTime(now);
-        
+
         for (HashMap<String, String> map : bookingsMaps) {
             Timestamp depTime;
             bookingDriverIdStr = map.get("DRIVERID");
-            
+
             if (bookingDriverIdStr == null || Long.valueOf(bookingDriverIdStr) != driverId) {
                 // Booking does not belong to driver, so skip
                 continue;
@@ -482,24 +545,23 @@ public class BookingManager {
             depTime = Timestamp.valueOf(map.get("DEPARTURETIME"));
             bookingCal.setTime(depTime);
             sameDay = today.get(Calendar.DAY_OF_YEAR) == bookingCal.get(Calendar.DAY_OF_YEAR)
-                && today.get(Calendar.YEAR) == bookingCal.get(Calendar.YEAR);
-            
+                    && today.get(Calendar.YEAR) == bookingCal.get(Calendar.YEAR);
+
             // Dont include the booking for the driver if they are only interested
             // in the bookings they must complete for today.
-            if(todaysOnly == true && sameDay == false){
+            if (todaysOnly == true && sameDay == false) {
                 continue;
             }
-            
+
             if (map.get("ARRIVALTIME") != null) {
                 arrivalTime = Timestamp.valueOf(map.get("ARRIVALTIME"));
-            }
-            else{
+            } else {
                 arrivalTime = null;
             }
-            
+
             bookingsList.add(new Booking(Long.parseLong(map.get("ID")),
                     CustomerManager.getCustomer(
-                        Long.parseLong(map.get("CUSTOMERID")), jdbc),
+                            Long.parseLong(map.get("CUSTOMERID")), jdbc),
                     DriverManager.getDriver(driverId, jdbc),
                     map.get("SOURCEADDRESS"),
                     map.get("DESTINATIONADDRESS"),
@@ -513,9 +575,9 @@ public class BookingManager {
                     new GenericItem(Integer.parseInt(map.get("BOOKINGSTATUSID")))));
         }
 
-        return bookingsList.toArray(new Booking[bookingsList.size()]);        
+        return bookingsList.toArray(new Booking[bookingsList.size()]);
     }
-    
+
     public static long assignDriver(long driverId, long bookingId, Jdbc jdbc) {
         Driver driver = DriverManager.getDriver(driverId, jdbc);
         if (driver == null) {

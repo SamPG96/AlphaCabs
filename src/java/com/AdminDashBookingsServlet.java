@@ -77,9 +77,10 @@ public class AdminDashBookingsServlet extends HttpServlet {
 
         if (assignBooking != null) {
             request.setAttribute("assignBooking", assignBooking);
+            drivers = DriverManager.getAllAvailableDrivers(jdbc, assignBooking);
             assignBooking = null;
             String driverOptions = "";
-            drivers = DriverManager.getAllDrivers(jdbc);
+
 
           driverOptions += "<option value=\"\"></option>";
 
