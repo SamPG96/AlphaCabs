@@ -64,7 +64,6 @@ public class AdminDashDriversServlet extends HttpServlet {
             driverUser = null;
             request.getRequestDispatcher("adminDashUpdateDriver.jsp").forward(
                     request, response);
-            //response.sendRedirect("adminDashUpdateDriver.jsp");
         } 
 
         //GET All Driver users

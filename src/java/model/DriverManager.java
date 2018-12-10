@@ -89,6 +89,17 @@ public class DriverManager {
                           driverRecord.get("REGISTRATION"));
     }
     
+    public static Driver getDriverByReg(String reg, Jdbc jdbc){
+        Driver[] allDrivers = getAllDrivers(jdbc);
+        
+        for(Driver driver : allDrivers){
+            if(reg.equals(driver.getRegistration())){
+                return driver;
+            }
+        }
+        return null;
+     }
+    
     /*
     * Return a list of all drivers in the database
     */

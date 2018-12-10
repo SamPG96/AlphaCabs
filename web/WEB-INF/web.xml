@@ -87,6 +87,14 @@
         <servlet-name>DriverFormServlet</servlet-name>
         <servlet-class>com.DriverFormServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AssignDriverServlet</servlet-name>
+        <servlet-class>com.AssignDriverServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AssignDriverServlet</servlet-name>
+        <url-pattern>/AssignDriverServlet.do</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DriverFormServlet</servlet-name>
         <url-pattern>/DriverFormServlet.do</url-pattern>

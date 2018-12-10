@@ -36,9 +36,6 @@
                     <div class="col-sm-4">
                         <button type="submit" class="btn mb-1">Display Bookings</button>
                     </div>
-                    <div class="col-sm-4">
-                        <button type="submit" name="assigndriver" class="btn mb-1">Assign Driver(s)</button>
-                    </div>
                 </div>
                 <div class="col-xs-12" style="height:20px;"></div>
                 <table id="bookingsTable" class="display" style="width:100%">
@@ -72,12 +69,18 @@
     <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript">
-        function getid(elem) {
-            var id = $(elem).attr('name');
+        function getAssignBooking(elem) {
+            var bookingid = $(elem).attr('data-bookingid');
 
-            $.post("http://localhost:8080/AlphaCabs/AdminDashBookingsServlet.do", {"id": id});
+            $.post("AdminDashBookingsServlet.do", {"bookingid": bookingid});
+            
+            window.setTimeout(loadpage, 1000);
         }
         ;
+        function loadpage() {
+                        //reloads page
+                        window.location.reload();
+                    }
         $(document).ready(function () {
             $('#bookingsTable').DataTable({
                 select: {
