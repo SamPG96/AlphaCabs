@@ -38,32 +38,26 @@
                     <div style="height:20px;"></div>
                     <div class="form-row">
                         <div class="form-group col-sm-6">
-                            <label>Source Address:</label>
-                            <input class="form-control" type="text" name="source" value=<%=booking.getSourceAddress()%> readonly/>
+                            Source Address: <%=booking.getSourceAddress()%> 
                         </div>
                         <div class="form-group col-sm-6">
-                            <label>Destination Address:</label>
-                            <input class="form-control" type="text" name="destination" value=<%=booking.getDestinationAddress()%> readonly/>
+                            Destination Address: <%=booking.getDestinationAddress()%>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-sm-6">
-                            <label>Date and Time</label>
-                            <input class="form-control" type="text" name="date" value=<%=Helper.formatDateWithTime(booking.getDepartureTime())%> readonly/>
+                            Date and Time: <%=Helper.formatDateWithTime(booking.getDepartureTime())%>
                         </div>
                         <div class="form-group col-sm-6">
-                            <label>No. of Passengers</label>
-                            <input class="form-control" type="number" name="passengers" value=<%=booking.getNumOfPassengers()%> readonly/>
+                            No. of Passengers <%=booking.getNumOfPassengers()%>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-sm-6">
-                            <label>Distance (Miles):</label>
-                            <input class="form-control" type="text" name="distance" value=<%=Helper.doubleToTwoDecPlacesString(booking.getDistance())%> readonly/>
+                            Distance (Miles): <%=Helper.doubleToTwoDecPlacesString(booking.getDistance())%>
                         </div>
                         <div class="form-group col-sm-6">
-                            <label>Booking ID:</label>
-                            <input class="form-control" type="text" name="bookingid" value=<%=booking.getId()%> readonly/>
+                            Booking ID: <%=booking.getId()%>
                         </div>
                     </div>
                     <div class="form-row">
