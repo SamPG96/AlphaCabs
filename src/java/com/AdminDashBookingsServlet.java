@@ -81,7 +81,6 @@ public class AdminDashBookingsServlet extends HttpServlet {
             assignBooking = null;
             String driverOptions = "";
 
-
           driverOptions += "<option value=\"\"></option>";
 
           for (Driver driver : drivers) {
