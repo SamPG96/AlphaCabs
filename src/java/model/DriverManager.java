@@ -127,12 +127,16 @@ public class DriverManager {
         ArrayList<Driver> availableDrivers = new ArrayList<>();
         Driver[] ret;
         Booking[] driverBookings;
-        boolean available = true;
+        boolean available;
 
         for (int i = 0; i < allDrivers.length; i++) {
+            available = true;
             driverBookings = BookingManager.getBookings(jdbc, allDrivers[i].getId());
             
             for(int j = 0; j < driverBookings.length; j++){
+                if(booking.getId() == driverBookings[j].getId()){
+                    continue;
+                }
                 if(bookingsOverlap(driverBookings[j], booking)){
                    available = false;
                 }
@@ -141,6 +145,7 @@ public class DriverManager {
             if(available){
                 availableDrivers.add(allDrivers[i]);
             }
+            
         }
         
         ret = new Driver[availableDrivers.size()];
@@ -160,7 +165,7 @@ public class DriverManager {
         Timestamp end1 = new Timestamp(start1.getTime() + duration1), 
                 end2 = new Timestamp(start2.getTime() + duration2);
         
-        return start1.after(end2) || start2.after(end1);
+        return !(start1.after(end2) || start2.after(end1));
     }
 
     /*
