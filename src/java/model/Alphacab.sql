@@ -27,7 +27,6 @@ INSERT INTO Customers (FirstName, LastName, Address) VALUES
 ('Saim', 'Soyler', '2 Rosemary Ave, London, N3'),
 ('Gul', 'Hikmet', '31 Clifton Rd, London, N3 2SG'),
 ('FirstNameTest', 'LastNameTest', 'AddressTest');
-
 -- --------------------------------------------------------
 CREATE TABLE Drivers (
   Id int NOT NULL GENERATED ALWAYS AS IDENTITY
@@ -146,7 +145,14 @@ INSERT INTO Bookings (CustomerId, DriverId, SourceAddress, DestinationAddress, N
 (3, 4, '54 Teignmouth Rd, London, NW2', '120 Green Lanes, London, N13', 2, 7.0, 7.0, 8.4, '2015-10-14 18:00:00', '2015-10-15 05:00:00', '2015-10-15 06:00:00', 4),
 (4, 4, '765 High Road, London, N12', '131 Stoke Newington High Road, London, N12', 3, 8.0, 8.0, 9.6, '2015-10-15 09:00:00', '2015-10-15 11:30:00', '2015-10-15 12:00:00', 4),
 (5, 2, '75 Squires Lane, London, N3', 'Luton Airport, Luton', 4, 30.0, 30.0, 36.0, '2015-10-21 14:30:00', '2015-10-22 09:00:00', '2015-10-22 10:00:00', 4),
-(6, NULL, 'Finchley, London', 'King''s Cross, London', 1, 5.0, 5.0, 6.0, '2015-11-02 09:22:18', '2015-11-05 09:00:00', NULL, 1);
+(6, NULL, 'Finchley, London', 'King''s Cross, London', 1, 5.0, 5.0, 6.0, '2015-11-02 09:22:18', '2015-11-05 09:00:00', NULL, 1),
+(1, NULL, '129 Station Rd, London, N3 2AS', 'Heathrow Terminal 3, London', 2, 19.67260586, 21.67260586, 26.007127032, '2018-12-10 12:09:31.191', '2018-12-10 15:02:00.000', NULL, 1),
+(1, NULL, '23 Bow Lane, London, N3', '131 Stoke Newington High Road, London, N12', 3, 7.2265447300000005, 9.22654473, 11.071853676, '2018-12-10 12:14:33.952', '2018-12-10 04:33:00.000', NULL, 1),
+(1, 4, 'Luton Airport, Luton', '54 Teignmouth Rd, London, NW2', 5, 29.269059584, 31.269059584, 37.5228715008, '2018-12-08 12:18:38.145', '2018-12-09 06:06:00.000', '2018-12-09 06:30:00.000', 4),
+(1, 1, 'Heathrow Terminal 3, London', '54 Teignmouth Rd, London, NW2', 3, 17.241181137, 19.241181137, 23.089417364400003, '2018-12-10 12:23:45.396', '2018-12-09 11:11:00.000', '2018-12-09 11:19:00.000', 4),
+(1, null, '54 Teignmouth Rd, London, NW2', '765 High Road, London, N12', 4, 6.447966867, 8.447966867, 10.1375602404, '2018-12-10 12:27:24.379', '2018-12-11 19:07:00.000', null, 2),
+(1, null, '23 Bow Lane, London, N3', '54 Teignmouth Rd, London, NW2', 4, 5.394743022, 7.394743022, 8.8736916264, '2018-12-10 12:30:40.778', '2018-12-11 03:33:00.000', null, 2);
+
 
 -- --------------------------------------------------------
 CREATE TABLE Configurations (
